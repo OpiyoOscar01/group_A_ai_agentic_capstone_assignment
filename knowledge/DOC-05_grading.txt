@@ -1,0 +1,2 @@
+DOC-ID: DOC-05 | Title: Grading and GPA Information (Explanatory Only) | Source: Team-synthesised (2026) | Version: 1.0
+Makerere uses letter grades A to F with grade points 5.0 to 0.0. GPA is computed as total grade points divided by total credit units. This document explains grading only. The agent must never change, predict or award grades. All grade queries or disputes are handled solely by the Examinations Office and School Board. Students may request an explanation of their published grades but not a grade change through this system.

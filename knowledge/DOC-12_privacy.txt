@@ -1,0 +1,2 @@
+DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0
+The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored or sent to external AI services. Retained memory is limited to the active case ID within a session. Students may request deletion of a session. Staff access case queues only for review. No data is shared outside the approved application boundary without authorisation. Policy reference for privacy refusals: DOC-12.

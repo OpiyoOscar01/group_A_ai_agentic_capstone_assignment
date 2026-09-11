@@ -1,0 +1,2 @@
+DOC-ID: DOC-06 | Title: Student Support Cases and Ticketing | Source: Team-created system spec (2026) | Version: 1.0
+Support categories are: missing_marks, retake, registration, other. A valid case requires student name, 10-digit student ID, category and description. On submission the system generates a unique case ID of form CASE-XXXX with status Pending. Status values are Pending, In Progress, Resolved. Only staff may move a case beyond Pending. Students confirm submission before creation. Active case ID is remembered within a session to avoid re-entry.

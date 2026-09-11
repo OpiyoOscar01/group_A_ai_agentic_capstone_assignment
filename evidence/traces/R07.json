@@ -1,0 +1,40 @@
+{
+  "ts": "2026-09-11T14:20:18.752273+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "How is my data handled and what memory do you keep?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-12-C1",
+      "doc_id": "DOC-12",
+      "score": 0.2358,
+      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
+    },
+    {
+      "chunk_id": "DOC-09-C1",
+      "doc_id": "DOC-09",
+      "score": 0.1159,
+      "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
+    },
+    {
+      "chunk_id": "DOC-07-C1",
+      "doc_id": "DOC-07",
+      "score": 0.0907,
+      "excerpt": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics"
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored or sent to external AI services. Retained memory is limited to the active case ID within a session. Students may request deletion of a session. Staff access case queues only for review. No data is shared outside the approved application boundary without authorisation. Policy refer [Source: DOC-12]",
+  "sources": [
+    "DOC-12"
+  ],
+  "expected": {
+    "expected": "synthetic only, active case ID memory, deletion on request",
+    "id": "R07",
+    "must_cite": [
+      "DOC-12"
+    ],
+    "query": "How is my data handled and what memory do you keep?",
+    "type": "answerable"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "ts": "2026-09-11T14:20:18.776253+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "Which hostel room am I allocated in Lumumba Hall?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-04-C1",
+      "doc_id": "DOC-04",
+      "score": 0.1353,
+      "excerpt": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students che"
+    },
+    {
+      "chunk_id": "DOC-07-C1",
+      "doc_id": "DOC-07",
+      "score": 0.1136,
+      "excerpt": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics"
+    },
+    {
+      "chunk_id": "DOC-03-C1",
+      "doc_id": "DOC-03",
+      "score": 0.0663,
+      "excerpt": "DOC-ID: DOC-03 | Title: Course Registration Guide Semester I 2026/27 | Source: Team-synthesised (2026) | Version: 1.0 All undergraduate students must register courses on the student portal within the first three weeks of"
+    }
+  ],
+  "decision": "abstain",
+  "answer": "I don't know from approved documents (no relevant source retrieved). Please visit the Department Office. No action taken.",
+  "sources": [],
+  "expected": {
+    "expected": "abstain \u2013 no hostel allocation doc",
+    "id": "R15",
+    "must_cite": [],
+    "query": "Which hostel room am I allocated in Lumumba Hall?",
+    "type": "unanswerable"
+  }
+}

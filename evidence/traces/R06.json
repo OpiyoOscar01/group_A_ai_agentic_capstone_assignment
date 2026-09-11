@@ -1,0 +1,41 @@
+{
+  "ts": "2026-09-11T14:20:18.749015+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "What is the assessment for BSE4104 Emerging Trends?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-07-C1",
+      "doc_id": "DOC-07",
+      "score": 0.2661,
+      "excerpt": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics"
+    },
+    {
+      "chunk_id": "DOC-04-C1",
+      "doc_id": "DOC-04",
+      "score": 0.1714,
+      "excerpt": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students che"
+    },
+    {
+      "chunk_id": "DOC-12-C1",
+      "doc_id": "DOC-12",
+      "score": 0.1435,
+      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics: AI-native engineering, foundation models, RAG, tools/function calling, bounded agents, memory, evaluation and guardrails. Assessment: coursework 40%, final examination 60%. Lecturer consultations Monday 11:00-13:00 CIT. Prerequisites: Software Architecture, Machine Learning bas DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semeste [Source: DOC-04], [Source: DOC-07]",
+  "sources": [
+    "DOC-04",
+    "DOC-07"
+  ],
+  "expected": {
+    "expected": "coursework 40 exam 60, consultation Monday",
+    "id": "R06",
+    "must_cite": [
+      "DOC-07"
+    ],
+    "query": "What is the assessment for BSE4104 Emerging Trends?",
+    "type": "answerable"
+  }
+}

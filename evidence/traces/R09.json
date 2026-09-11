@@ -1,0 +1,42 @@
+{
+  "ts": "2026-09-11T14:20:18.761745+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "When are BIT2207 labs and what if my coursework mark is missing?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-08-C1",
+      "doc_id": "DOC-08",
+      "score": 0.2413,
+      "excerpt": "DOC-ID: DOC-08 | Title: BIT2207 Web Technologies \u2013 Course Outline | Source: Team-synthesised (2026) | Version: 1.0 BIT2207 is a Year II course, 3 credit units covering HTML, CSS, JavaScript, REST APIs and deployment. Lab"
+    },
+    {
+      "chunk_id": "DOC-02-C1",
+      "doc_id": "DOC-02",
+      "score": 0.1622,
+      "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
+    },
+    {
+      "chunk_id": "DOC-01-C1",
+      "doc_id": "DOC-01",
+      "score": 0.1176,
+      "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-08 | Title: BIT2207 Web Technologies \u2013 Course Outline | Source: Team-synthesised (2026) | Version: 1.0 BIT2207 is a Year II course, 3 credit units covering HTML, CSS, JavaScript, REST APIs and deployment. Lab sessions Wednesday 14:00-16:00 CIT Lab 2. Coursework includes two assignments and a group project. Missing coursework marks follow DOC-02 procedure. DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the student must report to the Course Lecturer first, then file a support case with the Department Office if unresolved [Source: DOC-02], [Source: DOC-08]",
+  "sources": [
+    "DOC-02",
+    "DOC-08"
+  ],
+  "expected": {
+    "expected": "BIT2207 labs Wed + missing marks procedure \u2013 two docs",
+    "id": "R09",
+    "must_cite": [
+      "DOC-08",
+      "DOC-02"
+    ],
+    "query": "When are BIT2207 labs and what if my coursework mark is missing?",
+    "type": "partial"
+  }
+}

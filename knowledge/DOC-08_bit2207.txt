@@ -1,0 +1,2 @@
+DOC-ID: DOC-08 | Title: BIT2207 Web Technologies – Course Outline | Source: Team-synthesised (2026) | Version: 1.0
+BIT2207 is a Year II course, 3 credit units covering HTML, CSS, JavaScript, REST APIs and deployment. Lab sessions Wednesday 14:00-16:00 CIT Lab 2. Coursework includes two assignments and a group project. Missing coursework marks follow DOC-02 procedure.

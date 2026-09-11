@@ -1,0 +1,41 @@
+{
+  "ts": "2026-09-11T14:20:18.738324+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "How many times can I retake a failed course and how do I register?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-03-C1",
+      "doc_id": "DOC-03",
+      "score": 0.2088,
+      "excerpt": "DOC-ID: DOC-03 | Title: Course Registration Guide Semester I 2026/27 | Source: Team-synthesised (2026) | Version: 1.0 All undergraduate students must register courses on the student portal within the first three weeks of"
+    },
+    {
+      "chunk_id": "DOC-01-C1",
+      "doc_id": "DOC-01",
+      "score": 0.1903,
+      "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
+    },
+    {
+      "chunk_id": "DOC-07-C1",
+      "doc_id": "DOC-07",
+      "score": 0.131,
+      "excerpt": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics"
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-03 | Title: Course Registration Guide Semester I 2026/27 | Source: Team-synthesised (2026) | Version: 1.0 All undergraduate students must register courses on the student portal within the first three weeks of the semester. Late registration attracts a surcharge set by the Academic Registrar. A minimum of 15 credit units and maximum of 24 credit units per semester applies. Registration requires clearance of prior semester fees. Students with registration holds must visit the School Re DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who [Source: DOC-01], [Source: DOC-03]",
+  "sources": [
+    "DOC-01",
+    "DOC-03"
+  ],
+  "expected": {
+    "expected": "1 retake, register before deadline, Bursar fee",
+    "id": "R01",
+    "must_cite": [
+      "DOC-01"
+    ],
+    "query": "How many times can I retake a failed course and how do I register?",
+    "type": "answerable"
+  }
+}
