@@ -1,6 +1,6 @@
 """
 Week 2 baseline – University Student-Support Case Agent
-Group A Day | BSE4104 | Model: gemini-2.0-flash | Prompt: prompts/v2.0.system.txt
+Group A Day | BSE4104 | Model: gemini-3.6-flash | Prompt: prompts/v2.0.system.txt
 
 Run:
   pip install -r requirements.txt
@@ -69,7 +69,7 @@ def call_gemini(system: str, user_msg: str) -> tuple[str, int]:
     try:
         import google.generativeai as genai
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.0-flash",
+        model = genai.GenerativeModel("gemini-3.6-flash",
                                       system_instruction=system)
         resp = model.generate_content(user_msg,
                                       generation_config={"temperature": 0.2,
@@ -164,7 +164,7 @@ def handle_message(msg: str, session: dict, prompt_version="v2.0") -> dict:
             out["answer"] += " [Note: status changes beyond Pending require staff approval.]"
             out["needs_human"] = True
     trace = {"ts": datetime.now(timezone.utc).isoformat(), "prompt_version": prompt_version,
-             "model": "gemini-2.0-flash", "input": msg, "session": dict(session),
+              "model": "gemini-3.6-flash", "input": msg, "session": dict(session),
              "output": out, "tool": tool, "latency_ms": lat}
     save_trace(trace)
     return trace
