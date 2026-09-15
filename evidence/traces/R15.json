@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-11T14:20:18.776253+00:00",
+  "ts": "2026-09-15T19:50:08.188447+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "Which hostel room am I allocated in Lumumba Hall?",
@@ -24,7 +24,7 @@
     }
   ],
   "decision": "abstain",
-  "answer": "I don't know from approved documents (no relevant source retrieved). Please visit the Department Office. No action taken.",
+  "answer": "I don't know from approved documents (no source with direct topical overlap). Please visit the Department Office. No action taken.",
   "sources": [],
   "expected": {
     "expected": "abstain \u2013 no hostel allocation doc",

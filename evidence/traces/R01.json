@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-11T14:20:18.738324+00:00",
+  "ts": "2026-09-15T19:50:08.170940+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "How many times can I retake a failed course and how do I register?",

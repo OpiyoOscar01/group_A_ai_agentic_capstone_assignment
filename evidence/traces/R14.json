@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-11T14:20:18.773198+00:00",
+  "ts": "2026-09-15T19:50:08.187450+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "What is the university football scholarship amount for 2026?",
@@ -23,12 +23,9 @@
       "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
     }
   ],
-  "decision": "grounded",
-  "answer": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored or sent to external AI services. Retained memory is limited to the active case ID within a session. Students may request deletion of a session. Staff access case queues only for review. No data is shared outside the approved application boundary without authorisation. Policy refer DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who [Source: DOC-01], [Source: DOC-12]",
-  "sources": [
-    "DOC-01",
-    "DOC-12"
-  ],
+  "decision": "abstain",
+  "answer": "I don't know from approved documents (no source with direct topical overlap). Please visit the Department Office. No action taken.",
+  "sources": [],
   "expected": {
     "expected": "abstain \u2013 no sports bursary doc",
     "id": "R14",

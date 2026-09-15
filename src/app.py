@@ -1,6 +1,6 @@
 """
-Week 2 baseline – University Student-Support Case Agent
-Group A Day | BSE4104 | Model: gemini-3.6-flash | Prompt: prompts/v2.0.system.txt
+Week 3 RAG-Enhanced – University Student-Support Case Agent
+Group A Day | BSE4104 | Model: gemini-3.6-flash | Prompt: prompts/v3.0-rag.system.txt
 
 Run:
   pip install -r requirements.txt
@@ -13,18 +13,23 @@ Design (matches AI Boundary Matrix):
 - LLM only suggests intent + draft text. Deterministic Python enforces:
   ID validation, timetable/case lookup from synthetic JSON, human-approval gate,
   out-of-scope block list, trace logging.
+- Week 3: RAG retrieval for policy questions with source grounding.
 """
 import argparse, json, os, re, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
-PROMPT_FILE = BASE / "prompts" / "v2.0.system.txt"
+PROMPT_FILE = BASE / "prompts" / "v3.0-rag.system.txt"
 TIMETABLE_FILE = BASE / "data" / "timetable.json"
 CASES_FILE = BASE / "data" / "cases.json"
 TRACE_DIR = BASE / ".." / ".." / "evidence" / "traces"  # Week2/evidence/traces if run from baseline
 TRACE_DIR2 = BASE / "evidence" / "traces"  # fallback local
 TESTS_FILE = BASE / "tests" / "week2_10cases.json"
+
+# Week 3: Import RAG module
+sys.path.insert(0, str(BASE / "src"))
+from rag import answer as rag_answer, retrieve as rag_retrieve
 
 OUT_OF_SCOPE_KW = ["admit", "admission", "grade change", "change my grade",
                    "increase my marks", "disciplinary", "tuition fee waiver",
@@ -120,7 +125,7 @@ def parse_llm(text: str) -> dict:
         return {"intent": "clarify", "answer": text[:500], "suggested_category": None,
                 "needs_human": False, "redirect_office": None, "_parse": "fallback"}
 
-def handle_message(msg: str, session: dict, prompt_version="v2.0") -> dict:
+def handle_message(msg: str, session: dict, prompt_version="v3.0-rag") -> dict:
     sid, cid = extract_ids(msg)
     if cid and validate_case_id(cid):
         session["active_case_id"] = cid
@@ -142,15 +147,39 @@ def handle_message(msg: str, session: dict, prompt_version="v2.0") -> dict:
         tool = {"tool": "none", "result": None}
         lat = 0
     else:
-        system = load_text(PROMPT_FILE).replace("{active_case_id}", str(session.get("active_case_id"))).replace("{student_id}", str(sid))
-        raw, lat = call_gemini(system, msg)
-        out = parse_llm(raw)
-        out["_raw"] = raw[:1000]
-        # deterministic enrichment: never let LLM invent timetable/case
-        tool = deterministic_lookup(out.get("intent", ""), sid, cid, session)
-        if tool["tool"] != "none":
+        # Week 3: Use RAG for policy questions
+        rag_triggers = ["policy", "regulation", "retake", "rule", "handbook", "academic", "course"]
+        use_rag = any(k in low for k in rag_triggers) or "?" in msg
+        
+        if use_rag:
+            start = time.time()
+            rag_result = rag_answer(msg)
+            lat = int((time.time() - start) * 1000)
+            
+            # Convert RAG result to app format
+            out = {
+                "intent": "policy_qa",
+                "answer": rag_result.get("answer", "I don't know from approved documents."),
+                "suggested_category": None,
+                "needs_human": rag_result.get("decision") == "refuse-boundary",
+                "redirect_office": "Department Office" if rag_result.get("decision") == "refuse-boundary" else None,
+                "_rag": {
+                    "decision": rag_result.get("decision"),
+                    "sources": rag_result.get("sources", []),
+                    "retrieved": rag_result.get("retrieved", [])[:3]
+                }
+            }
+            tool = {"tool": "rag_retrieval", "result": {"sources": rag_result.get("sources", [])}}
+        else:
+            system = load_text(PROMPT_FILE).replace("{active_case_id}", str(session.get("active_case_id"))).replace("{student_id}", str(sid))
+            raw, lat = call_gemini(system, msg)
+            out = parse_llm(raw)
+            out["_raw"] = raw[:1000]
+            # deterministic enrichment: never let LLM invent timetable/case
+            tool = deterministic_lookup(out.get("intent", ""), sid, cid, session)
+            
+        if tool["tool"] != "none" and tool["tool"] != "rag_retrieval":
             res = tool["result"]
-            # attach id explicitly so traces are inspectable
             active_id = cid or session.get("active_case_id")
             if tool["tool"] == "timetable_lookup":
                 out["_tool_result"] = {"student_id": sid, "record": res}
@@ -163,6 +192,7 @@ def handle_message(msg: str, session: dict, prompt_version="v2.0") -> dict:
         if re.search(r"\b(approved|resolved|rejected)\b", out.get("answer", ""), re.I) and out.get("intent") != "out_of_scope":
             out["answer"] += " [Note: status changes beyond Pending require staff approval.]"
             out["needs_human"] = True
+            
     trace = {"ts": datetime.now(timezone.utc).isoformat(), "prompt_version": prompt_version,
               "model": "gemini-3.6-flash", "input": msg, "session": dict(session),
              "output": out, "tool": tool, "latency_ms": lat}

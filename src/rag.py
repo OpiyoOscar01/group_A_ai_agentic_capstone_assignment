@@ -1,6 +1,7 @@
 """Week 3 RAG pipeline – TF-IDF baseline (no external ML deps).
 Ingest knowledge/*.txt -> chunk (180 words, 30 overlap) -> TF-IDF index
--> top-k retrieval -> grounded answer with [Source: DOC-xx] or safe abstention.
+-> top-k retrieval -> coverage guard (>=2 salient shared tokens) 
+-> grounded answer with [Source: DOC-xx] or safe abstention.
 Run: python src/rag.py --query "..."  |  python src/rag.py --run-tests
 """
 import json, math, re, sys
@@ -12,10 +13,17 @@ BASE = Path(__file__).resolve().parents[1]
 KNOW = BASE / "knowledge"
 TRACE_DIR = BASE / "evidence" / "traces"
 TESTS = BASE / "tests" / "week3_15cases.json"
-CHUNK_WORDS, OVERLAP, TOP_K, MIN_SCORE = 180, 30, 3, 0.14
+CHUNK_WORDS, OVERLAP, TOP_K, MIN_SCORE, MIN_COVER = 180, 30, 3, 0.14, 2
 
 def tokenize(t: str):
     return re.findall(r"[a-z0-9]+", t.lower())
+
+STOP = frozenset("the a an and or but if then than so for of to in on at by with from into onto over under as is are was were be been being do does did will would can could should may might must not no what how when where why".split())
+
+def coverage(query: str, text: str) -> int:
+    q = {t for t in tokenize(query) if t not in STOP and not t.isdigit()}
+    d = {t for t in tokenize(text) if t not in STOP and not t.isdigit()}
+    return len(q & d)
 
 def load_chunks():
     chunks = []
@@ -76,6 +84,7 @@ def answer(query, use_llm=False):
              "prompt_version": "v3.0-rag", "query": query,
              "retrieved": [{"chunk_id": h["chunk_id"], "doc_id": h["doc_id"], "score": h["score"],
                             "excerpt": h["text"][:220]} for h in hits]}
+    covered = [h for h in top if coverage(query, h["text"]) >= MIN_COVER]
     low = query.lower()
     has_boundary = any(k in low for k in ["admit me", "eligible for admission", "admission to", "change my grade", "fee waiver", "disciplinary appeal decide", "approve my fee"])
     has_answerable = any(k in low for k in ["supplementary", "gpa", "explain"])
@@ -93,17 +102,21 @@ def answer(query, use_llm=False):
         trace.update({"decision": "refuse-boundary", "answer": "This is outside what I can do. I have not taken any action. Please contact the Admissions / Examinations / Bursar / Disciplinary Committee as appropriate. [Policy: DOC-10, DOC-11]",
                       "sources": ["DOC-10", "DOC-11"]})
         return trace
+    if not covered:
+        trace.update({"decision": "abstain", "answer": "I don't know from approved documents (no source with direct topical overlap). Please visit the Department Office. No action taken.",
+                      "sources": []})
+        return trace
     if not top:
         trace.update({"decision": "abstain", "answer": "I don't know from approved documents (no relevant source retrieved). Please visit the Department Office. No action taken.",
                       "sources": []})
         return trace
-    # partially answerable heuristic: only 1 weak hit
-    if len(top) == 1 and top[0]["score"] < 0.15:
-        trace.update({"decision": "partial", "answer": f"Partially answerable from approved documents. Based on {top[0]['doc_id']}: {top[0]['text'][:400]} [Source: {top[0]['doc_id']}]. For the remainder, I don't have an approved source – please confirm with the Department Office.",
-                      "sources": [top[0]["doc_id"]]})
+    # partially answerable heuristic: only 1 weak covered hit
+    if len(covered) == 1 and covered[0]["score"] < 0.15:
+        trace.update({"decision": "partial", "answer": f"Partially answerable from approved documents. Based on {covered[0]['doc_id']}: {covered[0]['text'][:400]} [Source: {covered[0]['doc_id']}]. For the remainder, I don't have an approved source – please confirm with the Department Office.",
+                      "sources": [covered[0]["doc_id"]]})
         return trace
-    ctx = " ".join(h["text"][:500] for h in top[:2])
-    srcs = sorted(set(h["doc_id"] for h in top[:2]))
+    ctx = " ".join(h["text"][:500] for h in covered[:2])
+    srcs = sorted(set(h["doc_id"] for h in covered[:2]))
     tag = ", ".join(f"[Source: {s}]" for s in srcs)
     llm_note = ""
     if use_llm:

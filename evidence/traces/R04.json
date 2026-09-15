@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-11T14:20:18.745028+00:00",
+  "ts": "2026-09-15T19:50:08.176758+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "When and where is BSE4104 and what attendance is required?",
@@ -24,9 +24,8 @@
     }
   ],
   "decision": "grounded",
-  "answer": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students check timetables using a valid 10-digit student ID. Attendance of at least 75% is required to sit examinations. Timetable clashes must be reported within week one. Sample record: BSE4104 Emerging Trends in Software Engineering, Monday 09:00-11:00, CIT Block B Room 3. Changes are ann DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who [Source: DOC-01], [Source: DOC-04]",
+  "answer": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students check timetables using a valid 10-digit student ID. Attendance of at least 75% is required to sit examinations. Timetable clashes must be reported within week one. Sample record: BSE4104 Emerging Trends in Software Engineering, Monday 09:00-11:00, CIT Block B Room 3. Changes are ann [Source: DOC-04]",
   "sources": [
-    "DOC-01",
     "DOC-04"
   ],
   "expected": {
