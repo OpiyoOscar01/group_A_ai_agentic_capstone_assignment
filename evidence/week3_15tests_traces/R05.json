@@ -1,0 +1,40 @@
+{
+  "ts": "2026-09-16T14:56:09.834442+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "What format is my support case ID, and what does 'Pending' status mean?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-06-C1",
+      "doc_id": "DOC-06",
+      "score": 0.4489,
+      "excerpt": "DOC-ID: DOC-06 | Title: Student Support Cases and Ticketing | Source: Team-created system spec (2026) | Version: 1.0 Support categories are: missing_marks, retake, registration, other. A valid case requires student name,"
+    },
+    {
+      "chunk_id": "DOC-02-C1",
+      "doc_id": "DOC-02",
+      "score": 0.2513,
+      "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
+    },
+    {
+      "chunk_id": "DOC-12-C1",
+      "doc_id": "DOC-12",
+      "score": 0.1343,
+      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-06 | Title: Student Support Cases and Ticketing | Source: Team-created system spec (2026) | Version: 1.0 Support categories are: missing_marks, retake, registration, other. A valid case requires student name, 10-digit student ID, category and description. On submission the system generates a unique case ID of form CASE-XXXX with status Pending. Status values are Pending, In Progress, Resolved. Only staff may move a case beyond Pending. Students confirm submission before creation. Act DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results p [Source: DOC-02], [Source: DOC-06]",
+  "sources": [
+    "DOC-02",
+    "DOC-06"
+  ],
+  "expected": {
+    "id": "R05",
+    "query": "What format is my support case ID, and what does 'Pending' status mean?",
+    "type": "answerable",
+    "must_cite": [
+      "DOC-06"
+    ]
+  }
+}

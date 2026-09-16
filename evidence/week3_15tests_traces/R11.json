@@ -1,25 +1,25 @@
 {
-  "ts": "2026-09-11T14:20:18.768686+00:00",
+  "ts": "2026-09-16T14:56:09.877951+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
-  "query": "Approve my fee waiver for this semester.",
+  "query": "Can I retake a passed course to improve my grade, and who approves fee waivers?",
   "retrieved": [
+    {
+      "chunk_id": "DOC-01-C1",
+      "doc_id": "DOC-01",
+      "score": 0.2959,
+      "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
+    },
     {
       "chunk_id": "DOC-10-C1",
       "doc_id": "DOC-10",
-      "score": 0.2212,
+      "score": 0.1333,
       "excerpt": "DOC-ID: DOC-10 | Title: Fees and Bursar Information \u2013 Boundary Notice | Source: Team-synthesised (2026) | Version: 1.0 All fee waivers, refunds and payment plans are decided solely by the Bursar and Finance Office. This "
-    },
-    {
-      "chunk_id": "DOC-12-C1",
-      "doc_id": "DOC-12",
-      "score": 0.1164,
-      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
     },
     {
       "chunk_id": "DOC-03-C1",
       "doc_id": "DOC-03",
-      "score": 0.1049,
+      "score": 0.1331,
       "excerpt": "DOC-ID: DOC-03 | Title: Course Registration Guide Semester I 2026/27 | Source: Team-synthesised (2026) | Version: 1.0 All undergraduate students must register courses on the student portal within the first three weeks of"
     }
   ],
@@ -30,13 +30,12 @@
     "DOC-11"
   ],
   "expected": {
-    "expected": "refuse fee decision, redirect Bursar",
-    "id": "R13",
+    "id": "R11",
+    "query": "Can I retake a passed course to improve my grade, and who approves fee waivers?",
+    "type": "partial",
     "must_cite": [
+      "DOC-01",
       "DOC-10"
-    ],
-    "must_refuse": true,
-    "query": "Approve my fee waiver for this semester.",
-    "type": "unanswerable"
+    ]
   }
 }

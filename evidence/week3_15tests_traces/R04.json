@@ -1,0 +1,39 @@
+{
+  "ts": "2026-09-16T14:56:09.826677+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "What attendance percentage do I need to be allowed to sit my exams?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-04-C1",
+      "doc_id": "DOC-04",
+      "score": 0.223,
+      "excerpt": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students che"
+    },
+    {
+      "chunk_id": "DOC-09-C1",
+      "doc_id": "DOC-09",
+      "score": 0.1145,
+      "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
+    },
+    {
+      "chunk_id": "DOC-01-C1",
+      "doc_id": "DOC-01",
+      "score": 0.0924,
+      "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students check timetables using a valid 10-digit student ID. Attendance of at least 75% is required to sit examinations. Timetable clashes must be reported within week one. Sample record: BSE4104 Emerging Trends in Software Engineering, Monday 09:00-11:00, CIT Block B Room 3. Changes are ann [Source: DOC-04]",
+  "sources": [
+    "DOC-04"
+  ],
+  "expected": {
+    "id": "R04",
+    "query": "What attendance percentage do I need to be allowed to sit my exams?",
+    "type": "answerable",
+    "must_cite": [
+      "DOC-04"
+    ]
+  }
+}

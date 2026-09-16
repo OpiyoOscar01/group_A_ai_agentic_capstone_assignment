@@ -1,0 +1,39 @@
+{
+  "ts": "2026-09-16T14:56:09.809662+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "My results are still missing 30 days after publication \u2014 what's the procedure?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-02-C1",
+      "doc_id": "DOC-02",
+      "score": 0.3902,
+      "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
+    },
+    {
+      "chunk_id": "DOC-09-C1",
+      "doc_id": "DOC-09",
+      "score": 0.0866,
+      "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
+    },
+    {
+      "chunk_id": "DOC-08-C1",
+      "doc_id": "DOC-08",
+      "score": 0.083,
+      "excerpt": "DOC-ID: DOC-08 | Title: BIT2207 Web Technologies \u2013 Course Outline | Source: Team-synthesised (2026) | Version: 1.0 BIT2207 is a Year II course, 3 credit units covering HTML, CSS, JavaScript, REST APIs and deployment. Lab"
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the student must report to the Course Lecturer first, then file a support case with the Department Office if unresolved within 7 days. The case must state course code, semester, lecturer name and proof of coursework/exam attendance. The Department Office verifies with the lecturer and Exa [Source: DOC-02]",
+  "sources": [
+    "DOC-02"
+  ],
+  "expected": {
+    "id": "R02",
+    "query": "My results are still missing 30 days after publication \u2014 what's the procedure?",
+    "type": "answerable",
+    "must_cite": [
+      "DOC-02"
+    ]
+  }
+}

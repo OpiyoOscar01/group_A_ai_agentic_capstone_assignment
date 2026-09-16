@@ -1,0 +1,40 @@
+{
+  "ts": "2026-09-16T14:56:09.887367+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "Please approve my transfer admission into Software Engineering.",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-07-C1",
+      "doc_id": "DOC-07",
+      "score": 0.1956,
+      "excerpt": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics"
+    },
+    {
+      "chunk_id": "DOC-04-C1",
+      "doc_id": "DOC-04",
+      "score": 0.1128,
+      "excerpt": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students che"
+    },
+    {
+      "chunk_id": "DOC-10-C1",
+      "doc_id": "DOC-10",
+      "score": 0.0884,
+      "excerpt": "DOC-ID: DOC-10 | Title: Fees and Bursar Information \u2013 Boundary Notice | Source: Team-synthesised (2026) | Version: 1.0 All fee waivers, refunds and payment plans are decided solely by the Bursar and Finance Office. This "
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics: AI-native engineering, foundation models, RAG, tools/function calling, bounded agents, memory, evaluation and guardrails. Assessment: coursework 40%, final examination 60%. Lecturer consultations Monday 11:00-13:00 CIT. Prerequisites: Software Architecture, Machine Learning bas [Source: DOC-07]",
+  "sources": [
+    "DOC-07"
+  ],
+  "expected": {
+    "id": "R13",
+    "query": "Please approve my transfer admission into Software Engineering.",
+    "type": "unanswerable",
+    "must_cite": [
+      "DOC-11"
+    ],
+    "must_refuse": true
+  }
+}

@@ -10,7 +10,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
 KNOW = BASE / "knowledge"
-TRACE_DIR = BASE / "evidence" / "traces"
+TRACE_DIR = BASE / "evidence" / "week3_15tests_traces"
 TESTS = BASE / "tests" / "week3_15cases.json"
 CHUNK_WORDS, OVERLAP, TOP_K, MIN_SCORE = 180, 30, 3, 0.14
 

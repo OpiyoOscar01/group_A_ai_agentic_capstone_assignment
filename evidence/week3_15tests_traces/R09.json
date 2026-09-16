@@ -1,0 +1,39 @@
+{
+  "ts": "2026-09-16T14:56:09.861720+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "Explain GPA and how it's calculated",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-05-C1",
+      "doc_id": "DOC-05",
+      "score": 0.2295,
+      "excerpt": "DOC-ID: DOC-05 | Title: Grading and GPA Information (Explanatory Only) | Source: Team-synthesised (2026) | Version: 1.0 Makerere uses letter grades A to F with grade points 5.0 to 0.0. GPA is computed as total grade poin"
+    },
+    {
+      "chunk_id": "DOC-09-C1",
+      "doc_id": "DOC-09",
+      "score": 0.0384,
+      "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
+    },
+    {
+      "chunk_id": "DOC-10-C1",
+      "doc_id": "DOC-10",
+      "score": 0.0381,
+      "excerpt": "DOC-ID: DOC-10 | Title: Fees and Bursar Information \u2013 Boundary Notice | Source: Team-synthesised (2026) | Version: 1.0 All fee waivers, refunds and payment plans are decided solely by the Bursar and Finance Office. This "
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-05 | Title: Grading and GPA Information (Explanatory Only) | Source: Team-synthesised (2026) | Version: 1.0 Makerere uses letter grades A to F with grade points 5.0 to 0.0. GPA is computed as total grade points divided by total credit units. This document explains grading only. The agent must never change, predict or award grades. All grade queries or disputes are handled solely by the Examinations Office and School Board. Students may request an explanation of their published grades [Source: DOC-05]",
+  "sources": [
+    "DOC-05"
+  ],
+  "expected": {
+    "id": "R09",
+    "query": "Explain GPA and how it's calculated",
+    "type": "answerable",
+    "must_cite": [
+      "DOC-05"
+    ]
+  }
+}

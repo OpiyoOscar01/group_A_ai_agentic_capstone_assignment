@@ -1,0 +1,40 @@
+{
+  "ts": "2026-09-16T14:56:09.795324+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "How many times can I retake a failed course, and where do I pay the retake fee?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-01-C1",
+      "doc_id": "DOC-01",
+      "score": 0.2858,
+      "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
+    },
+    {
+      "chunk_id": "DOC-02-C1",
+      "doc_id": "DOC-02",
+      "score": 0.1818,
+      "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
+    },
+    {
+      "chunk_id": "DOC-03-C1",
+      "doc_id": "DOC-03",
+      "score": 0.1695,
+      "excerpt": "DOC-ID: DOC-03 | Title: Course Registration Guide Semester I 2026/27 | Source: Team-synthesised (2026) | Version: 1.0 All undergraduate students must register courses on the student portal within the first three weeks of"
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with a mark below 50% may, on recommendation of the School Board, be permitted to retake the course when next offered. Only one retake attempt is permitted per failed course under normal progression. A supplementary examination may be granted where a student misses an examination for  DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results p [Source: DOC-01], [Source: DOC-02]",
+  "sources": [
+    "DOC-01",
+    "DOC-02"
+  ],
+  "expected": {
+    "id": "R01",
+    "query": "How many times can I retake a failed course, and where do I pay the retake fee?",
+    "type": "answerable",
+    "must_cite": [
+      "DOC-01"
+    ]
+  }
+}

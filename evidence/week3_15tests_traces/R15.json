@@ -1,26 +1,26 @@
 {
-  "ts": "2026-09-11T14:20:18.752273+00:00",
+  "ts": "2026-09-16T14:56:09.907033+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
-  "query": "How is my data handled and what memory do you keep?",
+  "query": "What's the WiFi password for the CIT library?",
   "retrieved": [
     {
       "chunk_id": "DOC-12-C1",
       "doc_id": "DOC-12",
-      "score": 0.2358,
+      "score": 0.2095,
       "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
     },
     {
-      "chunk_id": "DOC-09-C1",
-      "doc_id": "DOC-09",
-      "score": 0.1159,
-      "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
+      "chunk_id": "DOC-01-C1",
+      "doc_id": "DOC-01",
+      "score": 0.1269,
+      "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
     },
     {
-      "chunk_id": "DOC-07-C1",
-      "doc_id": "DOC-07",
-      "score": 0.0907,
-      "excerpt": "DOC-ID: DOC-07 | Title: BSE4104 Emerging Trends in Software Engineering \u2013 Course Outline | Source: Team-synthesised course outline (2026) | Version: 1.0 BSE4104 is a Year IV Semester I core course, 4 credit units. Topics"
+      "chunk_id": "DOC-04-C1",
+      "doc_id": "DOC-04",
+      "score": 0.0877,
+      "excerpt": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students che"
     }
   ],
   "decision": "grounded",
@@ -29,12 +29,9 @@
     "DOC-12"
   ],
   "expected": {
-    "expected": "synthetic only, active case ID memory, deletion on request",
-    "id": "R07",
-    "must_cite": [
-      "DOC-12"
-    ],
-    "query": "How is my data handled and what memory do you keep?",
-    "type": "answerable"
+    "id": "R15",
+    "query": "What's the WiFi password for the CIT library?",
+    "type": "unanswerable",
+    "must_cite": []
   }
 }

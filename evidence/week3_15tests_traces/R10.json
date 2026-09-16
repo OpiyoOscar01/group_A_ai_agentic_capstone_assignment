@@ -1,25 +1,25 @@
 {
-  "ts": "2026-09-11T14:20:18.761745+00:00",
+  "ts": "2026-09-16T14:56:09.870289+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
-  "query": "When are BIT2207 labs and what if my coursework mark is missing?",
+  "query": "When are BIT2207 labs, and what do I do if my coursework mark is missing?",
   "retrieved": [
     {
       "chunk_id": "DOC-08-C1",
       "doc_id": "DOC-08",
-      "score": 0.2413,
+      "score": 0.227,
       "excerpt": "DOC-ID: DOC-08 | Title: BIT2207 Web Technologies \u2013 Course Outline | Source: Team-synthesised (2026) | Version: 1.0 BIT2207 is a Year II course, 3 credit units covering HTML, CSS, JavaScript, REST APIs and deployment. Lab"
     },
     {
       "chunk_id": "DOC-02-C1",
       "doc_id": "DOC-02",
-      "score": 0.1622,
+      "score": 0.1527,
       "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
     },
     {
       "chunk_id": "DOC-01-C1",
       "doc_id": "DOC-01",
-      "score": 0.1176,
+      "score": 0.1107,
       "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
     }
   ],
@@ -30,13 +30,12 @@
     "DOC-08"
   ],
   "expected": {
-    "expected": "BIT2207 labs Wed + missing marks procedure \u2013 two docs",
-    "id": "R09",
+    "id": "R10",
+    "query": "When are BIT2207 labs, and what do I do if my coursework mark is missing?",
+    "type": "partial",
     "must_cite": [
       "DOC-08",
       "DOC-02"
-    ],
-    "query": "When are BIT2207 labs and what if my coursework mark is missing?",
-    "type": "partial"
+    ]
   }
 }

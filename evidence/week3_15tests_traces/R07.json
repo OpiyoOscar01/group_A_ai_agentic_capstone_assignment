@@ -1,0 +1,39 @@
+{
+  "ts": "2026-09-16T14:56:09.848132+00:00",
+  "model": "rag-tfidf-v1+gemini-2.0-flash",
+  "prompt_version": "v3.0-rag",
+  "query": "Is my real student data ever sent to an external AI service?",
+  "retrieved": [
+    {
+      "chunk_id": "DOC-12-C1",
+      "doc_id": "DOC-12",
+      "score": 0.3485,
+      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
+    },
+    {
+      "chunk_id": "DOC-01-C1",
+      "doc_id": "DOC-01",
+      "score": 0.0907,
+      "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
+    },
+    {
+      "chunk_id": "DOC-05-C1",
+      "doc_id": "DOC-05",
+      "score": 0.0666,
+      "excerpt": "DOC-ID: DOC-05 | Title: Grading and GPA Information (Explanatory Only) | Source: Team-synthesised (2026) | Version: 1.0 Makerere uses letter grades A to F with grade points 5.0 to 0.0. GPA is computed as total grade poin"
+    }
+  ],
+  "decision": "grounded",
+  "answer": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored or sent to external AI services. Retained memory is limited to the active case ID within a session. Students may request deletion of a session. Staff access case queues only for review. No data is shared outside the approved application boundary without authorisation. Policy refer [Source: DOC-12]",
+  "sources": [
+    "DOC-12"
+  ],
+  "expected": {
+    "id": "R07",
+    "query": "Is my real student data ever sent to an external AI service?",
+    "type": "answerable",
+    "must_cite": [
+      "DOC-12"
+    ]
+  }
+}

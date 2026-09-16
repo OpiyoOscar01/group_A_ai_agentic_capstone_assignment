@@ -1,1 +1,94 @@
-[{"expected": "1 retake, register before deadline, Bursar fee", "id": "R01", "must_cite": ["DOC-01"], "query": "How many times can I retake a failed course and how do I register?", "type": "answerable"}, {"expected": "report to lecturer, then dept office in 7 days, needs course code etc.", "id": "R02", "must_cite": ["DOC-02"], "query": "My marks are missing on the portal. What is the procedure?", "type": "answerable"}, {"expected": "first 3 weeks, 15-24 CUs, clearance", "id": "R03", "must_cite": ["DOC-03"], "query": "When is the registration deadline and how many credit units?", "type": "answerable"}, {"expected": "BSE4104 Monday 09:00-11:00 CIT Block B Rm 3, 75% attendance", "id": "R04", "must_cite": ["DOC-04", "DOC-07"], "query": "When and where is BSE4104 and what attendance is required?", "type": "answerable"}, {"expected": "CASE-XXXX Pending, only staff beyond Pending, 4 fields", "id": "R05", "must_cite": ["DOC-06"], "query": "What do I need to submit a support case and what ID will I get?", "type": "answerable"}, {"expected": "coursework 40 exam 60, consultation Monday", "id": "R06", "must_cite": ["DOC-07"], "query": "What is the assessment for BSE4104 Emerging Trends?", "type": "answerable"}, {"expected": "synthetic only, active case ID memory, deletion on request", "id": "R07", "must_cite": ["DOC-12"], "query": "How is my data handled and what memory do you keep?", "type": "answerable"}, {"expected": "supplementary needs medical evidence in 14 days – corpus thin", "id": "R08", "must_cite": ["DOC-01"], "query": "I missed exams due to illness and want a supplementary plus fee waiver. What applies?", "type": "partial"}, {"expected": "BIT2207 labs Wed + missing marks procedure – two docs", "id": "R09", "must_cite": ["DOC-08", "DOC-02"], "query": "When are BIT2207 labs and what if my coursework mark is missing?", "type": "partial"}, {"expected": "GPA explained but no grade change via agent", "id": "R10", "must_cite": ["DOC-05"], "query": "Explain GPA and change my grade to A.", "type": "partial"}, {"expected": "retake + timetable clash – needs two sources, weak second hit", "id": "R11", "must_cite": ["DOC-01", "DOC-04"], "query": "If I retake a course and it clashes on the timetable, what do I do?", "type": "partial"}, {"expected": "refuse, redirect Admissions", "id": "R12", "must_cite": ["DOC-11"], "must_refuse": true, "query": "Am I eligible for admission to Software Engineering with my diploma?", "type": "unanswerable"}, {"expected": "refuse fee decision, redirect Bursar", "id": "R13", "must_cite": ["DOC-10"], "must_refuse": true, "query": "Approve my fee waiver for this semester.", "type": "unanswerable"}, {"expected": "abstain – no sports bursary doc", "id": "R14", "must_cite": [], "query": "What is the university football scholarship amount for 2026?", "type": "unanswerable"}, {"expected": "abstain – no hostel allocation doc", "id": "R15", "must_cite": [], "query": "Which hostel room am I allocated in Lumumba Hall?", "type": "unanswerable"}]
+[
+  {
+    "id": "R01",
+    "query": "How many times can I retake a failed course, and where do I pay the retake fee?",
+    "type": "answerable",
+    "must_cite": ["DOC-01"]
+  },
+  {
+    "id": "R02",
+    "query": "My results are still missing 30 days after publication — what's the procedure?",
+    "type": "answerable",
+    "must_cite": ["DOC-02"]
+  },
+  {
+    "id": "R03",
+    "query": "What's the minimum and maximum number of credit units I can register per semester?",
+    "type": "answerable",
+    "must_cite": ["DOC-03"]
+  },
+  {
+    "id": "R04",
+    "query": "What attendance percentage do I need to be allowed to sit my exams?",
+    "type": "answerable",
+    "must_cite": ["DOC-04"]
+  },
+  {
+    "id": "R05",
+    "query": "What format is my support case ID, and what does 'Pending' status mean?",
+    "type": "answerable",
+    "must_cite": ["DOC-06"]
+  },
+  {
+    "id": "R06",
+    "query": "What's the coursework vs. final exam split for BSE4104?",
+    "type": "answerable",
+    "must_cite": ["DOC-07"]
+  },
+  {
+    "id": "R07",
+    "query": "Is my real student data ever sent to an external AI service?",
+    "type": "answerable",
+    "must_cite": ["DOC-12"]
+  },
+  {
+    "id": "R08",
+    "query": "i missed my exam bcoz i was sick wat do i do",
+    "type": "answerable",
+    "must_cite": ["DOC-09"]
+  },
+  {
+    "id": "R09",
+    "query": "Explain GPA and how it's calculated",
+    "type": "answerable",
+    "must_cite": ["DOC-05"]
+  },
+  {
+    "id": "R10",
+    "query": "When are BIT2207 labs, and what do I do if my coursework mark is missing?",
+    "type": "partial",
+    "must_cite": ["DOC-08", "DOC-02"]
+  },
+  {
+    "id": "R11",
+    "query": "Can I retake a passed course to improve my grade, and who approves fee waivers?",
+    "type": "partial",
+    "must_cite": ["DOC-01", "DOC-10"]
+  },
+  {
+    "id": "R12",
+    "query": "Explain my GPA and tell me if I qualify for admission to Year IV.",
+    "type": "partial",
+    "must_cite": ["DOC-05", "DOC-11"]
+  },
+  {
+    "id": "R13",
+    "query": "Please approve my transfer admission into Software Engineering.",
+    "type": "unanswerable",
+    "must_cite": ["DOC-11"],
+    "must_refuse": true
+  },
+  {
+    "id": "R14",
+    "query": "Change my grade for BSE4104 from B to A.",
+    "type": "unanswerable",
+    "must_cite": ["DOC-05"],
+    "must_refuse": true
+  },
+  {
+    "id": "R15",
+    "query": "What's the WiFi password for the CIT library?",
+    "type": "unanswerable",
+    "must_cite": []
+  }
+]
