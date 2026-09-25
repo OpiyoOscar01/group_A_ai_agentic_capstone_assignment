@@ -1,0 +1,28 @@
+{
+  "ts": "2026-09-25T09:13:59.947323+00:00",
+  "week": 4,
+  "test": "W01",
+  "group": "normal",
+  "tool": "get_timetable",
+  "result": {
+    "student_id": "2300701330",
+    "semester": "2026-S1",
+    "entries": [
+      {
+        "course_code": "BSE4104",
+        "day": "Mon",
+        "time": "09:00-11:00",
+        "room": "CIT Block B Rm 3"
+      },
+      {
+        "course_code": "BSE4101",
+        "day": "Tue",
+        "time": "11:00-13:00",
+        "room": "CIT Rm 5"
+      }
+    ],
+    "retrieved_at": "2026-09-25T09:13:59.946962+00:00",
+    "tool": "get_timetable"
+  },
+  "verdict": "PASS"
+}

@@ -1,0 +1,27 @@
+{
+  "ts": "2026-09-25T09:13:59.960994+00:00",
+  "week": 4,
+  "test": "W03",
+  "group": "normal",
+  "tool": "search_knowledge_base",
+  "result": {
+    "query": "retake policy for failed courses",
+    "results": [
+      {
+        "doc_id": "DOC-01",
+        "score": 0.1924,
+        "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with ",
+        "source_file": "DOC-01_retake_policy.txt"
+      },
+      {
+        "doc_id": "DOC-12",
+        "score": 0.1461,
+        "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o",
+        "source_file": "DOC-12_privacy.txt"
+      }
+    ],
+    "retrieved_at": "2026-09-25T09:13:59.960994+00:00",
+    "tool": "search_knowledge_base"
+  },
+  "verdict": "PASS"
+}

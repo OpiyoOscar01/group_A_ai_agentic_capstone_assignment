@@ -1,0 +1,14 @@
+{
+  "ts": "2026-09-25T09:13:59.963115+00:00",
+  "week": 4,
+  "test": "W05",
+  "group": "missing-params",
+  "tool": "create_support_case",
+  "result": {
+    "error": "invalid_arguments",
+    "message": "Missing required argument: description.",
+    "tool": "create_support_case",
+    "user_message": "I need a bit more detail before I can do that. Missing required argument: description."
+  },
+  "verdict": "PASS"
+}

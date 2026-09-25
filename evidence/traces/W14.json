@@ -1,0 +1,14 @@
+{
+  "ts": "2026-09-25T09:13:59.968854+00:00",
+  "week": 4,
+  "test": "W14",
+  "group": "unknown-tool",
+  "tool": "approve_case",
+  "result": {
+    "error": "unknown_tool",
+    "message": "Unknown tool: approve_case. No such capability exists.",
+    "tool": "approve_case",
+    "user_message": "That action is not something I can do. I have not taken any action."
+  },
+  "verdict": "PASS"
+}

@@ -1,0 +1,15 @@
+{
+  "ts": "2026-09-25T09:13:59.963115+00:00",
+  "week": 4,
+  "test": "W04",
+  "group": "approval",
+  "tool": "create_support_case",
+  "result": {
+    "approval_id": "APR-0001",
+    "state": "PENDING_APPROVAL",
+    "tool": "create_support_case",
+    "message": "Draft held for human approval as APR-0001.",
+    "user_message": "Your case draft APR-0001 is saved as PENDING_APPROVAL. A staff member must approve it before it becomes a case. Nothing else was changed."
+  },
+  "verdict": "PASS"
+}

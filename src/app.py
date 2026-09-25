@@ -1,5 +1,5 @@
 """
-Week 3 RAG-Enhanced – University Student-Support Case Agent
+Week 4 Tools + Guardrails – University Student-Support Case Agent
 Group A Day | BSE4104 | Model: gemini-3.6-flash | Prompt: prompts/v3.0-rag.system.txt
 
 Run:
@@ -8,12 +8,19 @@ Run:
   python src/app.py --chat
   python src/app.py --run-tests
   python src/app.py --message "Status of CASE-1001?"
+  python src/tools.py --demo            (Oscar: tool layer)
+  python src/guardrails.py --demo       (Richard: safety + approval)
+  python tests/run_week4_tests.py       (Week 4: 14 tool/guardrail tests)
 
 Design (matches AI Boundary Matrix):
 - LLM only suggests intent + draft text. Deterministic Python enforces:
   ID validation, timetable/case lookup from synthetic JSON, human-approval gate,
   out-of-scope block list, trace logging.
 - Week 3: RAG retrieval for policy questions with source grounding.
+- Week 4: tool registry (src/tools.py, Oscar) + safety pipeline
+  (src/guardrails.py, Richard): authorize -> approval-gate -> tool ->
+  response validation. Writes are held as PENDING_APPROVAL until a human
+  approves; no auto-approve path exists.
 """
 import argparse, json, os, re, sys, time
 from datetime import datetime, timezone
@@ -27,9 +34,11 @@ TRACE_DIR = BASE / ".." / ".." / "evidence" / "traces"  # Week2/evidence/traces 
 TRACE_DIR2 = BASE / "evidence" / "traces"  # fallback local
 TESTS_FILE = BASE / "tests" / "week2_10cases.json"
 
-# Week 3: Import RAG module
+# Week 3: RAG retrieval. Week 4: tool layer (Oscar) + safety layer (Richard).
 sys.path.insert(0, str(BASE / "src"))
 from rag import answer as rag_answer, retrieve as rag_retrieve
+from tools import call_tool
+from guardrails import guarded_call
 
 OUT_OF_SCOPE_KW = ["admit", "admission", "grade change", "change my grade",
                    "increase my marks", "disciplinary", "tuition fee waiver",
@@ -125,6 +134,98 @@ def parse_llm(text: str) -> dict:
         return {"intent": "clarify", "answer": text[:500], "suggested_category": None,
                 "needs_human": False, "redirect_office": None, "_parse": "fallback"}
 
+def _route_via_tools(msg: str, sid, cid, session):
+    """Week 4 tool routing: detect tool intent, dispatch via guarded_call.
+
+    Returns (out, tool) or None if the message is not tool-routable.
+    Every path goes through Richard's safety pipeline (auth -> approval ->
+    tool -> response validation), so the Week 4 guardrails apply uniformly.
+    """
+    low = msg.lower()
+    if not session.get("student_id"):
+        return None  # no authenticated identity: fall back to clarify flow
+
+    # Timetable: explicit request + valid session identity
+    if "timetable" in low or "schedule" in low or "classes" in low:
+        res = guarded_call("get_timetable", {"student_id": session["student_id"]}, session)
+        if "error" in res:
+            out = {"intent": "timetable", "answer": res.get("user_message", res.get("message", "")),
+                   "suggested_category": None, "needs_human": False,
+                   "redirect_office": None, "_tool_error": res.get("error")}
+        else:
+            codes = ", ".join(e.get("course_code", "") for e in res.get("entries", []))
+            out = {"intent": "timetable",
+                   "answer": f"Timetable for {res['student_id']} ({res['semester']}): {codes or 'no classes on record'}.",
+                   "suggested_category": None, "needs_human": False,
+                   "redirect_office": None, "_tool_result": res}
+        return out, {"tool": "get_timetable", "result": res}
+
+    # Case status: explicit case reference
+    active = cid or session.get("active_case_id")
+    if active or ("case" in low and "status" in low):
+        if not active:
+            return None
+        res = guarded_call("get_case_status",
+                           {"case_id": active, "student_id": session["student_id"]}, session)
+        if "error" in res:
+            out = {"intent": "case_status", "answer": res.get("user_message", res.get("message", "")),
+                   "suggested_category": None, "needs_human": False,
+                   "redirect_office": None, "_tool_error": res.get("error")}
+        else:
+            out = {"intent": "case_status",
+                   "answer": f"Case {res['case_id']} status: {res['status']} ({res.get('category', '')}).",
+                   "suggested_category": None, "needs_human": False,
+                   "redirect_office": None, "_tool_result": res}
+        return out, {"tool": "get_case_status", "result": res}
+
+    # Case creation: draft request with a known category keyword
+    create_kw = ["missing marks", "submit my case", "create case", "registration issue",
+                 "retake request", "timetable clash"]
+    if any(k in low for k in create_kw):
+        category = next((c for c in
+                         ["missing_marks", "retake_request", "registration_issue", "timetable_clash"]
+                         if c.replace("_", " ") in low), "missing_marks")
+        res = guarded_call("create_support_case",
+                           {"student_id": session["student_id"], "category": category,
+                            "subject": msg[:100], "description": msg[:500]}, session)
+        if res.get("state") == "PENDING_APPROVAL":
+            out = {"intent": "case_create", "answer": res.get("user_message", ""),
+                   "suggested_category": category, "needs_human": True,
+                   "redirect_office": None, "_approval": res.get("approval_id")}
+        elif "error" in res:
+            out = {"intent": "case_create", "answer": res.get("user_message", res.get("message", "")),
+                   "suggested_category": None, "needs_human": False,
+                   "redirect_office": None, "_tool_error": res.get("error")}
+        else:  # should not happen while the approval gate is active
+            out = {"intent": "case_create", "answer": f"Draft {res.get('case_id')} created.",
+                   "suggested_category": category, "needs_human": True,
+                   "redirect_office": None, "_tool_result": res}
+        return out, {"tool": "create_support_case", "result": res}
+
+    # Policy questions: grounded retrieval as a tool call
+    policy_kw = ["policy", "regulation", "retake", "rule", "handbook", "gpa",
+                 "supplementary", "attendance", "deadline", "credit"]
+    if any(k in low for k in policy_kw):
+        res = guarded_call("search_knowledge_base", {"query": msg}, session)
+        results = res.get("results", []) if "error" not in res else []
+        if not results:
+            out = {"intent": "policy_qa",
+                   "answer": "I don't know from approved documents. Please visit the Department Office.",
+                   "suggested_category": None, "needs_human": False,
+                   "redirect_office": None, "_tool_result": res}
+        else:
+            srcs = sorted(set(r.get("doc_id", "") for r in results))
+            tag = ", ".join(f"[Source: {s}]" for s in srcs if s)
+            ctx = " ".join(r.get("excerpt", "") for r in results[:2])
+            out = {"intent": "policy_qa",
+                   "answer": f"{ctx[:600]} {tag}",
+                   "suggested_category": None, "needs_human": False,
+                   "redirect_office": None, "_tool_result": res}
+        return out, {"tool": "search_knowledge_base", "result": res}
+
+    return None
+
+
 def handle_message(msg: str, session: dict, prompt_version="v3.0-rag") -> dict:
     sid, cid = extract_ids(msg)
     if cid and validate_case_id(cid):
@@ -147,38 +248,48 @@ def handle_message(msg: str, session: dict, prompt_version="v3.0-rag") -> dict:
         tool = {"tool": "none", "result": None}
         lat = 0
     else:
-        # Week 3: Use RAG for policy questions
-        rag_triggers = ["policy", "regulation", "retake", "rule", "handbook", "academic", "course"]
-        use_rag = any(k in low for k in rag_triggers) or "?" in msg
-        
-        if use_rag:
-            start = time.time()
-            rag_result = rag_answer(msg)
-            lat = int((time.time() - start) * 1000)
-            
-            # Convert RAG result to app format
-            out = {
-                "intent": "policy_qa",
-                "answer": rag_result.get("answer", "I don't know from approved documents."),
-                "suggested_category": None,
-                "needs_human": rag_result.get("decision") == "refuse-boundary",
-                "redirect_office": "Department Office" if rag_result.get("decision") == "refuse-boundary" else None,
-                "_rag": {
-                    "decision": rag_result.get("decision"),
-                    "sources": rag_result.get("sources", []),
-                    "retrieved": rag_result.get("retrieved", [])[:3]
-                }
-            }
-            tool = {"tool": "rag_retrieval", "result": {"sources": rag_result.get("sources", [])}}
+        # Week 4: route through the tool layer with Richard's safety pipeline.
+        # The session carries the authenticated identity for tool auth checks.
+        if sid and validate_student_id(sid):
+            session["student_id"] = sid
+        start = time.time()
+        routed = _route_via_tools(msg, sid, cid, session)
+        lat = int((time.time() - start) * 1000)
+        if routed is not None:
+            out, tool = routed
         else:
-            system = load_text(PROMPT_FILE).replace("{active_case_id}", str(session.get("active_case_id"))).replace("{student_id}", str(sid))
-            raw, lat = call_gemini(system, msg)
-            out = parse_llm(raw)
-            out["_raw"] = raw[:1000]
-            # deterministic enrichment: never let LLM invent timetable/case
-            tool = deterministic_lookup(out.get("intent", ""), sid, cid, session)
+            # Week 3: Use RAG for policy questions
+            rag_triggers = ["policy", "regulation", "retake", "rule", "handbook", "academic", "course"]
+            use_rag = any(k in low for k in rag_triggers) or "?" in msg
+
+            if use_rag:
+                rag_result = rag_answer(msg)
+
+                # Convert RAG result to app format
+                out = {
+                    "intent": "policy_qa",
+                    "answer": rag_result.get("answer", "I don't know from approved documents."),
+                    "suggested_category": None,
+                    "needs_human": rag_result.get("decision") == "refuse-boundary",
+                    "redirect_office": "Department Office" if rag_result.get("decision") == "refuse-boundary" else None,
+                    "_rag": {
+                        "decision": rag_result.get("decision"),
+                        "sources": rag_result.get("sources", []),
+                        "retrieved": rag_result.get("retrieved", [])[:3]
+                    }
+                }
+                tool = {"tool": "rag_retrieval", "result": {"sources": rag_result.get("sources", [])}}
+            else:
+                system = load_text(PROMPT_FILE).replace("{active_case_id}", str(session.get("active_case_id"))).replace("{student_id}", str(sid))
+                raw, lat = call_gemini(system, msg)
+                out = parse_llm(raw)
+                out["_raw"] = raw[:1000]
+                # deterministic enrichment: never let LLM invent timetable/case
+                tool = deterministic_lookup(out.get("intent", ""), sid, cid, session)
             
-        if tool["tool"] != "none" and tool["tool"] != "rag_retrieval":
+        if (tool["tool"] != "none" and tool["tool"] != "rag_retrieval"
+                and tool["tool"] not in ("get_timetable", "get_case_status",
+                                         "search_knowledge_base", "create_support_case")):
             res = tool["result"]
             active_id = cid or session.get("active_case_id")
             if tool["tool"] == "timetable_lookup":

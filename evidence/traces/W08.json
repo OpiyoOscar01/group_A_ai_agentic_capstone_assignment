@@ -1,0 +1,14 @@
+{
+  "ts": "2026-09-25T09:13:59.965802+00:00",
+  "week": 4,
+  "test": "W08",
+  "group": "unauthorized",
+  "tool": "get_timetable",
+  "result": {
+    "error": "unauthorized",
+    "message": "Authorization failed: student_id does not match the authenticated session. Cross-student access is never permitted.",
+    "tool": "get_timetable",
+    "user_message": "I can't do that for another student's record. Authorization failed: student_id does not match the authenticated session. Cross-student access is never permitted."
+  },
+  "verdict": "PASS"
+}

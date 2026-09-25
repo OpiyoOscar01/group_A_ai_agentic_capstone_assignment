@@ -1,0 +1,14 @@
+{
+  "ts": "2026-09-25T09:13:59.967848+00:00",
+  "week": 4,
+  "test": "W12",
+  "group": "malformed",
+  "tool": "create_support_case",
+  "result": {
+    "error": "invalid_arguments",
+    "message": "Unexpected argument(s): ['status']. Allowed: ['category', 'description', 'student_id', 'subject'].",
+    "tool": "create_support_case",
+    "user_message": "I need a bit more detail before I can do that. Unexpected argument(s): ['status']. Allowed: ['category', 'description', 'student_id', 'subject']."
+  },
+  "verdict": "PASS"
+}

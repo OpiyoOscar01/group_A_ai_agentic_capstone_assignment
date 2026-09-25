@@ -1,0 +1,14 @@
+{
+  "ts": "2026-09-25T09:13:59.963115+00:00",
+  "week": 4,
+  "test": "W06",
+  "group": "missing-params",
+  "tool": "get_timetable",
+  "result": {
+    "error": "invalid_arguments",
+    "message": "Missing required argument: student_id.",
+    "tool": "get_timetable",
+    "user_message": "I need a bit more detail before I can do that. Missing required argument: student_id."
+  },
+  "verdict": "PASS"
+}

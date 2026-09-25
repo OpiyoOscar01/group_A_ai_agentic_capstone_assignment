@@ -1,0 +1,15 @@
+{
+  "ts": "2026-09-25T09:13:59.965802+00:00",
+  "week": 4,
+  "test": "W09",
+  "group": "not-found",
+  "tool": "get_timetable",
+  "result": {
+    "error": "not_found",
+    "message": "I can't find a timetable for that student ID.",
+    "tool": "get_timetable",
+    "student_id": "2400999999",
+    "user_message": "I can't find that record for your student ID. Please confirm the ID and try again."
+  },
+  "verdict": "PASS"
+}

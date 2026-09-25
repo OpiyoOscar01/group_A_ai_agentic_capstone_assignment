@@ -1,0 +1,14 @@
+{
+  "ts": "2026-09-25T09:13:59.967848+00:00",
+  "week": 4,
+  "test": "W11",
+  "group": "unavailable",
+  "tool": "get_timetable",
+  "result": {
+    "error": "service_unavailable",
+    "message": "Timetable store is unavailable. Please try again later.",
+    "tool": "get_timetable",
+    "user_message": "That service is temporarily unavailable. Please try again later \u2014 nothing was changed."
+  },
+  "verdict": "PASS"
+}

@@ -1,0 +1,14 @@
+{
+  "ts": "2026-09-25T09:13:59.964380+00:00",
+  "week": 4,
+  "test": "W07",
+  "group": "unauthorized",
+  "tool": "get_case_status",
+  "result": {
+    "error": "unauthorized",
+    "message": "Authorization failed: you may only query cases you own. This attempt has been logged as a boundary event.",
+    "tool": "get_case_status",
+    "user_message": "I can't do that for another student's record. Authorization failed: you may only query cases you own. This attempt has been logged as a boundary event."
+  },
+  "verdict": "PASS"
+}
