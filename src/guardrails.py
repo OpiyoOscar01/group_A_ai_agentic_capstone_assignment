@@ -28,7 +28,7 @@ CASES_FILE = BASE / "data" / "cases.json"
 AUDIT_FILE = BASE / "evidence" / "traces" / "guardrail_audit.jsonl"
 
 sys.path.insert(0, str(BASE / "src"))
-from tools import TOOL_SCHEMAS, VALID_CATEGORIES, call_tool, _now_iso  # noqa: E402
+from tools import TOOL_SCHEMAS, call_tool, _now_iso  # noqa: E402
 
 
 def _audit(event: dict) -> None:
