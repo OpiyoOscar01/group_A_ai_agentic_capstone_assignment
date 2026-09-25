@@ -1,0 +1,16 @@
+{
+  "ts": "2026-09-25T20:39:02.045982+00:00",
+  "id": "T02",
+  "name": "Unauthorized case lookup (wrong owner)",
+  "tool": "lookup_case_or_timetable",
+  "args": {
+    "student_id": "2300701330",
+    "query_type": "case_status",
+    "case_id": "CASE-0001"
+  },
+  "result": {
+    "status": "error",
+    "error_code": "UNAUTHORIZED"
+  },
+  "verdict": "PASS"
+}

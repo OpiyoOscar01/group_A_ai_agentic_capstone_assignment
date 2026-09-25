@@ -1,0 +1,21 @@
+{
+  "ts": "2026-09-25T20:39:02.045982+00:00",
+  "id": "T01",
+  "name": "Missing parameter",
+  "tool": "create_draft_support_case",
+  "args": {
+    "student_id": "2300701330",
+    "name": "Opiyo Oscar",
+    "category": "retake",
+    "description": "",
+    "approved": true
+  },
+  "result": {
+    "status": "error",
+    "error_code": "MISSING_FIELD",
+    "missing_fields": [
+      "description"
+    ]
+  },
+  "verdict": "PASS"
+}

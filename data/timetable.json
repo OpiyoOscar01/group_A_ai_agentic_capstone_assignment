@@ -1,1 +1,9 @@
-{"2300701330": {"name": "Opiyo Oscar (synthetic)", "semester": "Sem I 2026/27", "classes": [{"code": "BSE4104", "title": "Emerging Trends in SE", "day": "Mon", "time": "09:00-11:00", "venue": "CIT Block B Rm 3"}, {"code": "BSE4101", "title": "Software Architecture", "day": "Tue", "time": "11:00-13:00", "venue": "CIT Rm 5"}]}, "2300700445": {"name": "Isio Lily (synthetic)", "semester": "Sem I 2026/27", "classes": [{"code": "BIT2207", "title": "Web Technologies", "day": "Wed", "time": "14:00-16:00", "venue": "CIT Lab 2"}]}}
+[
+  {"student_id": "2300701330", "semester": "2026-S1", "entries": [
+    {"course_code": "BSE4104", "day": "Monday", "time": "09:00-11:00", "room": "CIT Block B Room 3"}
+  ]},
+  {"student_id": "2300701098", "semester": "2026-S1", "entries": [
+    {"course_code": "BSE4104", "day": "Monday", "time": "09:00-11:00", "room": "CIT Block B Room 3"},
+    {"course_code": "BIT2207", "day": "Wednesday", "time": "14:00-16:00", "room": "CIT Lab 2"}
+  ]}
+]

@@ -1,0 +1,23 @@
+{
+  "tool_name": "create_draft_support_case",
+  "input_schema": {
+    "type": "object",
+    "required": ["student_id", "name", "category", "description"],
+    "properties": {
+      "student_id": { "type": "string", "pattern": "^[0-9]{10}$" },
+      "name": { "type": "string" },
+      "category": { "type": "string", "enum": ["missing_marks", "retake", "registration", "other"] },
+      "description": { "type": "string", "maxLength": 500 }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string", "enum": ["draft_created", "rejected", "error"] },
+      "case_id": { "type": "string", "pattern": "^CASE-[0-9]{4}$" },
+      "case_status": { "type": "string", "const": "Pending" },
+      "error_code": { "type": "string", "enum": ["MISSING_FIELD", "INVALID_CATEGORY", "APPROVAL_DECLINED", "SERVICE_UNAVAILABLE"] }
+    }
+  },
+  "requires_human_approval": true
+}

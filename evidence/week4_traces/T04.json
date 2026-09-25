@@ -1,0 +1,16 @@
+{
+  "ts": "2026-09-25T20:39:02.045982+00:00",
+  "id": "T04",
+  "name": "Not found case",
+  "tool": "lookup_case_or_timetable",
+  "args": {
+    "student_id": "2300700445",
+    "query_type": "case_status",
+    "case_id": "CASE-9999"
+  },
+  "result": {
+    "status": "error",
+    "error_code": "NOT_FOUND"
+  },
+  "verdict": "PASS"
+}

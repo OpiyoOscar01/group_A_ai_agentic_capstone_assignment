@@ -1,0 +1,15 @@
+{
+  "ts": "2026-09-25T20:39:02.058827+00:00",
+  "id": "T10",
+  "name": "Invalid query_type value",
+  "tool": "lookup_case_or_timetable",
+  "args": {
+    "student_id": "2300700445",
+    "query_type": "grades"
+  },
+  "result": {
+    "status": "error",
+    "error_code": "INVALID_ID"
+  },
+  "verdict": "PASS"
+}

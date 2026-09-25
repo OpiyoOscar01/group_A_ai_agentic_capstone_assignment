@@ -1,0 +1,18 @@
+{
+  "ts": "2026-09-25T20:39:02.052945+00:00",
+  "id": "T06",
+  "name": "Out-of-scope category (fee wording) not silently accepted",
+  "tool": "create_draft_support_case",
+  "args": {
+    "student_id": "2300701330",
+    "name": "Opiyo Oscar",
+    "category": "other",
+    "description": "Please approve my fee waiver for this semester.",
+    "approved": true
+  },
+  "result": {
+    "status": "error",
+    "error_code": "INVALID_CATEGORY"
+  },
+  "verdict": "PASS"
+}

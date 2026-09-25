@@ -1,0 +1,15 @@
+{
+  "ts": "2026-09-25T20:39:02.045982+00:00",
+  "id": "T05",
+  "name": "Malformed student ID",
+  "tool": "lookup_case_or_timetable",
+  "args": {
+    "student_id": "12345",
+    "query_type": "timetable"
+  },
+  "result": {
+    "status": "error",
+    "error_code": "INVALID_ID"
+  },
+  "verdict": "PASS"
+}

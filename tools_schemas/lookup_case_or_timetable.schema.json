@@ -1,0 +1,20 @@
+{
+  "tool_name": "lookup_case_or_timetable",
+  "input_schema": {
+    "type": "object",
+    "required": ["student_id", "query_type"],
+    "properties": {
+      "student_id": { "type": "string", "pattern": "^[0-9]{10}$", "description": "10-digit student ID, per DOC-04 / DOC-06" },
+      "query_type": { "type": "string", "enum": ["case_status", "timetable"] },
+      "case_id": { "type": "string", "pattern": "^CASE-[0-9]{4}$", "description": "Required when query_type = case_status" }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string", "enum": ["ok", "error"] },
+      "data": { "type": "object", "description": "Case record OR timetable entries depending on query_type" },
+      "error_code": { "type": "string", "enum": ["NOT_FOUND", "UNAUTHORIZED", "INVALID_ID", "SERVICE_UNAVAILABLE"] }
+    }
+  }
+}

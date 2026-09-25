@@ -1,1 +1,46 @@
-{"CASE-1001": {"student_id": "2300701330", "category": "missing_marks", "status": "Pending", "summary": "Missing marks for BSE4104 coursework (synthetic)", "created": "2026-09-08T10:00:00Z"}, "CASE-1002": {"student_id": "2300700445", "category": "registration", "status": "In Progress", "summary": "Course registration hold (synthetic)", "created": "2026-09-09T11:00:00Z"}}
+[
+  {
+    "case_id": "CASE-0001",
+    "student_id": "2300700445",
+    "category": "missing_marks",
+    "name": "Isio Lily",
+    "description": "Missing final exam score for BSE4104.",
+    "status": "Pending",
+    "created_by": "agent_draft",
+    "created_at": "2026-09-05T09:14:00Z",
+    "updated_at": "2026-09-05T09:14:00Z"
+  },
+  {
+    "case_id": "CASE-0002",
+    "student_id": "2300701098",
+    "category": "registration",
+    "name": "Namatovu Christine Maria",
+    "description": "Add/drop deadline conflict for elective course unit.",
+    "status": "Pending",
+    "created_by": "agent_draft",
+    "created_at": "2026-09-08T13:02:00Z",
+    "updated_at": "2026-09-08T13:02:00Z"
+  },
+  {
+    "case_id": "CASE-0003",
+    "student_id": "2300701330",
+    "category": "retake",
+    "name": "Opiyo Oscar",
+    "description": "Need to retake BIT2101.",
+    "status": "Pending",
+    "created_by": "agent_draft",
+    "created_at": "2026-09-20T14:24:50.062995+00:00",
+    "updated_at": "2026-09-20T14:24:50.062995+00:00"
+  },
+  {
+    "case_id": "CASE-0004",
+    "student_id": "2300701330",
+    "category": "retake",
+    "name": "Opiyo Oscar",
+    "description": "Need to retake BIT2101.",
+    "status": "Pending",
+    "created_by": "agent_draft",
+    "created_at": "2026-09-25T20:39:02.057136+00:00",
+    "updated_at": "2026-09-25T20:39:02.057136+00:00"
+  }
+]
