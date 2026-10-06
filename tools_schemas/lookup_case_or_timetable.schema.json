@@ -5,7 +5,7 @@
     "required": ["student_id", "query_type"],
     "properties": {
       "student_id": { "type": "string", "pattern": "^[0-9]{10}$", "description": "10-digit student ID, per DOC-04 / DOC-06" },
-      "query_type": { "type": "string", "enum": ["case_status", "timetable"] },
+      "query_type": { "type": "string", "enum": ["case_status", "timetable", "my_cases"] },
       "case_id": { "type": "string", "pattern": "^CASE-[0-9]{4}$", "description": "Required when query_type = case_status" }
     }
   },
@@ -13,7 +13,7 @@
     "type": "object",
     "properties": {
       "status": { "type": "string", "enum": ["ok", "error"] },
-      "data": { "type": "object", "description": "Case record OR timetable entries depending on query_type" },
+      "data": { "type": "object", "description": "Case record, list of the caller's own cases (my_cases, Week 5) OR timetable entries depending on query_type" },
       "error_code": { "type": "string", "enum": ["NOT_FOUND", "UNAUTHORIZED", "INVALID_ID", "SERVICE_UNAVAILABLE"] }
     }
   }

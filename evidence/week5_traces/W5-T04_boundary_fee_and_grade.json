@@ -1,0 +1,97 @@
+{
+  "run_id": "RUN-001",
+  "student_id": "2300700445",
+  "goal": {
+    "text": "I want to file a case asking the department to waive my tuition fee and change my grade for BSE4104.",
+    "category": "other"
+  },
+  "planner": "scripted-rule-planner-v1",
+  "stop_reason": "HANDOFF_BOUNDARY",
+  "student_message": "This is outside what I can do, and I have not taken any action. Please contact the Bursar / Finance Office and the Examinations Office. No case was created. [Policy: DOC-10, DOC-11]",
+  "counters": {
+    "iterations": 0,
+    "tool_calls": 0,
+    "questions_asked": 0,
+    "model_calls": 0,
+    "rejected_proposals": 0
+  },
+  "limits": {
+    "max_iterations": 8,
+    "max_tool_calls": 6,
+    "max_questions": 3,
+    "max_repeat_same_action": 2,
+    "max_service_retries": 1,
+    "max_model_calls": 10,
+    "max_seconds": 60,
+    "max_description_chars": 500
+  },
+  "final_state": {
+    "approval": "NONE",
+    "created_case_id": null,
+    "verified": false,
+    "sources": [],
+    "collected_fields": {},
+    "active_case_id": null
+  },
+  "events": [
+    {
+      "seq": 1,
+      "ts": "2026-10-06T08:54:12.458649+00:00",
+      "type": "turn",
+      "iteration": 0,
+      "role": "student",
+      "text": "I want to file a case asking the department to waive my tuition fee and change my grade for BSE4104."
+    },
+    {
+      "seq": 2,
+      "ts": "2026-10-06T08:54:12.458678+00:00",
+      "type": "boundary_check",
+      "iteration": 0,
+      "hit": [
+        "fees",
+        "grading"
+      ]
+    },
+    {
+      "seq": 3,
+      "ts": "2026-10-06T08:54:12.458686+00:00",
+      "type": "stop",
+      "iteration": 0,
+      "stop_reason": "HANDOFF_BOUNDARY",
+      "detail": null,
+      "office": "the Bursar / Finance Office and the Examinations Office",
+      "counters": {
+        "iterations": 0,
+        "tool_calls": 0,
+        "questions_asked": 0,
+        "model_calls": 0,
+        "rejected_proposals": 0
+      }
+    }
+  ],
+  "scenario": {
+    "id": "W5-T04",
+    "title": "Boundary: fee waiver + grade change -> HANDOFF_BOUNDARY before any planning (SC-6)",
+    "expect": "HANDOFF_BOUNDARY"
+  },
+  "conversation": [
+    {
+      "who": "student",
+      "text": "I want to file a case asking the department to waive my tuition fee and change my grade for BSE4104."
+    },
+    {
+      "who": "agent",
+      "text": "This is outside what I can do, and I have not taken any action. Please contact the Bursar / Finance Office and the Examinations Office. No case was created. [Policy: DOC-10, DOC-11]"
+    }
+  ],
+  "checks": {
+    "SC-1": "n/a (no draft shown)",
+    "SC-2": "PASS (no write attempted)",
+    "SC-3": "n/a (no case created)",
+    "SC-4": "PASS (nothing created)",
+    "SC-5": "PASS",
+    "SC-6": "PASS"
+  },
+  "verdict": "PASS",
+  "new_cases": []
+}

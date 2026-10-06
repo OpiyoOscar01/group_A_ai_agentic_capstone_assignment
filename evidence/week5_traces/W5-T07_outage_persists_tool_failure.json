@@ -1,0 +1,338 @@
+{
+  "run_id": "RUN-001",
+  "student_id": "2300701098",
+  "goal": {
+    "text": "My BSE4104 marks are missing.",
+    "category": "missing_marks"
+  },
+  "planner": "scripted-rule-planner-v1",
+  "stop_reason": "TOOL_FAILURE",
+  "student_message": "The service is unavailable right now. Please try later or visit the Department Office. No case was created.",
+  "counters": {
+    "iterations": 2,
+    "tool_calls": 3,
+    "questions_asked": 0,
+    "model_calls": 2,
+    "rejected_proposals": 0
+  },
+  "limits": {
+    "max_iterations": 8,
+    "max_tool_calls": 6,
+    "max_questions": 3,
+    "max_repeat_same_action": 2,
+    "max_service_retries": 1,
+    "max_model_calls": 10,
+    "max_seconds": 60,
+    "max_description_chars": 500
+  },
+  "final_state": {
+    "approval": "NONE",
+    "created_case_id": null,
+    "verified": false,
+    "sources": [
+      "DOC-02",
+      "DOC-06"
+    ],
+    "collected_fields": {
+      "name": "Namatovu Christine Maria",
+      "course_code": "BSE4104"
+    },
+    "active_case_id": null
+  },
+  "events": [
+    {
+      "seq": 1,
+      "ts": "2026-10-06T08:54:12.464106+00:00",
+      "type": "turn",
+      "iteration": 0,
+      "role": "student",
+      "text": "My BSE4104 marks are missing."
+    },
+    {
+      "seq": 2,
+      "ts": "2026-10-06T08:54:12.464124+00:00",
+      "type": "boundary_check",
+      "iteration": 0,
+      "hit": null
+    },
+    {
+      "seq": 3,
+      "ts": "2026-10-06T08:54:12.464156+00:00",
+      "type": "fields_collected",
+      "iteration": 0,
+      "fields": {
+        "course_code": "BSE4104"
+      },
+      "cited_case_ids": [],
+      "missing": [
+        "lecturer_contacted",
+        "days_since_report",
+        "semester",
+        "lecturer",
+        "attendance_proof"
+      ]
+    },
+    {
+      "seq": 4,
+      "ts": "2026-10-06T08:54:12.464167+00:00",
+      "type": "sense",
+      "iteration": 0,
+      "summary": {
+        "goal": {
+          "text": "My BSE4104 marks are missing.",
+          "category": "missing_marks"
+        },
+        "category": "missing_marks",
+        "iteration": 0,
+        "tool_calls": 0,
+        "questions_asked": 0,
+        "model_calls": 0,
+        "collected_fields": {
+          "name": "Namatovu Christine Maria",
+          "course_code": "BSE4104"
+        },
+        "missing_fields": [
+          "lecturer_contacted",
+          "days_since_report",
+          "semester",
+          "lecturer",
+          "attendance_proof"
+        ],
+        "sources": [],
+        "policy_checked": false,
+        "no_source": false,
+        "existing_cases_loaded": false,
+        "duplicate_of": null,
+        "prerequisite": "unknown",
+        "cited_case_pending": null,
+        "cited_not_found": null,
+        "approval": "NONE",
+        "created_case_id": null,
+        "verified": false
+      }
+    },
+    {
+      "seq": 5,
+      "ts": "2026-10-06T08:54:12.464173+00:00",
+      "type": "plan",
+      "iteration": 0,
+      "planner": "scripted-rule-planner-v1",
+      "proposal": {
+        "action": "search_handbook",
+        "args": {
+          "query": "missing marks procedure lecturer support case"
+        },
+        "reason": "need approved policy before anything else"
+      }
+    },
+    {
+      "seq": 6,
+      "ts": "2026-10-06T08:54:12.464189+00:00",
+      "type": "validate",
+      "iteration": 0,
+      "accepted": true,
+      "reason": "ok"
+    },
+    {
+      "seq": 7,
+      "ts": "2026-10-06T08:54:12.464495+00:00",
+      "type": "act",
+      "iteration": 1,
+      "action": "search_handbook",
+      "args": {
+        "query": "missing marks procedure lecturer support case"
+      },
+      "student_id_source": "session",
+      "tool_call_no": 1
+    },
+    {
+      "seq": 8,
+      "ts": "2026-10-06T08:54:12.464500+00:00",
+      "type": "observe",
+      "iteration": 1,
+      "action": "search_handbook",
+      "result": {
+        "status": "ok",
+        "top_score": 0.4056,
+        "hits": [
+          {
+            "doc_id": "DOC-02",
+            "chunk_id": "DOC-02-C1",
+            "score": 0.4056
+          },
+          {
+            "doc_id": "DOC-06",
+            "chunk_id": "DOC-06-C1",
+            "score": 0.2369
+          },
+          {
+            "doc_id": "DOC-08",
+            "chunk_id": "DOC-08-C1",
+            "score": 0.1545
+          }
+        ]
+      }
+    },
+    {
+      "seq": 9,
+      "ts": "2026-10-06T08:54:12.464515+00:00",
+      "type": "sense",
+      "iteration": 1,
+      "summary": {
+        "goal": {
+          "text": "My BSE4104 marks are missing.",
+          "category": "missing_marks"
+        },
+        "category": "missing_marks",
+        "iteration": 1,
+        "tool_calls": 1,
+        "questions_asked": 0,
+        "model_calls": 1,
+        "collected_fields": {
+          "name": "Namatovu Christine Maria",
+          "course_code": "BSE4104"
+        },
+        "missing_fields": [
+          "lecturer_contacted",
+          "days_since_report",
+          "semester",
+          "lecturer",
+          "attendance_proof"
+        ],
+        "sources": [
+          "DOC-02",
+          "DOC-06"
+        ],
+        "policy_checked": true,
+        "no_source": false,
+        "existing_cases_loaded": false,
+        "duplicate_of": null,
+        "prerequisite": "unknown",
+        "cited_case_pending": null,
+        "cited_not_found": null,
+        "approval": "NONE",
+        "created_case_id": null,
+        "verified": false
+      }
+    },
+    {
+      "seq": 10,
+      "ts": "2026-10-06T08:54:12.464519+00:00",
+      "type": "plan",
+      "iteration": 1,
+      "planner": "scripted-rule-planner-v1",
+      "proposal": {
+        "action": "lookup_case_or_timetable",
+        "args": {
+          "query_type": "my_cases"
+        },
+        "reason": "check for an existing case before creating anything"
+      }
+    },
+    {
+      "seq": 11,
+      "ts": "2026-10-06T08:54:12.464534+00:00",
+      "type": "validate",
+      "iteration": 1,
+      "accepted": true,
+      "reason": "ok"
+    },
+    {
+      "seq": 12,
+      "ts": "2026-10-06T08:54:12.464545+00:00",
+      "type": "act",
+      "iteration": 2,
+      "action": "lookup_case_or_timetable",
+      "args": {
+        "query_type": "my_cases",
+        "case_id": null
+      },
+      "student_id_source": "session",
+      "tool_call_no": 2
+    },
+    {
+      "seq": 13,
+      "ts": "2026-10-06T08:54:12.464547+00:00",
+      "type": "observe",
+      "iteration": 2,
+      "action": "lookup_case_or_timetable",
+      "result": {
+        "status": "error",
+        "error_code": "SERVICE_UNAVAILABLE"
+      }
+    },
+    {
+      "seq": 14,
+      "ts": "2026-10-06T08:54:12.464550+00:00",
+      "type": "retry",
+      "iteration": 2,
+      "action": "lookup_case_or_timetable",
+      "reason": "SERVICE_UNAVAILABLE",
+      "retry_no": 1
+    },
+    {
+      "seq": 15,
+      "ts": "2026-10-06T08:54:12.464556+00:00",
+      "type": "act",
+      "iteration": 2,
+      "action": "lookup_case_or_timetable",
+      "args": {
+        "query_type": "my_cases",
+        "case_id": null
+      },
+      "student_id_source": "session",
+      "tool_call_no": 3
+    },
+    {
+      "seq": 16,
+      "ts": "2026-10-06T08:54:12.464558+00:00",
+      "type": "observe",
+      "iteration": 2,
+      "action": "lookup_case_or_timetable",
+      "result": {
+        "status": "error",
+        "error_code": "SERVICE_UNAVAILABLE"
+      }
+    },
+    {
+      "seq": 17,
+      "ts": "2026-10-06T08:54:12.464564+00:00",
+      "type": "stop",
+      "iteration": 2,
+      "stop_reason": "TOOL_FAILURE",
+      "detail": "SERVICE_UNAVAILABLE after one retry",
+      "office": null,
+      "counters": {
+        "iterations": 2,
+        "tool_calls": 3,
+        "questions_asked": 0,
+        "model_calls": 2,
+        "rejected_proposals": 0
+      }
+    }
+  ],
+  "scenario": {
+    "id": "W5-T07",
+    "title": "Failure: outage persists after the one retry -> TOOL_FAILURE, no partial record",
+    "expect": "TOOL_FAILURE"
+  },
+  "conversation": [
+    {
+      "who": "student",
+      "text": "My BSE4104 marks are missing."
+    },
+    {
+      "who": "agent",
+      "text": "The service is unavailable right now. Please try later or visit the Department Office. No case was created."
+    }
+  ],
+  "checks": {
+    "SC-1": "n/a (no draft shown)",
+    "SC-2": "PASS (no write attempted)",
+    "SC-3": "n/a (no case created)",
+    "SC-4": "PASS (nothing created)",
+    "SC-5": "PASS"
+  },
+  "verdict": "PASS",
+  "new_cases": []
+}

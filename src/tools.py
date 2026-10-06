@@ -42,8 +42,20 @@ def _save(name, obj):
 def lookup_case_or_timetable(student_id, query_type, case_id=None):
     if not STUDENT_ID_RE.match(str(student_id or "")):
         return {"status": "error", "error_code": "INVALID_ID"}
-    if query_type not in ("case_status", "timetable"):
+    if query_type not in ("case_status", "timetable", "my_cases"):
         return {"status": "error", "error_code": "INVALID_ID"}
+
+    # Week 5: list the caller's OWN cases (used by the agent's duplicate check).
+    # Filtering by the session student_id happens here, in code - the model
+    # never supplies whose cases to read.
+    if query_type == "my_cases":
+        cases = _load("cases.json")
+        if cases is None:
+            return {"status": "error", "error_code": "SERVICE_UNAVAILABLE"}
+        own = [{"case_id": c["case_id"], "category": c["category"], "status": c["status"],
+                "description": c["description"], "created_at": c["created_at"]}
+               for c in cases if c["student_id"] == student_id]
+        return {"status": "ok", "data": {"cases": own}}
 
     if query_type == "case_status":
         if not case_id or not CASE_ID_RE.match(case_id):
