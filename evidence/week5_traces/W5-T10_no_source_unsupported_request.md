@@ -25,8 +25,8 @@
 | 4 | 0 | PLAN | `search_handbook` {"query": "I want to file a case about my parking permit"} - need approved policy before anything else |
 | 5 | 0 | VALIDATE | accepted |
 | 6 | 1 | ACT | `search_handbook` {"query": "I want to file a case about my parking permit"} |
-| 7 | 1 | OBSERVE | {"status": "ok", "top_score": 0.1676, "hits": [{"doc_id": "DOC-02", "chunk_id": "DOC-02-C1", "score": 0.1676}]} |
-| 8 | 1 | NOTE | {"note": "top score 0.1676 below stricter bar 0.25 for category 'other'"} |
+| 7 | 1 | OBSERVE | {"status": "ok", "top_score": 0.1704, "hits": [{"doc_id": "DOC-02", "chunk_id": "DOC-02-C1", "score": 0.1704}]} |
+| 8 | 1 | NOTE | {"note": "top score 0.1704 below stricter bar 0.25 for category 'other'"} |
 | 9 | 1 | SENSE | state: category=other, sources=[], missing=[], approval=NONE, existing_cases_loaded=False, duplicate_of=None |
 | 10 | 1 | PLAN | `finish` {"outcome": "NO_SOURCE"} - no approved source supports this request |
 | 11 | 1 | VALIDATE | accepted |

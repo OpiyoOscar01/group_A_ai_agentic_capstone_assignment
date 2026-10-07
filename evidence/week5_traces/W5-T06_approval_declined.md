@@ -37,7 +37,7 @@ Submit this? (yes/no)
 | 5 | 0 | PLAN | `search_handbook` {"query": "missing marks procedure lecturer support case"} - need approved policy before anything else |
 | 6 | 0 | VALIDATE | accepted |
 | 7 | 1 | ACT | `search_handbook` {"query": "missing marks procedure lecturer support case"} |
-| 8 | 1 | OBSERVE | {"status": "ok", "top_score": 0.4056, "hits": [{"doc_id": "DOC-02", "chunk_id": "DOC-02-C1", "score": 0.4056}, {"doc_id": "DOC-06", "chunk_id": "DOC-06-C1", "score": 0... |
+| 8 | 1 | OBSERVE | {"status": "ok", "top_score": 0.4096, "hits": [{"doc_id": "DOC-02", "chunk_id": "DOC-02-C1", "score": 0.4096}, {"doc_id": "DOC-06", "chunk_id": "DOC-06-C1", "score": 0... |
 | 9 | 1 | SENSE | state: category=missing_marks, sources=['DOC-02', 'DOC-06'], missing=['lecturer_contacted', 'days_since_report', 'semester', 'lecturer', 'attendance_proof'], approval=NONE, existing_cases_loaded=False, duplicate_of=None |
 | 10 | 1 | PLAN | `lookup_case_or_timetable` {"query_type": "my_cases"} - check for an existing case before creating anything |
 | 11 | 1 | VALIDATE | accepted |

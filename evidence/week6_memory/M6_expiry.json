@@ -1,0 +1,74 @@
+{
+  "id": "M6",
+  "title": "Records older than 30 days are not used",
+  "verdict": "PASS",
+  "transcript": [
+    {
+      "who": "student (session A)",
+      "text": "My BSE4104 marks are missing."
+    },
+    {
+      "who": "agent",
+      "text": "(Question 1 of 3) To prepare your case I still need: whether you have already reported this to your course lecturer; how many days ago you reported it; the semester (e.g. 2026-S1); the lecturer's name; your proof of coursework/exam attendance (e.g. exam card, attendance sheet)."
+    },
+    {
+      "who": "student (session A)",
+      "text": "I reported it to Dr Kato 10 days ago, semester 2026-S1."
+    },
+    {
+      "who": "agent",
+      "text": "(Question 2 of 3) To prepare your case I still need: your proof of coursework/exam attendance (e.g. exam card, attendance sheet)."
+    },
+    {
+      "who": "student (session A)",
+      "text": "I have my exam card and the signed attendance sheet."
+    },
+    {
+      "who": "agent",
+      "text": "Here is the case I will submit for you:\n  Name: Namatovu Christine Maria\n  Category: missing_marks\n  Description: Missing marks for BSE4104 (2026-S1). Lecturer: Dr Kato. Reported to lecturer 10 days ago, unresolved. Proof of attendance: exam card.\n  Sources: DOC-02, DOC-06\nSubmit this? (yes/no)"
+    },
+    {
+      "who": "student (session A)",
+      "text": "yes"
+    },
+    {
+      "who": "agent",
+      "text": "Your case CASE-0005 was created with status Pending and confirmed in the system. Department staff will review it. Sources used: DOC-02, DOC-06."
+    },
+    {
+      "who": "student (session B, 31 days later)",
+      "text": "What is the status of my case?"
+    },
+    {
+      "who": "agent",
+      "text": "I don't have an active case on record for you. Please tell me the case ID (format CASE-0000)."
+    }
+  ],
+  "checks": [
+    {
+      "check": "expired record ignored: agent asks for the ID",
+      "pass": true
+    },
+    {
+      "check": "expired record deleted with reason 'expired'",
+      "pass": true
+    }
+  ],
+  "memory_file": {},
+  "audit": [
+    {
+      "ts": "2026-10-07T20:16:54.856768+00:00",
+      "student_id": "2300701098",
+      "op": "write",
+      "case_id": "CASE-0005",
+      "outcome": "created"
+    },
+    {
+      "ts": "2026-10-07T20:16:54.872735+00:00",
+      "student_id": "2300701098",
+      "op": "delete",
+      "case_id": "CASE-0005",
+      "outcome": "expired"
+    }
+  ]
+}

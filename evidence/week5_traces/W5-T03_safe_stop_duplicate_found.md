@@ -26,7 +26,7 @@
 | 5 | 0 | PLAN | `search_handbook` {"query": "retake failed course policy"} - need approved policy before anything else |
 | 6 | 0 | VALIDATE | accepted |
 | 7 | 1 | ACT | `search_handbook` {"query": "retake failed course policy"} |
-| 8 | 1 | OBSERVE | {"status": "ok", "top_score": 0.2442, "hits": [{"doc_id": "DOC-01", "chunk_id": "DOC-01-C1", "score": 0.2442}]} |
+| 8 | 1 | OBSERVE | {"status": "ok", "top_score": 0.2444, "hits": [{"doc_id": "DOC-01", "chunk_id": "DOC-01-C1", "score": 0.2444}]} |
 | 9 | 1 | SENSE | state: category=retake, sources=['DOC-01'], missing=['semester'], approval=NONE, existing_cases_loaded=False, duplicate_of=None |
 | 10 | 1 | PLAN | `lookup_case_or_timetable` {"query_type": "my_cases"} - check for an existing case before creating anything |
 | 11 | 1 | VALIDATE | accepted |

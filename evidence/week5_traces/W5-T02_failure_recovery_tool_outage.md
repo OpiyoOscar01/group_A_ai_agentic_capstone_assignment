@@ -37,7 +37,7 @@ Submit this? (yes/no)
 | 5 | 0 | PLAN | `search_handbook` {"query": "missing marks procedure lecturer support case"} - need approved policy before anything else |
 | 6 | 0 | VALIDATE | accepted |
 | 7 | 1 | ACT | `search_handbook` {"query": "missing marks procedure lecturer support case"} |
-| 8 | 1 | OBSERVE | {"status": "ok", "top_score": 0.4056, "hits": [{"doc_id": "DOC-02", "chunk_id": "DOC-02-C1", "score": 0.4056}, {"doc_id": "DOC-06", "chunk_id": "DOC-06-C1", "score": 0... |
+| 8 | 1 | OBSERVE | {"status": "ok", "top_score": 0.4096, "hits": [{"doc_id": "DOC-02", "chunk_id": "DOC-02-C1", "score": 0.4096}, {"doc_id": "DOC-06", "chunk_id": "DOC-06-C1", "score": 0... |
 | 9 | 1 | SENSE | state: category=missing_marks, sources=['DOC-02', 'DOC-06'], missing=['lecturer_contacted', 'days_since_report', 'semester', 'lecturer', 'attendance_proof'], approval=NONE, existing_cases_loaded=False, duplicate_of=None |
 | 10 | 1 | PLAN | `lookup_case_or_timetable` {"query_type": "my_cases"} - check for an existing case before creating anything |
 | 11 | 1 | VALIDATE | accepted |
@@ -81,7 +81,7 @@ Submit this? (yes/no)
 | 49 | 5 | PLAN | `lookup_case_or_timetable` {"query_type": "case_status", "case_id": "CASE-0005"} - verify the created case exists |
 | 50 | 5 | VALIDATE | accepted |
 | 51 | 6 | ACT | `lookup_case_or_timetable` {"query_type": "case_status", "case_id": "CASE-0005"} |
-| 52 | 6 | OBSERVE | {"status": "ok", "data": {"case_id": "CASE-0005", "category": "missing_marks", "status": "Pending", "created_at": "2026-10-06T08:54:12.454477+00:00"}} |
+| 52 | 6 | OBSERVE | {"status": "ok", "data": {"case_id": "CASE-0005", "category": "missing_marks", "status": "Pending", "created_at": "2026-10-07T20:16:27.103686+00:00"}} |
 | 53 | 6 | SENSE | state: category=missing_marks, sources=['DOC-02', 'DOC-06'], missing=[], approval=APPROVED, existing_cases_loaded=True, duplicate_of=None |
 | 54 | 6 | PLAN | `finish` {"outcome": "GOAL_MET"} - case created and confirmed by lookup |
 | 55 | 6 | VALIDATE | accepted |

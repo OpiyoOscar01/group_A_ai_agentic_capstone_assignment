@@ -1,0 +1,72 @@
+{
+  "server": {
+    "name": "student-support-case-server",
+    "version": "0.1.0-spec",
+    "status": "MCP-style specification of existing in-process functions (src/tools.py, src/agent.py). Not run on an MCP SDK.",
+    "data": "synthetic students, timetable and cases only"
+  },
+  "host_context": {
+    "injected_by_host": ["student_id", "approved"],
+    "rule": "These two values are NEVER part of any inputSchema. student_id comes from the authenticated session; approved is set to true by the host only after the student replies an explicit yes to the exact draft. A model cannot supply or override either."
+  },
+  "tools": [
+    {
+      "name": "search_handbook",
+      "description": "Retrieve approved handbook passages for a query. Returns document IDs and scores, or NO_SOURCE when nothing passes the score threshold.",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "query": { "type": "string", "minLength": 1, "maxLength": 200 } },
+        "required": ["query"],
+        "additionalProperties": false
+      },
+      "annotations": { "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false },
+      "x-permission": "handbook:read",
+      "x-approval": "none",
+      "x-host-injected": [],
+      "x-errors": ["NO_SOURCE"]
+    },
+    {
+      "name": "lookup_case_or_timetable",
+      "description": "Read-only. case_status returns one case; my_cases lists the caller's own cases. Ownership is enforced by the server using the host-injected student_id.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query_type": { "type": "string", "enum": ["case_status", "my_cases"] },
+          "case_id": { "type": "string", "pattern": "^CASE-\\d{4}$" }
+        },
+        "required": ["query_type"],
+        "if": { "properties": { "query_type": { "const": "case_status" } } },
+        "then": { "required": ["case_id"] },
+        "else": { "not": { "required": ["case_id"] } },
+        "additionalProperties": false
+      },
+      "annotations": { "readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false },
+      "x-permission": "cases:read:own",
+      "x-approval": "none",
+      "x-host-injected": ["student_id"],
+      "x-errors": ["INVALID_ID", "NOT_FOUND", "UNAUTHORIZED", "SERVICE_UNAVAILABLE"],
+      "x-note": "The Week 4 function also supports query_type=timetable for the single-step router; it is not offered to the agent."
+    },
+    {
+      "name": "create_draft_support_case",
+      "description": "Creates ONE support case with status Pending for staff review. Cannot set any other status, cannot edit or delete.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "category": { "type": "string", "enum": ["missing_marks", "retake", "registration", "other"] },
+          "description": { "type": "string", "minLength": 1, "maxLength": 500 }
+        },
+        "required": ["name", "category", "description"],
+        "additionalProperties": false
+      },
+      "annotations": { "readOnlyHint": false, "destructiveHint": false, "idempotentHint": false, "openWorldHint": false },
+      "x-permission": "cases:create:draft",
+      "x-approval": "student explicit yes to the exact draft; host sets approved=true",
+      "x-host-injected": ["student_id", "approved"],
+      "x-errors": ["MISSING_FIELD", "INVALID_CATEGORY", "APPROVAL_DECLINED", "SERVICE_UNAVAILABLE"],
+      "x-effects": "appends one record with status Pending"
+    }
+  ],
+  "not_exposed": ["memory store (data/memory.json)", "case edit", "case delete", "case approve or resolve", "any student_id parameter"]
+}

@@ -27,6 +27,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import tools  # noqa: E402  (Week 4)
 import rag    # noqa: E402  (Week 3)
+from memory import MemoryStore  # noqa: E402  (Week 6)
 
 BASE = HERE.parent
 
@@ -115,6 +116,12 @@ PROBLEM_RE = re.compile(
     r"\b(need|want|have|must|would like)\b.{0,10}\bto retake\b|\bretake request\b|"
     r"\bregistration (issue|problem)\b|\b(cannot|can't|unable to) register\b|\badd/?drop\b", re.I)
 QUESTION_RE = re.compile(r"^\s*(what|how|when|where|who|which|why|can i|do i|does|is|are|should)\b", re.I)
+
+STATUS_FOLLOWUP_RE = re.compile(
+    r"\b(status|update|progress|news)\b.{0,30}\b(my|the|that|this)\b.{0,10}\bcase\b|"
+    r"\b(my|the|that|this) case\b.{0,25}\b(status|update|progress)\b|\bwhat happened (to|with) (my|the) case\b", re.I)
+FORGET_RE = re.compile(r"\b(forget|delete|clear|erase|remove)\b.{0,25}\b(session|memory|active case|what you remember)\b", re.I)
+OPEN_STATUSES = {"Pending", "In Review"}      # anything else counts as closed -> memory is dropped
 
 YES_REPLIES = {"yes", "y", "yes submit", "yes submit it", "yes please", "confirm", "submit", "yes confirm", "yes i confirm"}
 
@@ -259,6 +266,7 @@ class Session:
         self.run = None                       # paused run, if any
         self.runs_completed = 0
         self.last_run = None
+        self.memory_events = []               # content-free record of memory use in this session
 
     @staticmethod
     def _lookup_name(student_id):
@@ -543,8 +551,9 @@ def validate(run, p):
 # Controller
 # --------------------------------------------------------------------------
 class Agent:
-    def __init__(self, planner=None):
+    def __init__(self, planner=None, memory=None):
         self.planner = planner or ScriptedPlanner()
+        self.memory = memory or MemoryStore()
         self._run_counter = 0
 
     # ---------------- public turn API ----------------
@@ -555,12 +564,66 @@ class Agent:
             return self._resume_approval(session, run, message)
         if run and run.status == "awaiting_answer":
             return self._resume_answer(session, run, message)
+        if FORGET_RE.search(message):
+            return self._forget(session)
+        if STATUS_FOLLOWUP_RE.search(message) and not re.search(r"CASE-\d{4}", message, re.I):
+            return self._status_followup(session)
         if is_case_request(message):
             return self._start(session, message)
         # single-step request: stays on the Week 4 router / Week 3 RAG path
         import orchestrator
         r = orchestrator.route(session.student_id, message)
         return {"final": True, "stop_reason": None, "route": r["decision"], "message": json.dumps(r.get("rag_result", r.get("tool_result", r)))[:600]}
+
+    # ---------------- Week 6: memory (read-only follow-up, controller-written) ----------------
+    def _remember(self, session, case_id, source):
+        session.active_case_id = case_id
+        if self.memory.set_active_case(session.student_id, case_id, source):
+            session.memory_events.append({"op": "write", "case_id": case_id, "source": source})
+
+    def _memory_reply(self, session, message, **extra):
+        return {"final": True, "stop_reason": None, "route": "memory_status_followup", "message": message, **extra}
+
+    def _status_followup(self, session):
+        """'What is the status of my case?' with no ID. Memory supplies a CANDIDATE only; the read-only
+        lookup tool (which enforces ownership) decides whether it can be used."""
+        sid = session.student_id
+        ask = "I don't have an active case on record for you. Please tell me the case ID (format CASE-0000)."
+        entry = self.memory.get_active_case(sid)
+        if not entry:
+            session.memory_events.append({"op": "read", "outcome": "miss"})
+            return self._memory_reply(session, ask, memory_used=False)
+        cid = entry["active_case_id"]
+        r = tools.lookup_case_or_timetable(sid, "case_status", cid)
+        if r.get("error_code") == "SERVICE_UNAVAILABLE":                      # one retry, same rule as the agent loop
+            r = tools.lookup_case_or_timetable(sid, "case_status", cid)
+        if r.get("error_code") == "SERVICE_UNAVAILABLE":
+            session.memory_events.append({"op": "read", "case_id": cid, "outcome": "service_unavailable"})
+            return self._memory_reply(session, f"The case service is unavailable right now. Please try again later or visit {DEPARTMENT_OFFICE}.", memory_used=True)
+        if r.get("status") != "ok":                                           # NOT_FOUND / UNAUTHORIZED / anything else
+            self.memory.forget(sid, f"lookup_{r.get('error_code', 'failed')}")
+            session.active_case_id = None
+            session.memory_events.append({"op": "discard", "outcome": r.get("error_code")})
+            return self._memory_reply(session, "I could not use the case I had on record, so I have cleared it. " + ask, memory_used=False)
+        d = r["data"]
+        if d.get("status") not in OPEN_STATUSES:
+            self.memory.forget(sid, "case_closed")
+            session.active_case_id = None
+            session.memory_events.append({"op": "discard", "outcome": "case_closed", "case_id": cid})
+            return self._memory_reply(session, f"Your last case {cid} is now {d.get('status')}, so I no longer treat it as active. "
+                                               "If you want to check another case, give me its ID.", memory_used=True)
+        session.active_case_id = cid
+        session.memory_events.append({"op": "use", "case_id": cid, "outcome": d.get("status")})
+        return self._memory_reply(session, f"Your active case {cid} ({d.get('category')}) is {d.get('status')}. "
+                                           "I remembered it from your earlier request. Say \"forget my session\" to clear it.",
+                                  memory_used=True, case_id=cid)
+
+    def _forget(self, session):
+        existed = self.memory.forget(session.student_id, "student_request")
+        session.active_case_id = None
+        session.memory_events.append({"op": "delete", "outcome": "student_request", "existed": existed})
+        return self._memory_reply(session, "Done. I no longer remember an active case for you." if existed
+                                  else "I had nothing stored for you.", memory_used=False)
 
     # ---------------- run lifecycle ----------------
     def _start(self, session, message):
@@ -785,13 +848,13 @@ class Agent:
                 run.cited_not_found = cid                         # re-plan: ask the student to check
                 return None
             if r["status"] == "ok":
-                session.active_case_id = cid                      # student cited their own case
+                self._remember(session, cid, "cited")             # student cited their own case
             return None
 
         if name == "create_draft_support_case":
             if r.get("status") == "draft_created":
                 run.created_case_id = r["case_id"]
-                session.active_case_id = r["case_id"]
+                self._remember(session, r["case_id"], "created")
                 return None
             if code == "MISSING_FIELD":                           # re-plan: ask for exactly the missing field
                 run.approval = {"status": "NONE", "draft": None}

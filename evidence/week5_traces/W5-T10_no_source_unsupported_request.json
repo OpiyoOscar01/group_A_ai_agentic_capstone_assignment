@@ -38,7 +38,7 @@
   "events": [
     {
       "seq": 1,
-      "ts": "2026-10-06T08:54:12.469011+00:00",
+      "ts": "2026-10-07T20:16:27.206822+00:00",
       "type": "turn",
       "iteration": 0,
       "role": "student",
@@ -46,14 +46,14 @@
     },
     {
       "seq": 2,
-      "ts": "2026-10-06T08:54:12.469032+00:00",
+      "ts": "2026-10-07T20:16:27.206822+00:00",
       "type": "boundary_check",
       "iteration": 0,
       "hit": null
     },
     {
       "seq": 3,
-      "ts": "2026-10-06T08:54:12.469065+00:00",
+      "ts": "2026-10-07T20:16:27.206822+00:00",
       "type": "sense",
       "iteration": 0,
       "summary": {
@@ -85,7 +85,7 @@
     },
     {
       "seq": 4,
-      "ts": "2026-10-06T08:54:12.469071+00:00",
+      "ts": "2026-10-07T20:16:27.206822+00:00",
       "type": "plan",
       "iteration": 0,
       "planner": "scripted-rule-planner-v1",
@@ -99,7 +99,7 @@
     },
     {
       "seq": 5,
-      "ts": "2026-10-06T08:54:12.469093+00:00",
+      "ts": "2026-10-07T20:16:27.206822+00:00",
       "type": "validate",
       "iteration": 0,
       "accepted": true,
@@ -107,7 +107,7 @@
     },
     {
       "seq": 6,
-      "ts": "2026-10-06T08:54:12.469519+00:00",
+      "ts": "2026-10-07T20:16:27.207822+00:00",
       "type": "act",
       "iteration": 1,
       "action": "search_handbook",
@@ -119,32 +119,32 @@
     },
     {
       "seq": 7,
-      "ts": "2026-10-06T08:54:12.469526+00:00",
+      "ts": "2026-10-07T20:16:27.207822+00:00",
       "type": "observe",
       "iteration": 1,
       "action": "search_handbook",
       "result": {
         "status": "ok",
-        "top_score": 0.1676,
+        "top_score": 0.1704,
         "hits": [
           {
             "doc_id": "DOC-02",
             "chunk_id": "DOC-02-C1",
-            "score": 0.1676
+            "score": 0.1704
           }
         ]
       }
     },
     {
       "seq": 8,
-      "ts": "2026-10-06T08:54:12.469539+00:00",
+      "ts": "2026-10-07T20:16:27.207822+00:00",
       "type": "note",
       "iteration": 1,
-      "note": "top score 0.1676 below stricter bar 0.25 for category 'other'"
+      "note": "top score 0.1704 below stricter bar 0.25 for category 'other'"
     },
     {
       "seq": 9,
-      "ts": "2026-10-06T08:54:12.469552+00:00",
+      "ts": "2026-10-07T20:16:27.207822+00:00",
       "type": "sense",
       "iteration": 1,
       "summary": {
@@ -176,7 +176,7 @@
     },
     {
       "seq": 10,
-      "ts": "2026-10-06T08:54:12.469559+00:00",
+      "ts": "2026-10-07T20:16:27.207822+00:00",
       "type": "plan",
       "iteration": 1,
       "planner": "scripted-rule-planner-v1",
@@ -190,7 +190,7 @@
     },
     {
       "seq": 11,
-      "ts": "2026-10-06T08:54:12.469581+00:00",
+      "ts": "2026-10-07T20:16:27.207822+00:00",
       "type": "validate",
       "iteration": 1,
       "accepted": true,
@@ -198,7 +198,7 @@
     },
     {
       "seq": 12,
-      "ts": "2026-10-06T08:54:12.469587+00:00",
+      "ts": "2026-10-07T20:16:27.207822+00:00",
       "type": "stop",
       "iteration": 1,
       "stop_reason": "NO_SOURCE",

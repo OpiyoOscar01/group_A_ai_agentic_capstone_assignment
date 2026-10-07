@@ -1,0 +1,109 @@
+{
+  "id": "M1",
+  "title": "Memory improves a legitimate task: status follow-up in 1 turn instead of 2, across a restart",
+  "verdict": "PASS",
+  "transcript": [
+    {
+      "who": "student (session A)",
+      "text": "My BSE4104 marks are missing."
+    },
+    {
+      "who": "agent",
+      "text": "(Question 1 of 3) To prepare your case I still need: whether you have already reported this to your course lecturer; how many days ago you reported it; the semester (e.g. 2026-S1); the lecturer's name; your proof of coursework/exam attendance (e.g. exam card, attendance sheet)."
+    },
+    {
+      "who": "student (session A)",
+      "text": "I reported it to Dr Kato 10 days ago, semester 2026-S1."
+    },
+    {
+      "who": "agent",
+      "text": "(Question 2 of 3) To prepare your case I still need: your proof of coursework/exam attendance (e.g. exam card, attendance sheet)."
+    },
+    {
+      "who": "student (session A)",
+      "text": "I have my exam card and the signed attendance sheet."
+    },
+    {
+      "who": "agent",
+      "text": "Here is the case I will submit for you:\n  Name: Namatovu Christine Maria\n  Category: missing_marks\n  Description: Missing marks for BSE4104 (2026-S1). Lecturer: Dr Kato. Reported to lecturer 10 days ago, unresolved. Proof of attendance: exam card.\n  Sources: DOC-02, DOC-06\nSubmit this? (yes/no)"
+    },
+    {
+      "who": "student (session A)",
+      "text": "yes"
+    },
+    {
+      "who": "agent",
+      "text": "Your case CASE-0005 was created with status Pending and confirmed in the system. Department staff will review it. Sources used: DOC-02, DOC-06."
+    },
+    {
+      "who": "student (baseline, no memory)",
+      "text": "What is the status of my case?"
+    },
+    {
+      "who": "agent",
+      "text": "I don't have an active case on record for you. Please tell me the case ID (format CASE-0000)."
+    },
+    {
+      "who": "student (baseline, no memory)",
+      "text": "Check status of CASE-0005"
+    },
+    {
+      "who": "agent",
+      "text": "{\"status\": \"ok\", \"data\": {\"case_id\": \"CASE-0005\", \"category\": \"missing_marks\", \"status\": \"Pending\", \"created_at\": \"2026-10-07T20:16:54.674516+00:00\"}}"
+    },
+    {
+      "who": "student (session B, next day)",
+      "text": "What is the status of my case?"
+    },
+    {
+      "who": "agent",
+      "text": "Your active case CASE-0005 (missing_marks) is Pending. I remembered it from your earlier request. Say \"forget my session\" to clear it."
+    }
+  ],
+  "checks": [
+    {
+      "check": "memory record persisted to disk after the case was created",
+      "pass": true
+    },
+    {
+      "check": "baseline without memory had to ask for the case ID",
+      "pass": true
+    },
+    {
+      "check": "with memory the answer names the remembered case and its live status (Pending) in ONE turn",
+      "pass": true
+    },
+    {
+      "check": "turns needed (measured): 1 with memory < 2 without",
+      "pass": true
+    },
+    {
+      "check": "status shown came from a live lookup, not from stored text (record holds no status)",
+      "pass": true
+    }
+  ],
+  "memory_file": {
+    "2300701098": {
+      "active_case_id": "CASE-0005",
+      "source": "created",
+      "set_at": "2026-10-07T20:16:54.679370+00:00",
+      "expires_at": "2026-11-06T20:16:54.679370+00:00"
+    }
+  },
+  "audit": [
+    {
+      "ts": "2026-10-07T20:16:54.680849+00:00",
+      "student_id": "2300701098",
+      "op": "write",
+      "case_id": "CASE-0005",
+      "outcome": "created"
+    },
+    {
+      "ts": "2026-10-07T20:16:54.704049+00:00",
+      "student_id": "2300701098",
+      "op": "read",
+      "case_id": "CASE-0005",
+      "outcome": "hit"
+    }
+  ]
+}

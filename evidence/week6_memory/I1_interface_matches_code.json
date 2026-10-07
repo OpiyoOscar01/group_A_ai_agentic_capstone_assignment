@@ -1,0 +1,66 @@
+{
+  "id": "I1",
+  "title": "The MCP-style specification agrees with the implementation",
+  "verdict": "PASS",
+  "transcript": [],
+  "checks": [
+    {
+      "check": "manifest tools == the agent's tool actions",
+      "pass": true
+    },
+    {
+      "check": "search_handbook: model-visible args and required args match the validator",
+      "pass": true
+    },
+    {
+      "check": "search_handbook: student_id / approved are not model-visible",
+      "pass": true
+    },
+    {
+      "check": "lookup_case_or_timetable: model-visible args and required args match the validator",
+      "pass": true
+    },
+    {
+      "check": "lookup_case_or_timetable: student_id / approved are not model-visible",
+      "pass": true
+    },
+    {
+      "check": "create_draft_support_case: model-visible args and required args match the validator",
+      "pass": true
+    },
+    {
+      "check": "create_draft_support_case: student_id / approved are not model-visible",
+      "pass": true
+    },
+    {
+      "check": "category enum == code ALLOWED_CATEGORIES",
+      "pass": true
+    },
+    {
+      "check": "query_type enum == code AGENT_QUERY_TYPES",
+      "pass": true
+    },
+    {
+      "check": "description maxLength == code limit",
+      "pass": true
+    },
+    {
+      "check": "every documented error code exists in the tool code",
+      "pass": true
+    },
+    {
+      "check": "read-only hints: search and lookup read-only, create is not",
+      "pass": true
+    },
+    {
+      "check": "behaviour matches spec: create without host approval -> APPROVAL_DECLINED",
+      "pass": true
+    },
+    {
+      "check": "memory store is declared as not exposed",
+      "pass": true
+    }
+  ],
+  "memory_file": {},
+  "audit": []
+}
