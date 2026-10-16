@@ -1,0 +1,18 @@
+{
+  "id": "U04",
+  "title": "tampered draft args are rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "create_draft_support_case",
+    "args": {
+      "name": "N",
+      "category": "other",
+      "description": "CHANGED"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "ARGS_DIFFER_FROM_APPROVED_DRAFT",
+  "expected_reason": "ARGS_DIFFER_FROM_APPROVED_DRAFT",
+  "verdict": "PASS"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "U05",
+  "title": "arbitrary case-ID probe is rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "lookup_case_or_timetable",
+    "args": {
+      "query_type": "case_status",
+      "case_id": "CASE-0002"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "CASE_ID_NOT_FROM_CONTEXT",
+  "expected_reason": "CASE_ID_NOT_FROM_CONTEXT",
+  "verdict": "PASS"
+}

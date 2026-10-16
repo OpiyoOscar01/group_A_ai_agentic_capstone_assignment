@@ -1,0 +1,17 @@
+{
+  "id": "U08",
+  "title": "invalid category is rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "present_draft",
+    "args": {
+      "category": "fee_waiver",
+      "description": "d"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "INVALID_CATEGORY",
+  "expected_reason": "INVALID_CATEGORY",
+  "verdict": "PASS"
+}

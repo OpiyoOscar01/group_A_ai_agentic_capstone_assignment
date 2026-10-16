@@ -43,6 +43,8 @@ LIMITS = {
     "max_model_calls": 10,
     "max_seconds": 60,
     "max_description_chars": 500,
+    "max_message_chars": 2000,   # Week 7 (Richard): bound on one student message;
+                                 # far above any legitimate field (descriptions cap at 500)
 }
 
 # Contract section 7 - stop reasons
@@ -235,6 +237,21 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def safe_text(s, limit=800):
+    """Week 7 (Richard): student-facing output guard. Strips ASCII control
+    characters (which can hide terminal escape sequences pasted from user
+    input) and caps length. Stored records are untouched - only display text."""
+    s = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", str(s or ""))
+    return s if len(s) <= limit else s[:limit - 3] + "..."
+
+
+def cap_message(message):
+    """Week 7 (Richard): bound one student message. Returns (text, was_cut)."""
+    if len(message) > LIMITS["max_message_chars"]:
+        return message[:LIMITS["max_message_chars"]], True
+    return message, False
+
+
 # --------------------------------------------------------------------------
 # Tool registry. search_handbook is a thin wrapper over the Week 3 retriever.
 # --------------------------------------------------------------------------
@@ -264,6 +281,7 @@ class Session:
         self.name = name or self._lookup_name(student_id)
         self.active_case_id = None
         self.run = None                       # paused run, if any
+        self._pending_trunc = None          # overlong-input note awaiting a run
         self.runs_completed = 0
         self.last_run = None
         self.memory_events = []               # content-free record of memory use in this session
@@ -559,6 +577,16 @@ class Agent:
     # ---------------- public turn API ----------------
     def handle_turn(self, session, message):
         """One student message in -> one reply out. Resumes a paused run or starts a new one."""
+        raw_len = len(message or "")
+        message, cut = cap_message(message or "")
+        trunc_info = None
+        if cut:
+            trunc_info = {"original_chars": raw_len, "kept_chars": len(message),
+                          "note": "overlong input capped; run continues on the kept prefix"}
+            if session.run is not None:
+                session.run.log("input_truncated", **trunc_info)
+                trunc_info = None
+            session._pending_trunc = trunc_info
         run = session.run
         if run and run.status == "awaiting_approval":
             return self._resume_approval(session, run, message)
@@ -629,6 +657,10 @@ class Agent:
     def _start(self, session, message):
         self._run_counter += 1
         run = Run(session, message, f"RUN-{self._run_counter:03d}")
+        pending = getattr(session, "_pending_trunc", None)
+        if pending:
+            run.log("input_truncated", **pending)
+            session._pending_trunc = None
         session.run = run
         run.log("turn", role="student", text=message)
         return self._ingest_and_continue(session, run, message)
@@ -739,7 +771,7 @@ class Agent:
                     run.stop_reason = None
                     run.log("act", action="ask_student", args=args)
                     run.log("pause", reason="awaiting student reply", questions_asked=run.questions_asked)
-                    return {"final": False, "stop_reason": None, "run_status": run.status, "message": args["question"]}
+                    return {"final": False, "stop_reason": None, "run_status": run.status, "message": safe_text(args["question"])}
 
                 # --- 4 Act (tool) -> 5 Observe ---
                 if run.tool_calls >= LIMITS["max_tool_calls"]:
@@ -775,8 +807,8 @@ class Agent:
         run.log("act", action="present_draft", args=draft)
         run.log("pause", reason="AWAITING_APPROVAL")
         msg = (f"Here is the case I will submit for you:\n  Name: {draft['name']}\n  Category: {draft['category']}\n"
-               f"  Description: {draft['description']}\n  Sources: {', '.join(run.sources)}\nSubmit this? (yes/no)")
-        return {"final": False, "stop_reason": PAUSE_STOP, "run_status": run.status, "message": msg}
+                f"  Description: {draft['description']}\n  Sources: {', '.join(run.sources)}\nSubmit this? (yes/no)")
+        return {"final": False, "stop_reason": PAUSE_STOP, "run_status": run.status, "message": safe_text(msg)}
 
     # ---------------- act + observe ----------------
     def _execute_and_observe(self, session, run, name, args):
@@ -885,6 +917,11 @@ class Agent:
         return {"final": True, "stop_reason": reason, "run_status": "finished", "message": run.stop_message}
 
     def _student_message(self, run, reason, office):
+        # Week 7 (Richard): every student-facing stop message passes the
+        # output guard (control-char strip + length cap). Stored data is untouched.
+        return safe_text(self._student_message_raw(run, reason, office))
+
+    def _student_message_raw(self, run, reason, office):
         src = ", ".join(run.sources) or "none"
         if reason == "GOAL_MET":
             return (f"Your case {run.created_case_id} was created with status Pending and confirmed in the system. "

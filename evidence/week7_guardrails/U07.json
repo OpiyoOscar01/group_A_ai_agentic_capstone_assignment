@@ -1,0 +1,16 @@
+{
+  "id": "U07",
+  "title": "unapproved query type is rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "lookup_case_or_timetable",
+    "args": {
+      "query_type": "timetable"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "QUERY_TYPE_NOT_APPROVED:timetable",
+  "expected_reason": "QUERY_TYPE_NOT_APPROVED:timetable",
+  "verdict": "PASS"
+}
