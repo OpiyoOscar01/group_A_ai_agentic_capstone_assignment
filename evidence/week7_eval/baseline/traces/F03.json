@@ -1,11 +1,20 @@
 {
  "run_id": "RUN-001",
+ "trace_id": "RUN-001-d32bd103",
  "student_id": "2300716574",
+ "student_id_hash": "81ebd0507586",
  "goal": {
   "text": "My BSE4104 marks are missing.",
   "category": "missing_marks"
  },
  "planner": "scripted-rule-planner-v1",
+ "planner_model": "none (rule-based, no LLM)",
+ "prompt_version": "scripted-policy-v1",
+ "prompt_sha256": null,
+ "latency_ms": {
+  "planner": 0.037,
+  "tools": 0.862
+ },
  "stop_reason": "TOOL_FAILURE",
  "student_message": "The service is unavailable right now. Please try later or visit the Department Office. No case was created.",
  "counters": {
@@ -47,7 +56,7 @@
  "events": [
   {
    "seq": 1,
-   "ts": "2026-10-16T06:56:15.062493+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "turn",
    "iteration": 0,
    "role": "student",
@@ -55,14 +64,14 @@
   },
   {
    "seq": 2,
-   "ts": "2026-10-16T06:56:15.062512+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "boundary_check",
    "iteration": 0,
    "hit": null
   },
   {
    "seq": 3,
-   "ts": "2026-10-16T06:56:15.062543+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "fields_collected",
    "iteration": 0,
    "fields": {
@@ -79,7 +88,7 @@
   },
   {
    "seq": 4,
-   "ts": "2026-10-16T06:56:15.062553+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "sense",
    "iteration": 0,
    "summary": {
@@ -118,10 +127,13 @@
   },
   {
    "seq": 5,
-   "ts": "2026-10-16T06:56:15.062558+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "plan",
    "iteration": 0,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.005,
    "proposal": {
     "action": "search_handbook",
     "args": {
@@ -132,7 +144,7 @@
   },
   {
    "seq": 6,
-   "ts": "2026-10-16T06:56:15.062575+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "validate",
    "iteration": 0,
    "accepted": true,
@@ -140,7 +152,7 @@
   },
   {
    "seq": 7,
-   "ts": "2026-10-16T06:56:15.062849+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "act",
    "iteration": 1,
    "action": "search_handbook",
@@ -148,11 +160,12 @@
     "query": "missing marks procedure lecturer support case"
    },
    "student_id_source": "session",
-   "tool_call_no": 1
+   "tool_call_no": 1,
+   "ms": 0.603
   },
   {
    "seq": 8,
-   "ts": "2026-10-16T06:56:15.062852+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "observe",
    "iteration": 1,
    "action": "search_handbook",
@@ -176,11 +189,35 @@
       "score": 0.1548
      }
     ]
+   },
+   "ms": 0.603,
+   "retrieval": {
+    "query": "missing marks procedure lecturer support case",
+    "threshold": 0.14,
+    "top_score": 0.4096,
+    "decision": "ok",
+    "hits": [
+     {
+      "doc_id": "DOC-02",
+      "chunk_id": "DOC-02-C1",
+      "score": 0.4096
+     },
+     {
+      "doc_id": "DOC-06",
+      "chunk_id": "DOC-06-C1",
+      "score": 0.2382
+     },
+     {
+      "doc_id": "DOC-08",
+      "chunk_id": "DOC-08-C1",
+      "score": 0.1548
+     }
+    ]
    }
   },
   {
    "seq": 9,
-   "ts": "2026-10-16T06:56:15.062866+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "sense",
    "iteration": 1,
    "summary": {
@@ -222,10 +259,13 @@
   },
   {
    "seq": 10,
-   "ts": "2026-10-16T06:56:15.062871+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "plan",
    "iteration": 1,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.004,
    "proposal": {
     "action": "lookup_case_or_timetable",
     "args": {
@@ -236,7 +276,7 @@
   },
   {
    "seq": 11,
-   "ts": "2026-10-16T06:56:15.062884+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "validate",
    "iteration": 1,
    "accepted": true,
@@ -244,7 +284,7 @@
   },
   {
    "seq": 12,
-   "ts": "2026-10-16T06:56:15.062926+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "act",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -253,11 +293,12 @@
     "case_id": null
    },
    "student_id_source": "session",
-   "tool_call_no": 2
+   "tool_call_no": 2,
+   "ms": 0.246
   },
   {
    "seq": 13,
-   "ts": "2026-10-16T06:56:15.062928+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "observe",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -266,11 +307,12 @@
     "data": {
      "cases": []
     }
-   }
+   },
+   "ms": 0.246
   },
   {
    "seq": 14,
-   "ts": "2026-10-16T06:56:15.062937+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "sense",
    "iteration": 2,
    "summary": {
@@ -312,10 +354,13 @@
   },
   {
    "seq": 15,
-   "ts": "2026-10-16T06:56:15.062944+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "plan",
    "iteration": 2,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.01,
    "proposal": {
     "action": "ask_student",
     "args": {
@@ -333,7 +378,7 @@
   },
   {
    "seq": 16,
-   "ts": "2026-10-16T06:56:15.062962+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "validate",
    "iteration": 2,
    "accepted": true,
@@ -341,7 +386,7 @@
   },
   {
    "seq": 17,
-   "ts": "2026-10-16T06:56:15.062965+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "act",
    "iteration": 3,
    "action": "ask_student",
@@ -358,7 +403,7 @@
   },
   {
    "seq": 18,
-   "ts": "2026-10-16T06:56:15.062967+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "pause",
    "iteration": 3,
    "reason": "awaiting student reply",
@@ -366,7 +411,7 @@
   },
   {
    "seq": 19,
-   "ts": "2026-10-16T06:56:15.062973+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "turn",
    "iteration": 3,
    "role": "student",
@@ -374,21 +419,21 @@
   },
   {
    "seq": 20,
-   "ts": "2026-10-16T06:56:15.062975+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "resume",
    "iteration": 3,
    "from_status": "awaiting_answer"
   },
   {
    "seq": 21,
-   "ts": "2026-10-16T06:56:15.063000+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "boundary_check",
    "iteration": 3,
    "hit": null
   },
   {
    "seq": 22,
-   "ts": "2026-10-16T06:56:15.063068+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "fields_collected",
    "iteration": 3,
    "fields": {
@@ -404,7 +449,7 @@
   },
   {
    "seq": 23,
-   "ts": "2026-10-16T06:56:15.063078+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "sense",
    "iteration": 3,
    "summary": {
@@ -446,10 +491,13 @@
   },
   {
    "seq": 24,
-   "ts": "2026-10-16T06:56:15.063085+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "plan",
    "iteration": 3,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.007,
    "proposal": {
     "action": "ask_student",
     "args": {
@@ -463,7 +511,7 @@
   },
   {
    "seq": 25,
-   "ts": "2026-10-16T06:56:15.063101+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "validate",
    "iteration": 3,
    "accepted": true,
@@ -471,7 +519,7 @@
   },
   {
    "seq": 26,
-   "ts": "2026-10-16T06:56:15.063105+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "act",
    "iteration": 4,
    "action": "ask_student",
@@ -484,7 +532,7 @@
   },
   {
    "seq": 27,
-   "ts": "2026-10-16T06:56:15.063107+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "pause",
    "iteration": 4,
    "reason": "awaiting student reply",
@@ -492,7 +540,7 @@
   },
   {
    "seq": 28,
-   "ts": "2026-10-16T06:56:15.063112+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "turn",
    "iteration": 4,
    "role": "student",
@@ -500,21 +548,21 @@
   },
   {
    "seq": 29,
-   "ts": "2026-10-16T06:56:15.063114+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "resume",
    "iteration": 4,
    "from_status": "awaiting_answer"
   },
   {
    "seq": 30,
-   "ts": "2026-10-16T06:56:15.063127+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "boundary_check",
    "iteration": 4,
    "hit": null
   },
   {
    "seq": 31,
-   "ts": "2026-10-16T06:56:15.063161+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "fields_collected",
    "iteration": 4,
    "fields": {
@@ -525,7 +573,7 @@
   },
   {
    "seq": 32,
-   "ts": "2026-10-16T06:56:15.063170+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "sense",
    "iteration": 4,
    "summary": {
@@ -566,10 +614,13 @@
   },
   {
    "seq": 33,
-   "ts": "2026-10-16T06:56:15.063175+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "plan",
    "iteration": 4,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.007,
    "proposal": {
     "action": "present_draft",
     "args": {
@@ -581,7 +632,7 @@
   },
   {
    "seq": 34,
-   "ts": "2026-10-16T06:56:15.063189+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "validate",
    "iteration": 4,
    "accepted": true,
@@ -589,7 +640,7 @@
   },
   {
    "seq": 35,
-   "ts": "2026-10-16T06:56:15.063193+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "act",
    "iteration": 4,
    "action": "present_draft",
@@ -601,14 +652,14 @@
   },
   {
    "seq": 36,
-   "ts": "2026-10-16T06:56:15.063194+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "pause",
    "iteration": 4,
    "reason": "AWAITING_APPROVAL"
   },
   {
    "seq": 37,
-   "ts": "2026-10-16T06:56:15.063200+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "turn",
    "iteration": 4,
    "role": "student",
@@ -616,14 +667,14 @@
   },
   {
    "seq": 38,
-   "ts": "2026-10-16T06:56:15.063202+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "resume",
    "iteration": 4,
    "from_status": "awaiting_approval"
   },
   {
    "seq": 39,
-   "ts": "2026-10-16T06:56:15.063206+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "approval",
    "iteration": 4,
    "status": "APPROVED",
@@ -631,7 +682,7 @@
   },
   {
    "seq": 40,
-   "ts": "2026-10-16T06:56:15.063212+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "sense",
    "iteration": 4,
    "summary": {
@@ -672,10 +723,13 @@
   },
   {
    "seq": 41,
-   "ts": "2026-10-16T06:56:15.063216+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "plan",
    "iteration": 4,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.004,
    "proposal": {
     "action": "create_draft_support_case",
     "args": {
@@ -688,7 +742,7 @@
   },
   {
    "seq": 42,
-   "ts": "2026-10-16T06:56:15.063228+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "validate",
    "iteration": 4,
    "accepted": true,
@@ -696,7 +750,7 @@
   },
   {
    "seq": 43,
-   "ts": "2026-10-16T06:56:15.063242+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "act",
    "iteration": 5,
    "action": "create_draft_support_case",
@@ -707,22 +761,24 @@
     "approved": true
    },
    "student_id_source": "session",
-   "tool_call_no": 3
+   "tool_call_no": 3,
+   "ms": 0.008
   },
   {
    "seq": 44,
-   "ts": "2026-10-16T06:56:15.063245+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "observe",
    "iteration": 5,
    "action": "create_draft_support_case",
    "result": {
     "status": "error",
     "error_code": "SERVICE_UNAVAILABLE"
-   }
+   },
+   "ms": 0.008
   },
   {
    "seq": 45,
-   "ts": "2026-10-16T06:56:15.063247+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "retry",
    "iteration": 5,
    "action": "create_draft_support_case",
@@ -731,7 +787,7 @@
   },
   {
    "seq": 46,
-   "ts": "2026-10-16T06:56:15.063255+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "act",
    "iteration": 5,
    "action": "create_draft_support_case",
@@ -742,22 +798,24 @@
     "approved": true
    },
    "student_id_source": "session",
-   "tool_call_no": 4
+   "tool_call_no": 4,
+   "ms": 0.005
   },
   {
    "seq": 47,
-   "ts": "2026-10-16T06:56:15.063258+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "observe",
    "iteration": 5,
    "action": "create_draft_support_case",
    "result": {
     "status": "error",
     "error_code": "SERVICE_UNAVAILABLE"
-   }
+   },
+   "ms": 0.005
   },
   {
    "seq": 48,
-   "ts": "2026-10-16T06:56:15.063265+00:00",
+   "ts": "2026-10-16T19:45:59.522400+00:00",
    "type": "stop",
    "iteration": 5,
    "stop_reason": "TOOL_FAILURE",

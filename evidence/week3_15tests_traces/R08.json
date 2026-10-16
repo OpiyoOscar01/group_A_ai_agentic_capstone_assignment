@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.853692+00:00",
+  "ts": "2026-10-16T18:29:08.781705+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "i missed my exam bcoz i was sick wat do i do",
@@ -19,7 +19,7 @@
     {
       "chunk_id": "DOC-02-C1",
       "doc_id": "DOC-02",
-      "score": 0.059,
+      "score": 0.0596,
       "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
     }
   ],

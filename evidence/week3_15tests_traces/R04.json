@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.826677+00:00",
+  "ts": "2026-10-16T18:29:08.770850+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "What attendance percentage do I need to be allowed to sit my exams?",
@@ -7,13 +7,13 @@
     {
       "chunk_id": "DOC-04-C1",
       "doc_id": "DOC-04",
-      "score": 0.223,
+      "score": 0.2236,
       "excerpt": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students che"
     },
     {
       "chunk_id": "DOC-09-C1",
       "doc_id": "DOC-09",
-      "score": 0.1145,
+      "score": 0.1151,
       "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
     },
     {

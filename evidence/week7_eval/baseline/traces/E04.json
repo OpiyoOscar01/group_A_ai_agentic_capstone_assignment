@@ -1,18 +1,27 @@
 {
  "run_id": "RUN-001",
+ "trace_id": "RUN-001-6cb603e3",
  "student_id": "2300716574",
+ "student_id_hash": "81ebd0507586",
  "goal": {
   "text": "My BSE4104 marks are missing.",
   "category": "missing_marks"
  },
  "planner": "scripted-rule-planner-v1",
- "stop_reason": "NEEDS_INFO",
- "student_message": "I could not collect everything needed. Still missing: the lecturer's name. No case was created.",
+ "planner_model": "none (rule-based, no LLM)",
+ "prompt_version": "scripted-policy-v1",
+ "prompt_sha256": null,
+ "latency_ms": {
+  "planner": 0.06,
+  "tools": 15.272
+ },
+ "stop_reason": "GOAL_MET",
+ "student_message": "Your case CASE-0005 was created with status Pending and confirmed in the system. Department staff will review it. Sources used: DOC-02, DOC-06.",
  "counters": {
-  "iterations": 5,
-  "tool_calls": 2,
-  "questions_asked": 3,
-  "model_calls": 6,
+  "iterations": 6,
+  "tool_calls": 4,
+  "questions_asked": 2,
+  "model_calls": 8,
   "rejected_proposals": 0
  },
  "limits": {
@@ -26,9 +35,9 @@
   "max_description_chars": 500
  },
  "final_state": {
-  "approval": "NONE",
-  "created_case_id": null,
-  "verified": false,
+  "approval": "APPROVED",
+  "created_case_id": "CASE-0005",
+  "verified": true,
   "sources": [
    "DOC-02",
    "DOC-06"
@@ -37,16 +46,17 @@
    "name": "Ogwal Richard",
    "course_code": "BSE4104",
    "semester": "2026-S1",
+   "lecturer": "Kato",
    "lecturer_contacted": true,
    "days_since_report": 10,
    "attendance_proof": "exam card"
   },
-  "active_case_id": null
+  "active_case_id": "CASE-0005"
  },
  "events": [
   {
    "seq": 1,
-   "ts": "2026-10-16T06:56:14.987765+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "turn",
    "iteration": 0,
    "role": "student",
@@ -54,14 +64,14 @@
   },
   {
    "seq": 2,
-   "ts": "2026-10-16T06:56:14.987783+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "boundary_check",
    "iteration": 0,
    "hit": null
   },
   {
    "seq": 3,
-   "ts": "2026-10-16T06:56:14.987814+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "fields_collected",
    "iteration": 0,
    "fields": {
@@ -78,7 +88,7 @@
   },
   {
    "seq": 4,
-   "ts": "2026-10-16T06:56:14.987825+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "sense",
    "iteration": 0,
    "summary": {
@@ -117,10 +127,13 @@
   },
   {
    "seq": 5,
-   "ts": "2026-10-16T06:56:14.987830+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "plan",
    "iteration": 0,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.005,
    "proposal": {
     "action": "search_handbook",
     "args": {
@@ -131,7 +144,7 @@
   },
   {
    "seq": 6,
-   "ts": "2026-10-16T06:56:14.987848+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "validate",
    "iteration": 0,
    "accepted": true,
@@ -139,7 +152,7 @@
   },
   {
    "seq": 7,
-   "ts": "2026-10-16T06:56:14.988193+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "act",
    "iteration": 1,
    "action": "search_handbook",
@@ -147,11 +160,12 @@
     "query": "missing marks procedure lecturer support case"
    },
    "student_id_source": "session",
-   "tool_call_no": 1
+   "tool_call_no": 1,
+   "ms": 0.641
   },
   {
    "seq": 8,
-   "ts": "2026-10-16T06:56:14.988197+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "observe",
    "iteration": 1,
    "action": "search_handbook",
@@ -175,11 +189,35 @@
       "score": 0.1548
      }
     ]
+   },
+   "ms": 0.641,
+   "retrieval": {
+    "query": "missing marks procedure lecturer support case",
+    "threshold": 0.14,
+    "top_score": 0.4096,
+    "decision": "ok",
+    "hits": [
+     {
+      "doc_id": "DOC-02",
+      "chunk_id": "DOC-02-C1",
+      "score": 0.4096
+     },
+     {
+      "doc_id": "DOC-06",
+      "chunk_id": "DOC-06-C1",
+      "score": 0.2382
+     },
+     {
+      "doc_id": "DOC-08",
+      "chunk_id": "DOC-08-C1",
+      "score": 0.1548
+     }
+    ]
    }
   },
   {
    "seq": 9,
-   "ts": "2026-10-16T06:56:14.988212+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "sense",
    "iteration": 1,
    "summary": {
@@ -221,10 +259,13 @@
   },
   {
    "seq": 10,
-   "ts": "2026-10-16T06:56:14.988217+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "plan",
    "iteration": 1,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.005,
    "proposal": {
     "action": "lookup_case_or_timetable",
     "args": {
@@ -235,7 +276,7 @@
   },
   {
    "seq": 11,
-   "ts": "2026-10-16T06:56:14.988233+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "validate",
    "iteration": 1,
    "accepted": true,
@@ -243,7 +284,7 @@
   },
   {
    "seq": 12,
-   "ts": "2026-10-16T06:56:14.988285+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "act",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -252,11 +293,12 @@
     "case_id": null
    },
    "student_id_source": "session",
-   "tool_call_no": 2
+   "tool_call_no": 2,
+   "ms": 0.339
   },
   {
    "seq": 13,
-   "ts": "2026-10-16T06:56:14.988288+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "observe",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -265,11 +307,12 @@
     "data": {
      "cases": []
     }
-   }
+   },
+   "ms": 0.339
   },
   {
    "seq": 14,
-   "ts": "2026-10-16T06:56:14.988296+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "sense",
    "iteration": 2,
    "summary": {
@@ -311,10 +354,13 @@
   },
   {
    "seq": 15,
-   "ts": "2026-10-16T06:56:14.988304+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "plan",
    "iteration": 2,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.012,
    "proposal": {
     "action": "ask_student",
     "args": {
@@ -332,7 +378,7 @@
   },
   {
    "seq": 16,
-   "ts": "2026-10-16T06:56:14.988322+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "validate",
    "iteration": 2,
    "accepted": true,
@@ -340,7 +386,7 @@
   },
   {
    "seq": 17,
-   "ts": "2026-10-16T06:56:14.988325+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "act",
    "iteration": 3,
    "action": "ask_student",
@@ -357,7 +403,7 @@
   },
   {
    "seq": 18,
-   "ts": "2026-10-16T06:56:14.988327+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "pause",
    "iteration": 3,
    "reason": "awaiting student reply",
@@ -365,7 +411,7 @@
   },
   {
    "seq": 19,
-   "ts": "2026-10-16T06:56:14.988333+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "turn",
    "iteration": 3,
    "role": "student",
@@ -373,37 +419,37 @@
   },
   {
    "seq": 20,
-   "ts": "2026-10-16T06:56:14.988334+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "resume",
    "iteration": 3,
    "from_status": "awaiting_answer"
   },
   {
    "seq": 21,
-   "ts": "2026-10-16T06:56:14.988352+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "boundary_check",
    "iteration": 3,
    "hit": null
   },
   {
    "seq": 22,
-   "ts": "2026-10-16T06:56:14.988396+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "fields_collected",
    "iteration": 3,
    "fields": {
     "semester": "2026-S1",
+    "lecturer": "Kato",
     "lecturer_contacted": true,
     "days_since_report": 10
    },
    "cited_case_ids": [],
    "missing": [
-    "lecturer",
     "attendance_proof"
    ]
   },
   {
    "seq": 23,
-   "ts": "2026-10-16T06:56:14.988403+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "sense",
    "iteration": 3,
    "summary": {
@@ -420,11 +466,11 @@
      "name": "Ogwal Richard",
      "course_code": "BSE4104",
      "semester": "2026-S1",
+     "lecturer": "Kato",
      "lecturer_contacted": true,
      "days_since_report": 10
     },
     "missing_fields": [
-     "lecturer",
      "attendance_proof"
     ],
     "sources": [
@@ -445,16 +491,18 @@
   },
   {
    "seq": 24,
-   "ts": "2026-10-16T06:56:14.988409+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "plan",
    "iteration": 3,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.007,
    "proposal": {
     "action": "ask_student",
     "args": {
-     "question": "(Question 2 of 3) To prepare your case I still need: the lecturer's name; your proof of coursework/exam attendance (e.g. exam card, attendance sheet).",
+     "question": "(Question 2 of 3) To prepare your case I still need: your proof of coursework/exam attendance (e.g. exam card, attendance sheet).",
      "fields": [
-      "lecturer",
       "attendance_proof"
      ]
     },
@@ -463,7 +511,7 @@
   },
   {
    "seq": 25,
-   "ts": "2026-10-16T06:56:14.988422+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "validate",
    "iteration": 3,
    "accepted": true,
@@ -471,21 +519,20 @@
   },
   {
    "seq": 26,
-   "ts": "2026-10-16T06:56:14.988425+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "act",
    "iteration": 4,
    "action": "ask_student",
    "args": {
-    "question": "(Question 2 of 3) To prepare your case I still need: the lecturer's name; your proof of coursework/exam attendance (e.g. exam card, attendance sheet).",
+    "question": "(Question 2 of 3) To prepare your case I still need: your proof of coursework/exam attendance (e.g. exam card, attendance sheet).",
     "fields": [
-     "lecturer",
      "attendance_proof"
     ]
    }
   },
   {
    "seq": 27,
-   "ts": "2026-10-16T06:56:14.988426+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "pause",
    "iteration": 4,
    "reason": "awaiting student reply",
@@ -493,7 +540,7 @@
   },
   {
    "seq": 28,
-   "ts": "2026-10-16T06:56:14.988431+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "turn",
    "iteration": 4,
    "role": "student",
@@ -501,34 +548,32 @@
   },
   {
    "seq": 29,
-   "ts": "2026-10-16T06:56:14.988433+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "resume",
    "iteration": 4,
    "from_status": "awaiting_answer"
   },
   {
    "seq": 30,
-   "ts": "2026-10-16T06:56:14.988445+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "boundary_check",
    "iteration": 4,
    "hit": null
   },
   {
    "seq": 31,
-   "ts": "2026-10-16T06:56:14.988478+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "fields_collected",
    "iteration": 4,
    "fields": {
     "attendance_proof": "exam card"
    },
    "cited_case_ids": [],
-   "missing": [
-    "lecturer"
-   ]
+   "missing": []
   },
   {
    "seq": 32,
-   "ts": "2026-10-16T06:56:14.988485+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "sense",
    "iteration": 4,
    "summary": {
@@ -545,13 +590,12 @@
      "name": "Ogwal Richard",
      "course_code": "BSE4104",
      "semester": "2026-S1",
+     "lecturer": "Kato",
      "lecturer_contacted": true,
      "days_since_report": 10,
      "attendance_proof": "exam card"
     },
-    "missing_fields": [
-     "lecturer"
-    ],
+    "missing_fields": [],
     "sources": [
      "DOC-02",
      "DOC-06"
@@ -570,24 +614,25 @@
   },
   {
    "seq": 33,
-   "ts": "2026-10-16T06:56:14.988491+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "plan",
    "iteration": 4,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.007,
    "proposal": {
-    "action": "ask_student",
+    "action": "present_draft",
     "args": {
-     "question": "(Question 3 of 3) To prepare your case I still need: the lecturer's name.",
-     "fields": [
-      "lecturer"
-     ]
+     "category": "missing_marks",
+     "description": "Missing marks for BSE4104 (2026-S1). Lecturer: Kato. Reported to lecturer 10 days ago, unresolved. Proof of attendance: exam card."
     },
-    "reason": "required fields missing"
+    "reason": "all required fields collected"
    }
   },
   {
    "seq": 34,
-   "ts": "2026-10-16T06:56:14.988504+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "validate",
    "iteration": 4,
    "accepted": true,
@@ -595,73 +640,71 @@
   },
   {
    "seq": 35,
-   "ts": "2026-10-16T06:56:14.988507+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "act",
-   "iteration": 5,
-   "action": "ask_student",
+   "iteration": 4,
+   "action": "present_draft",
    "args": {
-    "question": "(Question 3 of 3) To prepare your case I still need: the lecturer's name.",
-    "fields": [
-     "lecturer"
-    ]
+    "name": "Ogwal Richard",
+    "category": "missing_marks",
+    "description": "Missing marks for BSE4104 (2026-S1). Lecturer: Kato. Reported to lecturer 10 days ago, unresolved. Proof of attendance: exam card."
    }
   },
   {
    "seq": 36,
-   "ts": "2026-10-16T06:56:14.988508+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "pause",
-   "iteration": 5,
-   "reason": "awaiting student reply",
-   "questions_asked": 3
+   "iteration": 4,
+   "reason": "AWAITING_APPROVAL"
   },
   {
    "seq": 37,
-   "ts": "2026-10-16T06:56:14.988513+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "turn",
-   "iteration": 5,
+   "iteration": 4,
    "role": "student",
    "text": "yes"
   },
   {
    "seq": 38,
-   "ts": "2026-10-16T06:56:14.988515+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "resume",
-   "iteration": 5,
-   "from_status": "awaiting_answer"
+   "iteration": 4,
+   "from_status": "awaiting_approval"
   },
   {
    "seq": 39,
-   "ts": "2026-10-16T06:56:14.988519+00:00",
-   "type": "boundary_check",
-   "iteration": 5,
-   "hit": null
+   "ts": "2026-10-16T19:45:58.650551+00:00",
+   "type": "approval",
+   "iteration": 4,
+   "status": "APPROVED",
+   "reply": "yes"
   },
   {
    "seq": 40,
-   "ts": "2026-10-16T06:56:14.988538+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "sense",
-   "iteration": 5,
+   "iteration": 4,
    "summary": {
     "goal": {
      "text": "My BSE4104 marks are missing.",
      "category": "missing_marks"
     },
     "category": "missing_marks",
-    "iteration": 5,
+    "iteration": 4,
     "tool_calls": 2,
-    "questions_asked": 3,
+    "questions_asked": 2,
     "model_calls": 5,
     "collected_fields": {
      "name": "Ogwal Richard",
      "course_code": "BSE4104",
      "semester": "2026-S1",
+     "lecturer": "Kato",
      "lecturer_contacted": true,
      "days_since_report": 10,
      "attendance_proof": "exam card"
     },
-    "missing_fields": [
-     "lecturer"
-    ],
+    "missing_fields": [],
     "sources": [
      "DOC-02",
      "DOC-06"
@@ -673,46 +716,244 @@
     "prerequisite": "met",
     "cited_case_pending": null,
     "cited_not_found": null,
-    "approval": "NONE",
+    "approval": "APPROVED",
     "created_case_id": null,
     "verified": false
    }
   },
   {
    "seq": 41,
-   "ts": "2026-10-16T06:56:14.988542+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
    "type": "plan",
-   "iteration": 5,
+   "iteration": 4,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.004,
    "proposal": {
-    "action": "finish",
+    "action": "create_draft_support_case",
     "args": {
-     "outcome": "NEEDS_INFO"
+     "name": "Ogwal Richard",
+     "category": "missing_marks",
+     "description": "Missing marks for BSE4104 (2026-S1). Lecturer: Kato. Reported to lecturer 10 days ago, unresolved. Proof of attendance: exam card."
     },
-    "reason": "question budget used, fields still missing"
+    "reason": "student approved the exact draft"
    }
   },
   {
    "seq": 42,
-   "ts": "2026-10-16T06:56:14.988553+00:00",
+   "ts": "2026-10-16T19:45:58.650551+00:00",
+   "type": "validate",
+   "iteration": 4,
+   "accepted": true,
+   "reason": "ok"
+  },
+  {
+   "seq": 43,
+   "ts": "2026-10-16T19:45:58.653473+00:00",
+   "type": "act",
+   "iteration": 5,
+   "action": "create_draft_support_case",
+   "args": {
+    "name": "Ogwal Richard",
+    "category": "missing_marks",
+    "description": "Missing marks for BSE4104 (2026-S1). Lecturer: Kato. Reported to lecturer 10 days ago, unresolved. Proof of attendance: exam card.",
+    "approved": true
+   },
+   "student_id_source": "session",
+   "tool_call_no": 3,
+   "ms": 1.876
+  },
+  {
+   "seq": 44,
+   "ts": "2026-10-16T19:45:58.653473+00:00",
+   "type": "observe",
+   "iteration": 5,
+   "action": "create_draft_support_case",
+   "result": {
+    "status": "draft_created",
+    "case_id": "CASE-0005",
+    "case_status": "Pending"
+   },
+   "ms": 1.876
+  },
+  {
+   "seq": 45,
+   "ts": "2026-10-16T19:45:58.657654+00:00",
+   "type": "sense",
+   "iteration": 5,
+   "summary": {
+    "goal": {
+     "text": "My BSE4104 marks are missing.",
+     "category": "missing_marks"
+    },
+    "category": "missing_marks",
+    "iteration": 5,
+    "tool_calls": 3,
+    "questions_asked": 2,
+    "model_calls": 6,
+    "collected_fields": {
+     "name": "Ogwal Richard",
+     "course_code": "BSE4104",
+     "semester": "2026-S1",
+     "lecturer": "Kato",
+     "lecturer_contacted": true,
+     "days_since_report": 10,
+     "attendance_proof": "exam card"
+    },
+    "missing_fields": [],
+    "sources": [
+     "DOC-02",
+     "DOC-06"
+    ],
+    "policy_checked": true,
+    "no_source": false,
+    "existing_cases_loaded": true,
+    "duplicate_of": null,
+    "prerequisite": "met",
+    "cited_case_pending": null,
+    "cited_not_found": null,
+    "approval": "APPROVED",
+    "created_case_id": "CASE-0005",
+    "verified": false
+   }
+  },
+  {
+   "seq": 46,
+   "ts": "2026-10-16T19:45:58.657654+00:00",
+   "type": "plan",
+   "iteration": 5,
+   "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.011,
+   "proposal": {
+    "action": "lookup_case_or_timetable",
+    "args": {
+     "query_type": "case_status",
+     "case_id": "CASE-0005"
+    },
+    "reason": "verify the created case exists"
+   }
+  },
+  {
+   "seq": 47,
+   "ts": "2026-10-16T19:45:58.657654+00:00",
    "type": "validate",
    "iteration": 5,
    "accepted": true,
    "reason": "ok"
   },
   {
-   "seq": 43,
-   "ts": "2026-10-16T06:56:14.988559+00:00",
+   "seq": 48,
+   "ts": "2026-10-16T19:45:58.668633+00:00",
+   "type": "act",
+   "iteration": 6,
+   "action": "lookup_case_or_timetable",
+   "args": {
+    "query_type": "case_status",
+    "case_id": "CASE-0005"
+   },
+   "student_id_source": "session",
+   "tool_call_no": 4,
+   "ms": 12.416
+  },
+  {
+   "seq": 49,
+   "ts": "2026-10-16T19:45:58.668633+00:00",
+   "type": "observe",
+   "iteration": 6,
+   "action": "lookup_case_or_timetable",
+   "result": {
+    "status": "ok",
+    "data": {
+     "case_id": "CASE-0005",
+     "category": "missing_marks",
+     "status": "Pending",
+     "created_at": "2026-10-16T19:45:58.653473+00:00"
+    }
+   },
+   "ms": 12.416
+  },
+  {
+   "seq": 50,
+   "ts": "2026-10-16T19:45:58.668633+00:00",
+   "type": "sense",
+   "iteration": 6,
+   "summary": {
+    "goal": {
+     "text": "My BSE4104 marks are missing.",
+     "category": "missing_marks"
+    },
+    "category": "missing_marks",
+    "iteration": 6,
+    "tool_calls": 4,
+    "questions_asked": 2,
+    "model_calls": 7,
+    "collected_fields": {
+     "name": "Ogwal Richard",
+     "course_code": "BSE4104",
+     "semester": "2026-S1",
+     "lecturer": "Kato",
+     "lecturer_contacted": true,
+     "days_since_report": 10,
+     "attendance_proof": "exam card"
+    },
+    "missing_fields": [],
+    "sources": [
+     "DOC-02",
+     "DOC-06"
+    ],
+    "policy_checked": true,
+    "no_source": false,
+    "existing_cases_loaded": true,
+    "duplicate_of": null,
+    "prerequisite": "met",
+    "cited_case_pending": null,
+    "cited_not_found": null,
+    "approval": "APPROVED",
+    "created_case_id": "CASE-0005",
+    "verified": true
+   }
+  },
+  {
+   "seq": 51,
+   "ts": "2026-10-16T19:45:58.668633+00:00",
+   "type": "plan",
+   "iteration": 6,
+   "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.009,
+   "proposal": {
+    "action": "finish",
+    "args": {
+     "outcome": "GOAL_MET"
+    },
+    "reason": "case created and confirmed by lookup"
+   }
+  },
+  {
+   "seq": 52,
+   "ts": "2026-10-16T19:45:58.668633+00:00",
+   "type": "validate",
+   "iteration": 6,
+   "accepted": true,
+   "reason": "ok"
+  },
+  {
+   "seq": 53,
+   "ts": "2026-10-16T19:45:58.668633+00:00",
    "type": "stop",
-   "iteration": 5,
-   "stop_reason": "NEEDS_INFO",
+   "iteration": 6,
+   "stop_reason": "GOAL_MET",
    "detail": null,
    "office": null,
    "counters": {
-    "iterations": 5,
-    "tool_calls": 2,
-    "questions_asked": 3,
-    "model_calls": 6,
+    "iterations": 6,
+    "tool_calls": 4,
+    "questions_asked": 2,
+    "model_calls": 8,
     "rejected_proposals": 0
    }
   }

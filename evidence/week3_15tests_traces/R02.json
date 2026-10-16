@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.809662+00:00",
+  "ts": "2026-10-16T18:29:08.757057+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "My results are still missing 30 days after publication \u2014 what's the procedure?",
@@ -7,20 +7,20 @@
     {
       "chunk_id": "DOC-02-C1",
       "doc_id": "DOC-02",
-      "score": 0.3902,
+      "score": 0.3793,
       "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
-    },
-    {
-      "chunk_id": "DOC-09-C1",
-      "doc_id": "DOC-09",
-      "score": 0.0866,
-      "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
     },
     {
       "chunk_id": "DOC-08-C1",
       "doc_id": "DOC-08",
-      "score": 0.083,
+      "score": 0.0854,
       "excerpt": "DOC-ID: DOC-08 | Title: BIT2207 Web Technologies \u2013 Course Outline | Source: Team-synthesised (2026) | Version: 1.0 BIT2207 is a Year II course, 3 credit units covering HTML, CSS, JavaScript, REST APIs and deployment. Lab"
+    },
+    {
+      "chunk_id": "DOC-09-C1",
+      "doc_id": "DOC-09",
+      "score": 0.0787,
+      "excerpt": "DOC-ID: DOC-09 | Title: Examination Rules | Source: Team-synthesised (2026) | Version: 1.0 Students must present a valid student ID and examination permit. Mobile phones are prohibited in examination halls. Late arrival "
     }
   ],
   "decision": "grounded",

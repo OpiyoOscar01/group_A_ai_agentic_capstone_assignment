@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.841573+00:00",
+  "ts": "2026-10-16T18:29:08.776809+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "What's the coursework vs. final exam split for BSE4104?",
@@ -13,14 +13,14 @@
     {
       "chunk_id": "DOC-02-C1",
       "doc_id": "DOC-02",
-      "score": 0.1246,
+      "score": 0.1259,
       "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
     },
     {
       "chunk_id": "DOC-12-C1",
       "doc_id": "DOC-12",
-      "score": 0.1211,
-      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
+      "score": 0.1087,
+      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.1 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
     }
   ],
   "decision": "grounded",

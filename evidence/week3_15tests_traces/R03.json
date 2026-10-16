@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.820495+00:00",
+  "ts": "2026-10-16T18:29:08.757057+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "What's the minimum and maximum number of credit units I can register per semester?",
@@ -7,7 +7,7 @@
     {
       "chunk_id": "DOC-03-C1",
       "doc_id": "DOC-03",
-      "score": 0.4493,
+      "score": 0.4494,
       "excerpt": "DOC-ID: DOC-03 | Title: Course Registration Guide Semester I 2026/27 | Source: Team-synthesised (2026) | Version: 1.0 All undergraduate students must register courses on the student portal within the first three weeks of"
     },
     {
@@ -19,7 +19,7 @@
     {
       "chunk_id": "DOC-02-C1",
       "doc_id": "DOC-02",
-      "score": 0.0969,
+      "score": 0.0979,
       "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
     }
   ],

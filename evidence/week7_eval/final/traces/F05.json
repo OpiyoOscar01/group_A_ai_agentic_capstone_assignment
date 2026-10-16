@@ -1,6 +1,6 @@
 {
  "run_id": "RUN-001",
- "trace_id": "RUN-001-3bd6a2bd",
+ "trace_id": "RUN-001-4cc6ec57",
  "student_id": "2300700445",
  "student_id_hash": "e13210a3a1e4",
  "goal": {
@@ -12,8 +12,8 @@
  "prompt_version": "scripted-policy-v1",
  "prompt_sha256": null,
  "latency_ms": {
-  "planner": 0.006,
-  "tools": 0.278
+  "planner": 0.025,
+  "tools": 1.668
  },
  "stop_reason": "NO_SOURCE",
  "student_message": "I don't know this from approved documents. Please visit the Department Office. No case was created.",
@@ -47,7 +47,7 @@
  "events": [
   {
    "seq": 1,
-   "ts": "2026-10-16T12:49:06.235665+00:00",
+   "ts": "2026-10-16T20:38:16.161877+00:00",
    "type": "turn",
    "iteration": 0,
    "role": "student",
@@ -55,14 +55,14 @@
   },
   {
    "seq": 2,
-   "ts": "2026-10-16T12:49:06.235689+00:00",
+   "ts": "2026-10-16T20:38:16.161877+00:00",
    "type": "boundary_check",
    "iteration": 0,
    "hit": null
   },
   {
    "seq": 3,
-   "ts": "2026-10-16T12:49:06.235728+00:00",
+   "ts": "2026-10-16T20:38:16.161877+00:00",
    "type": "sense",
    "iteration": 0,
    "summary": {
@@ -94,13 +94,13 @@
   },
   {
    "seq": 4,
-   "ts": "2026-10-16T12:49:06.235737+00:00",
+   "ts": "2026-10-16T20:38:16.161877+00:00",
    "type": "plan",
    "iteration": 0,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.003,
+   "planner_ms": 0.013,
    "proposal": {
     "action": "search_handbook",
     "args": {
@@ -111,7 +111,7 @@
   },
   {
    "seq": 5,
-   "ts": "2026-10-16T12:49:06.235795+00:00",
+   "ts": "2026-10-16T20:38:16.166507+00:00",
    "type": "validate",
    "iteration": 0,
    "accepted": true,
@@ -119,7 +119,7 @@
   },
   {
    "seq": 6,
-   "ts": "2026-10-16T12:49:06.236082+00:00",
+   "ts": "2026-10-16T20:38:16.166507+00:00",
    "type": "act",
    "iteration": 1,
    "action": "search_handbook",
@@ -128,11 +128,11 @@
    },
    "student_id_source": "session",
    "tool_call_no": 1,
-   "ms": 0.278
+   "ms": 1.668
   },
   {
    "seq": 7,
-   "ts": "2026-10-16T12:49:06.236088+00:00",
+   "ts": "2026-10-16T20:38:16.166507+00:00",
    "type": "observe",
    "iteration": 1,
    "action": "search_handbook",
@@ -147,7 +147,7 @@
      }
     ]
    },
-   "ms": 0.278,
+   "ms": 1.668,
    "retrieval": {
     "query": "I want to file a case about my parking permit",
     "threshold": 0.14,
@@ -164,14 +164,14 @@
   },
   {
    "seq": 8,
-   "ts": "2026-10-16T12:49:06.236097+00:00",
+   "ts": "2026-10-16T20:38:16.168265+00:00",
    "type": "note",
    "iteration": 1,
    "note": "top score 0.1704 below stricter bar 0.25 for category 'other'"
   },
   {
    "seq": 9,
-   "ts": "2026-10-16T12:49:06.236106+00:00",
+   "ts": "2026-10-16T20:38:16.168265+00:00",
    "type": "sense",
    "iteration": 1,
    "summary": {
@@ -203,13 +203,13 @@
   },
   {
    "seq": 10,
-   "ts": "2026-10-16T12:49:06.236112+00:00",
+   "ts": "2026-10-16T20:38:16.168265+00:00",
    "type": "plan",
    "iteration": 1,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.003,
+   "planner_ms": 0.012,
    "proposal": {
     "action": "finish",
     "args": {
@@ -220,7 +220,7 @@
   },
   {
    "seq": 11,
-   "ts": "2026-10-16T12:49:06.236128+00:00",
+   "ts": "2026-10-16T20:38:16.168265+00:00",
    "type": "validate",
    "iteration": 1,
    "accepted": true,
@@ -228,7 +228,7 @@
   },
   {
    "seq": 12,
-   "ts": "2026-10-16T12:49:06.236134+00:00",
+   "ts": "2026-10-16T20:38:16.168265+00:00",
    "type": "stop",
    "iteration": 1,
    "stop_reason": "NO_SOURCE",

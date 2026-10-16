@@ -1,6 +1,6 @@
 {
  "run_id": "RUN-001",
- "trace_id": "RUN-001-340161f5",
+ "trace_id": "RUN-001-75a1c556",
  "student_id": "2300000000",
  "student_id_hash": "4c42d95859c6",
  "goal": {
@@ -45,7 +45,7 @@
  "events": [
   {
    "seq": 1,
-   "ts": "2026-10-16T12:49:06.244243+00:00",
+   "ts": "2026-10-16T20:38:16.314454+00:00",
    "type": "turn",
    "iteration": 0,
    "role": "student",
@@ -53,14 +53,14 @@
   },
   {
    "seq": 2,
-   "ts": "2026-10-16T12:49:06.244253+00:00",
+   "ts": "2026-10-16T20:38:16.314454+00:00",
    "type": "identity_check",
    "iteration": 0,
    "registered": false
   },
   {
    "seq": 3,
-   "ts": "2026-10-16T12:49:06.244258+00:00",
+   "ts": "2026-10-16T20:38:16.314454+00:00",
    "type": "stop",
    "iteration": 0,
    "stop_reason": "UNAUTHORIZED",

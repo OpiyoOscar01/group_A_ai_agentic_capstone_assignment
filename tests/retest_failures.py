@@ -3,14 +3,14 @@ Week 7 - Failure Catalogue evidence generator.
 Joins each catalogued failure to (a) the BASELINE result (Week 6 code) and (b) the FINAL result (fixed code),
 and re-tests the three earlier failures (FC-12..14) by reproducing them with the fix disabled.
 
-Run (after both evaluation runs exist):  python evaluation/retest_failures.py
+Run (after both evaluation runs exist):  python tests/retest_failures.py
 Output: evidence/week7_failures/catalogue_evidence.json and .md
 """
 import hashlib, json, os, shutil, subprocess, sys, tempfile
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(BASE / "src")); sys.path.insert(0, str(BASE / "evaluation")); sys.path.insert(0, str(BASE / "tests"))
+sys.path.insert(0, str(BASE / "src")); sys.path.insert(0, str(BASE / "tests"))
 OUT = BASE / "evidence" / "week7_failures"; OUT.mkdir(parents=True, exist_ok=True)
 
 def load(label):
@@ -44,7 +44,7 @@ rows.append({"id": "FC-11", "title": "Traces lacked latency, model/prompt versio
 # ---- FC-12: retrieval near-miss (Week 5): disable the stricter bar and re-run F05
 import tools, agent as A
 from run_week7_eval import run_one
-spec = next(s for s in json.loads((BASE / "evaluation" / "week7_eval_set.json").read_text())["scenarios"] if s["id"] == "F05")
+spec = next(s for s in json.loads((BASE / "tests" / "week7_eval_set.json").read_text())["scenarios"] if s["id"] == "F05")
 keep = A.OTHER_MIN_SCORE
 A.OTHER_MIN_SCORE = 0.0
 b, _ = run_one(spec); A.OTHER_MIN_SCORE = keep
@@ -63,7 +63,7 @@ def run_in_copy(runner_src):
     n0 = case_count(tmp)
     subprocess.run([sys.executable, str(tmp / "tests" / "run_week4_tool_tests.py")], capture_output=True, cwd=tmp)
     n1 = case_count(tmp); shutil.rmtree(tmp, ignore_errors=True); return n0, n1
-o0, o1 = run_in_copy(BASE / "evaluation" / "legacy" / "run_week4_tool_tests_original.py")
+o0, o1 = run_in_copy(BASE / "tests" / "legacy" / "run_week4_tool_tests_original.py")
 f0, f1 = run_in_copy(None)
 rows.append({"id": "FC-13", "title": "Week 4 test runner wrote a new case into the real data/cases.json on every run (found Weeks 5-6)",
              "scenarios": ["Week 4 suite"], "before": {"original runner": f"cases {o0} -> {o1}"}, "after": {"fixed runner": f"cases {f0} -> {f1}"},
@@ -81,11 +81,43 @@ rows.append({"id": "FC-14", "title": "Week 6 test hard-coded the new case ID (CA
              "scenarios": ["Week 6 suite"], "before": {"observed Week 6": "AssertionError 'seed failed' after Week 4 test added a case"},
              "after": {"Week 6 suite on polluted data": "8/8 scenarios pass" if ok14 else "FAIL"}, "retested_ok": ok14})
 
+def evidence_text(evidence):
+    return "; ".join(f"{key}: {value}" for key, value in evidence.items()).replace("|", "\\|")
+
+
+def status_text(row):
+    return "PASS" if row["retested_ok"] else "NOT VERIFIED"
+
+
 (OUT / "catalogue_evidence.json").write_text(json.dumps({"baseline": bsum, "final": fsum, "failures": rows}, indent=1))
-md = ["# Failure Catalogue evidence (generated)\n", f"Baseline: {bsum['passed']}/{bsum['scenarios']} pass, {bsum['safety_violations']} safety violations. "
-      f"Final: {fsum['passed']}/{fsum['scenarios']} pass, {fsum['safety_violations']} safety violations.\n", "| ID | Failure | Before | After | Re-test |", "|---|---|---|---|---|"]
-for r in rows:
-    md.append(f"| {r['id']} | {r['title']} | {'; '.join(f'{k}: {v}' for k, v in r['before'].items())[:200]} | {'; '.join(f'{k}: {v}' for k, v in r['after'].items())[:120]} | {'PASS' if r['retested_ok'] else 'FAIL'} |")
-(OUT / "CATALOGUE_EVIDENCE.md").write_text("\n".join(md).replace("\n\n|", "\n|") + "\n", encoding="utf-8")
-for r in rows: print(r["id"], "re-test", "PASS" if r["retested_ok"] else "FAIL", "|", list(r["after"].values())[:2])
+md = [
+    "# Week 7 Failure Catalogue Evidence\n",
+    "## Evaluation run summary\n",
+    "| Run | Scenarios passed | Safety violations | Traceability | p95 latency |",
+    "|---|---:|---:|---:|---:|",
+    f"| Baseline-labeled output | {bsum['passed']}/{bsum['scenarios']} | {bsum['safety_violations']} | {btr[0]}/{btr[1]} traces | {bsum['latency_ms']['p95']} ms |",
+    f"| Final | {fsum['passed']}/{fsum['scenarios']} | {fsum['safety_violations']} | {ftr[0]}/{ftr[1]} traces | {fsum['latency_ms']['p95']} ms |",
+    "",
+    "The retained baseline-labeled and final outputs both pass all 49 scenarios. The `baseline` label selects an output folder; it does not itself run historical Week 6 code. Therefore, entries marked **NOT VERIFIED** below are not proven fixed by a valid before/after comparison. In this table, NOT VERIFIED means the catalogue re-test criterion was not met; it does not mean the current scenario failed.",
+    "",
+    "## Failure and re-test status\n",
+    "| ID | Finding and scenario(s) | Before → after evidence | Status |",
+    "|---|---|---|---|",
+]
+for row in rows:
+    scenarios = ", ".join(row["scenarios"]).replace("|", "\\|")
+    md.append(
+        f"| {row['id']} | {row['title']} ({scenarios}) | "
+        f"{evidence_text(row['before'])} → {evidence_text(row['after'])} | {status_text(row)} |"
+    )
+md.extend([
+    "",
+    "## Status interpretation",
+    "- **PASS** — the targeted re-test demonstrated the expected correction.",
+    "- **NOT VERIFIED** — the generated evidence did not establish a valid failure-before/fix-after result; consult the evidence and preserve the relevant historical code revision before making a fix claim.",
+    "",
+])
+(OUT / "CATALOGUE_EVIDENCE.md").write_text("\n".join(md), encoding="utf-8")
+for row in rows:
+    print(row["id"], "re-test", status_text(row), "|", list(row["after"].values())[:2])
 print("all re-tests pass:", all(r["retested_ok"] for r in rows))

@@ -1,7 +1,7 @@
 """
 Week 7 - Evaluation pipeline for the bounded support-case agent.
 
-Runs every scenario in evaluation/week7_eval_set.json on its own temporary copy of data/ and scores:
+Runs every scenario in tests/week7_eval_set.json on its own temporary copy of data/ and scores:
   TC  task completion       stop reason, cases created, required reply content, bounded input
   GR  groundedness          every DOC cited to the student was retrieved (or is the correct boundary notice);
                             required policy documents were actually retrieved
@@ -13,7 +13,7 @@ Runs every scenario in evaluation/week7_eval_set.json on its own temporary copy 
   TR  traceability          trace carries trace id, planner/model/prompt version, per-step latency, retrieval evidence
 A scenario PASSES when TC, GR, TS, IF all hold and SV is empty. TR and LAT are reported as separate metrics.
 
-Run:  python evaluation/run_week7_eval.py --label final        (or --label baseline)
+Run:  python tests/run_week7_eval.py --label final        (or --label baseline)
 Output: evidence/week7_eval/<label>/{results.json,RESULTS.md,events.jsonl,traces/}
 """
 import argparse
@@ -204,7 +204,7 @@ def main():
     if out_dir.exists():
         shutil.rmtree(out_dir)
     (out_dir / "traces").mkdir(parents=True)
-    ds = json.loads((BASE / "evaluation" / "week7_eval_set.json").read_text())
+    ds = json.loads((BASE / "tests" / "week7_eval_set.json").read_text())
     results, jl = [], []
     for spec in ds["scenarios"]:
         res, trace = run_one(spec)

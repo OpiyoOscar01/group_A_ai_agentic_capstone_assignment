@@ -1,6 +1,6 @@
 {
  "run_id": "RUN-001",
- "trace_id": "RUN-001-fded9969",
+ "trace_id": "RUN-001-6832f868",
  "student_id": "2300707270",
  "student_id_hash": "02b434d9a77a",
  "goal": {
@@ -12,8 +12,8 @@
  "prompt_version": "scripted-policy-v1",
  "prompt_sha256": null,
  "latency_ms": {
-  "planner": 0.016,
-  "tools": 0.795
+  "planner": 0.057,
+  "tools": 21.028
  },
  "stop_reason": "GOAL_MET",
  "student_message": "Your case CASE-0005 was created with status Pending and confirmed in the system. Department staff will review it. Sources used: DOC-01.",
@@ -51,7 +51,7 @@
  "events": [
   {
    "seq": 1,
-   "ts": "2026-10-16T12:49:06.122917+00:00",
+   "ts": "2026-10-16T20:38:14.701599+00:00",
    "type": "turn",
    "iteration": 0,
    "role": "student",
@@ -59,14 +59,14 @@
   },
   {
    "seq": 2,
-   "ts": "2026-10-16T12:49:06.122944+00:00",
+   "ts": "2026-10-16T20:38:14.701599+00:00",
    "type": "boundary_check",
    "iteration": 0,
    "hit": null
   },
   {
    "seq": 3,
-   "ts": "2026-10-16T12:49:06.122983+00:00",
+   "ts": "2026-10-16T20:38:14.701599+00:00",
    "type": "fields_collected",
    "iteration": 0,
    "fields": {
@@ -78,7 +78,7 @@
   },
   {
    "seq": 4,
-   "ts": "2026-10-16T12:49:06.122994+00:00",
+   "ts": "2026-10-16T20:38:14.701599+00:00",
    "type": "sense",
    "iteration": 0,
    "summary": {
@@ -112,13 +112,13 @@
   },
   {
    "seq": 5,
-   "ts": "2026-10-16T12:49:06.123002+00:00",
+   "ts": "2026-10-16T20:38:14.701599+00:00",
    "type": "plan",
    "iteration": 0,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.003,
+   "planner_ms": 0.007,
    "proposal": {
     "action": "search_handbook",
     "args": {
@@ -129,7 +129,7 @@
   },
   {
    "seq": 6,
-   "ts": "2026-10-16T12:49:06.123021+00:00",
+   "ts": "2026-10-16T20:38:14.701599+00:00",
    "type": "validate",
    "iteration": 0,
    "accepted": true,
@@ -137,7 +137,7 @@
   },
   {
    "seq": 7,
-   "ts": "2026-10-16T12:49:06.123299+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "act",
    "iteration": 1,
    "action": "search_handbook",
@@ -146,11 +146,11 @@
    },
    "student_id_source": "session",
    "tool_call_no": 1,
-   "ms": 0.271
+   "ms": 0.821
   },
   {
    "seq": 8,
-   "ts": "2026-10-16T12:49:06.123304+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "observe",
    "iteration": 1,
    "action": "search_handbook",
@@ -165,7 +165,7 @@
      }
     ]
    },
-   "ms": 0.271,
+   "ms": 0.821,
    "retrieval": {
     "query": "retake failed course policy",
     "threshold": 0.14,
@@ -182,7 +182,7 @@
   },
   {
    "seq": 9,
-   "ts": "2026-10-16T12:49:06.123325+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "sense",
    "iteration": 1,
    "summary": {
@@ -218,13 +218,13 @@
   },
   {
    "seq": 10,
-   "ts": "2026-10-16T12:49:06.123331+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "plan",
    "iteration": 1,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.002,
+   "planner_ms": 0.006,
    "proposal": {
     "action": "lookup_case_or_timetable",
     "args": {
@@ -235,7 +235,7 @@
   },
   {
    "seq": 11,
-   "ts": "2026-10-16T12:49:06.123346+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "validate",
    "iteration": 1,
    "accepted": true,
@@ -243,7 +243,7 @@
   },
   {
    "seq": 12,
-   "ts": "2026-10-16T12:49:06.123392+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "act",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -253,11 +253,11 @@
    },
    "student_id_source": "session",
    "tool_call_no": 2,
-   "ms": 0.039
+   "ms": 0.364
   },
   {
    "seq": 13,
-   "ts": "2026-10-16T12:49:06.123395+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "observe",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -267,11 +267,11 @@
      "cases": []
     }
    },
-   "ms": 0.039
+   "ms": 0.364
   },
   {
    "seq": 14,
-   "ts": "2026-10-16T12:49:06.123404+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "sense",
    "iteration": 2,
    "summary": {
@@ -307,13 +307,13 @@
   },
   {
    "seq": 15,
-   "ts": "2026-10-16T12:49:06.123411+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "plan",
    "iteration": 2,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.003,
+   "planner_ms": 0.01,
    "proposal": {
     "action": "present_draft",
     "args": {
@@ -325,7 +325,7 @@
   },
   {
    "seq": 16,
-   "ts": "2026-10-16T12:49:06.123426+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "validate",
    "iteration": 2,
    "accepted": true,
@@ -333,7 +333,7 @@
   },
   {
    "seq": 17,
-   "ts": "2026-10-16T12:49:06.123459+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "act",
    "iteration": 2,
    "action": "present_draft",
@@ -345,14 +345,14 @@
   },
   {
    "seq": 18,
-   "ts": "2026-10-16T12:49:06.123464+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "pause",
    "iteration": 2,
    "reason": "AWAITING_APPROVAL"
   },
   {
    "seq": 19,
-   "ts": "2026-10-16T12:49:06.123477+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "turn",
    "iteration": 2,
    "role": "student",
@@ -360,14 +360,14 @@
   },
   {
    "seq": 20,
-   "ts": "2026-10-16T12:49:06.123481+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "resume",
    "iteration": 2,
    "from_status": "awaiting_approval"
   },
   {
    "seq": 21,
-   "ts": "2026-10-16T12:49:06.123488+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "approval",
    "iteration": 2,
    "status": "APPROVED",
@@ -375,7 +375,7 @@
   },
   {
    "seq": 22,
-   "ts": "2026-10-16T12:49:06.123499+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "sense",
    "iteration": 2,
    "summary": {
@@ -411,13 +411,13 @@
   },
   {
    "seq": 23,
-   "ts": "2026-10-16T12:49:06.123505+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "plan",
    "iteration": 2,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.003,
+   "planner_ms": 0.007,
    "proposal": {
     "action": "create_draft_support_case",
     "args": {
@@ -430,7 +430,7 @@
   },
   {
    "seq": 24,
-   "ts": "2026-10-16T12:49:06.123521+00:00",
+   "ts": "2026-10-16T20:38:14.704995+00:00",
    "type": "validate",
    "iteration": 2,
    "accepted": true,
@@ -438,7 +438,7 @@
   },
   {
    "seq": 25,
-   "ts": "2026-10-16T12:49:06.123971+00:00",
+   "ts": "2026-10-16T20:38:14.707872+00:00",
    "type": "act",
    "iteration": 3,
    "action": "create_draft_support_case",
@@ -450,11 +450,11 @@
    },
    "student_id_source": "session",
    "tool_call_no": 3,
-   "ms": 0.442
+   "ms": 1.529
   },
   {
    "seq": 26,
-   "ts": "2026-10-16T12:49:06.123978+00:00",
+   "ts": "2026-10-16T20:38:14.707872+00:00",
    "type": "observe",
    "iteration": 3,
    "action": "create_draft_support_case",
@@ -463,11 +463,11 @@
     "case_id": "CASE-0005",
     "case_status": "Pending"
    },
-   "ms": 0.442
+   "ms": 1.529
   },
   {
    "seq": 27,
-   "ts": "2026-10-16T12:49:06.124157+00:00",
+   "ts": "2026-10-16T20:38:14.713477+00:00",
    "type": "sense",
    "iteration": 3,
    "summary": {
@@ -503,13 +503,13 @@
   },
   {
    "seq": 28,
-   "ts": "2026-10-16T12:49:06.124165+00:00",
+   "ts": "2026-10-16T20:38:14.713477+00:00",
    "type": "plan",
    "iteration": 3,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.003,
+   "planner_ms": 0.015,
    "proposal": {
     "action": "lookup_case_or_timetable",
     "args": {
@@ -521,7 +521,7 @@
   },
   {
    "seq": 29,
-   "ts": "2026-10-16T12:49:06.124183+00:00",
+   "ts": "2026-10-16T20:38:14.713477+00:00",
    "type": "validate",
    "iteration": 3,
    "accepted": true,
@@ -529,7 +529,7 @@
   },
   {
    "seq": 30,
-   "ts": "2026-10-16T12:49:06.124233+00:00",
+   "ts": "2026-10-16T20:38:14.731774+00:00",
    "type": "act",
    "iteration": 4,
    "action": "lookup_case_or_timetable",
@@ -539,11 +539,11 @@
    },
    "student_id_source": "session",
    "tool_call_no": 4,
-   "ms": 0.043
+   "ms": 18.314
   },
   {
    "seq": 31,
-   "ts": "2026-10-16T12:49:06.124236+00:00",
+   "ts": "2026-10-16T20:38:14.731774+00:00",
    "type": "observe",
    "iteration": 4,
    "action": "lookup_case_or_timetable",
@@ -553,14 +553,14 @@
      "case_id": "CASE-0005",
      "category": "retake",
      "status": "Pending",
-     "created_at": "2026-10-16T12:49:06.123591+00:00"
+     "created_at": "2026-10-16T20:38:14.706787+00:00"
     }
    },
-   "ms": 0.043
+   "ms": 18.314
   },
   {
    "seq": 32,
-   "ts": "2026-10-16T12:49:06.124245+00:00",
+   "ts": "2026-10-16T20:38:14.731774+00:00",
    "type": "sense",
    "iteration": 4,
    "summary": {
@@ -596,13 +596,13 @@
   },
   {
    "seq": 33,
-   "ts": "2026-10-16T12:49:06.124250+00:00",
+   "ts": "2026-10-16T20:38:14.731774+00:00",
    "type": "plan",
    "iteration": 4,
    "planner": "scripted-rule-planner-v1",
    "model": "none (rule-based, no LLM)",
    "prompt_version": "scripted-policy-v1",
-   "planner_ms": 0.002,
+   "planner_ms": 0.012,
    "proposal": {
     "action": "finish",
     "args": {
@@ -613,7 +613,7 @@
   },
   {
    "seq": 34,
-   "ts": "2026-10-16T12:49:06.124262+00:00",
+   "ts": "2026-10-16T20:38:14.731774+00:00",
    "type": "validate",
    "iteration": 4,
    "accepted": true,
@@ -621,7 +621,7 @@
   },
   {
    "seq": 35,
-   "ts": "2026-10-16T12:49:06.124267+00:00",
+   "ts": "2026-10-16T20:38:14.731774+00:00",
    "type": "stop",
    "iteration": 4,
    "stop_reason": "GOAL_MET",

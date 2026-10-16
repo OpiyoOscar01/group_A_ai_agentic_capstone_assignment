@@ -1,13 +1,22 @@
 {
  "run_id": "RUN-001",
+ "trace_id": "RUN-001-50fd5a99",
  "student_id": "2300700445",
+ "student_id_hash": "e13210a3a1e4",
  "goal": {
   "text": "I want to file a case to appeal my suspension for plagiarism",
   "category": "other"
  },
  "planner": "scripted-rule-planner-v1",
+ "planner_model": "none (rule-based, no LLM)",
+ "prompt_version": "scripted-policy-v1",
+ "prompt_sha256": null,
+ "latency_ms": {
+  "planner": 0,
+  "tools": 0
+ },
  "stop_reason": "HANDOFF_BOUNDARY",
- "student_message": "This is outside what I can do, and I have not taken any action. Please contact the Disciplinary Committee. No case was created. [Policy: DOC-10, DOC-11]",
+ "student_message": "This is outside what I can do, and I have not taken any action. Please contact the Disciplinary Committee. No case was created. [Policy: DOC-09]",
  "counters": {
   "iterations": 0,
   "tool_calls": 0,
@@ -36,7 +45,7 @@
  "events": [
   {
    "seq": 1,
-   "ts": "2026-10-16T06:56:15.087216+00:00",
+   "ts": "2026-10-16T19:45:59.757056+00:00",
    "type": "turn",
    "iteration": 0,
    "role": "student",
@@ -44,7 +53,7 @@
   },
   {
    "seq": 2,
-   "ts": "2026-10-16T06:56:15.087249+00:00",
+   "ts": "2026-10-16T19:45:59.757056+00:00",
    "type": "boundary_check",
    "iteration": 0,
    "hit": [
@@ -53,7 +62,7 @@
   },
   {
    "seq": 3,
-   "ts": "2026-10-16T06:56:15.087259+00:00",
+   "ts": "2026-10-16T19:45:59.757056+00:00",
    "type": "stop",
    "iteration": 0,
    "stop_reason": "HANDOFF_BOUNDARY",

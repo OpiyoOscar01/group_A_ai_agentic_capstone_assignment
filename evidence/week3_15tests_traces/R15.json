@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.907033+00:00",
+  "ts": "2026-10-16T18:29:08.800102+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "What's the WiFi password for the CIT library?",
@@ -7,24 +7,24 @@
     {
       "chunk_id": "DOC-12-C1",
       "doc_id": "DOC-12",
-      "score": 0.2095,
-      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
+      "score": 0.191,
+      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.1 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
     },
     {
       "chunk_id": "DOC-01-C1",
       "doc_id": "DOC-01",
-      "score": 0.1269,
+      "score": 0.127,
       "excerpt": "DOC-ID: DOC-01 | Title: Academic Regulations \u2013 Retakes and Supplementary Examinations | Source: Team-synthesised from public Makerere handbook structure (2026) | Version: 1.0 2026-09-12 A student who fails a course with "
     },
     {
       "chunk_id": "DOC-04-C1",
       "doc_id": "DOC-04",
-      "score": 0.0877,
+      "score": 0.088,
       "excerpt": "DOC-ID: DOC-04 | Title: Timetable and Class Attendance Policy | Source: Team-synthesised (2026) | Version: 1.0 Official class timetables are published by the School Timetabling Officer before semester start. Students che"
     }
   ],
   "decision": "grounded",
-  "answer": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored or sent to external AI services. Retained memory is limited to the active case ID within a session. Students may request deletion of a session. Staff access case queues only for review. No data is shared outside the approved application boundary without authorisation. Policy refer [Source: DOC-12]",
+  "answer": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.1 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored or sent to external AI services. Retained memory is limited to one item: the active case ID (CASE-XXXX) of the signed-in student. It is kept for at most 30 days, or until the case is no longer open, and is used only to answer read-only follow-up questions such as case status. Stud [Source: DOC-12]",
   "sources": [
     "DOC-12"
   ],

@@ -1,11 +1,20 @@
 {
  "run_id": "RUN-001",
+ "trace_id": "RUN-001-28a7bd24",
  "student_id": "2300716574",
+ "student_id_hash": "81ebd0507586",
  "goal": {
   "text": "My BSE4104 marks are missing.",
   "category": "missing_marks"
  },
  "planner": "scripted-rule-planner-v1",
+ "planner_model": "none (rule-based, no LLM)",
+ "prompt_version": "scripted-policy-v1",
+ "prompt_sha256": null,
+ "latency_ms": {
+  "planner": 0.01,
+  "tools": 0.63
+ },
  "stop_reason": "TOOL_FAILURE",
  "student_message": "The service is unavailable right now. Please try later or visit the Department Office. No case was created.",
  "counters": {
@@ -42,7 +51,7 @@
  "events": [
   {
    "seq": 1,
-   "ts": "2026-10-16T06:56:15.060395+00:00",
+   "ts": "2026-10-16T19:45:59.507817+00:00",
    "type": "turn",
    "iteration": 0,
    "role": "student",
@@ -50,14 +59,14 @@
   },
   {
    "seq": 2,
-   "ts": "2026-10-16T06:56:15.060414+00:00",
+   "ts": "2026-10-16T19:45:59.507817+00:00",
    "type": "boundary_check",
    "iteration": 0,
    "hit": null
   },
   {
    "seq": 3,
-   "ts": "2026-10-16T06:56:15.060446+00:00",
+   "ts": "2026-10-16T19:45:59.507817+00:00",
    "type": "fields_collected",
    "iteration": 0,
    "fields": {
@@ -74,7 +83,7 @@
   },
   {
    "seq": 4,
-   "ts": "2026-10-16T06:56:15.060456+00:00",
+   "ts": "2026-10-16T19:45:59.507817+00:00",
    "type": "sense",
    "iteration": 0,
    "summary": {
@@ -113,10 +122,13 @@
   },
   {
    "seq": 5,
-   "ts": "2026-10-16T06:56:15.060461+00:00",
+   "ts": "2026-10-16T19:45:59.507817+00:00",
    "type": "plan",
    "iteration": 0,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.006,
    "proposal": {
     "action": "search_handbook",
     "args": {
@@ -127,7 +139,7 @@
   },
   {
    "seq": 6,
-   "ts": "2026-10-16T06:56:15.060480+00:00",
+   "ts": "2026-10-16T19:45:59.507817+00:00",
    "type": "validate",
    "iteration": 0,
    "accepted": true,
@@ -135,7 +147,7 @@
   },
   {
    "seq": 7,
-   "ts": "2026-10-16T06:56:15.060758+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "act",
    "iteration": 1,
    "action": "search_handbook",
@@ -143,11 +155,12 @@
     "query": "missing marks procedure lecturer support case"
    },
    "student_id_source": "session",
-   "tool_call_no": 1
+   "tool_call_no": 1,
+   "ms": 0.619
   },
   {
    "seq": 8,
-   "ts": "2026-10-16T06:56:15.060762+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "observe",
    "iteration": 1,
    "action": "search_handbook",
@@ -171,11 +184,35 @@
       "score": 0.1548
      }
     ]
+   },
+   "ms": 0.619,
+   "retrieval": {
+    "query": "missing marks procedure lecturer support case",
+    "threshold": 0.14,
+    "top_score": 0.4096,
+    "decision": "ok",
+    "hits": [
+     {
+      "doc_id": "DOC-02",
+      "chunk_id": "DOC-02-C1",
+      "score": 0.4096
+     },
+     {
+      "doc_id": "DOC-06",
+      "chunk_id": "DOC-06-C1",
+      "score": 0.2382
+     },
+     {
+      "doc_id": "DOC-08",
+      "chunk_id": "DOC-08-C1",
+      "score": 0.1548
+     }
+    ]
    }
   },
   {
    "seq": 9,
-   "ts": "2026-10-16T06:56:15.060776+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "sense",
    "iteration": 1,
    "summary": {
@@ -217,10 +254,13 @@
   },
   {
    "seq": 10,
-   "ts": "2026-10-16T06:56:15.060780+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "plan",
    "iteration": 1,
    "planner": "scripted-rule-planner-v1",
+   "model": "none (rule-based, no LLM)",
+   "prompt_version": "scripted-policy-v1",
+   "planner_ms": 0.004,
    "proposal": {
     "action": "lookup_case_or_timetable",
     "args": {
@@ -231,7 +271,7 @@
   },
   {
    "seq": 11,
-   "ts": "2026-10-16T06:56:15.060793+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "validate",
    "iteration": 1,
    "accepted": true,
@@ -239,7 +279,7 @@
   },
   {
    "seq": 12,
-   "ts": "2026-10-16T06:56:15.060803+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "act",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -248,22 +288,24 @@
     "case_id": null
    },
    "student_id_source": "session",
-   "tool_call_no": 2
+   "tool_call_no": 2,
+   "ms": 0.007
   },
   {
    "seq": 13,
-   "ts": "2026-10-16T06:56:15.060805+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "observe",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
    "result": {
     "status": "error",
     "error_code": "SERVICE_UNAVAILABLE"
-   }
+   },
+   "ms": 0.007
   },
   {
    "seq": 14,
-   "ts": "2026-10-16T06:56:15.060808+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "retry",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -272,7 +314,7 @@
   },
   {
    "seq": 15,
-   "ts": "2026-10-16T06:56:15.060813+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "act",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
@@ -281,22 +323,24 @@
     "case_id": null
    },
    "student_id_source": "session",
-   "tool_call_no": 3
+   "tool_call_no": 3,
+   "ms": 0.004
   },
   {
    "seq": 16,
-   "ts": "2026-10-16T06:56:15.060815+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "observe",
    "iteration": 2,
    "action": "lookup_case_or_timetable",
    "result": {
     "status": "error",
     "error_code": "SERVICE_UNAVAILABLE"
-   }
+   },
+   "ms": 0.004
   },
   {
    "seq": 17,
-   "ts": "2026-10-16T06:56:15.060821+00:00",
+   "ts": "2026-10-16T19:45:59.510962+00:00",
    "type": "stop",
    "iteration": 2,
    "stop_reason": "TOOL_FAILURE",

@@ -10,7 +10,7 @@
 | Instruction following | 100% (49/49) |
 | Safety violations | 0 in 0 scenario(s) (target 0) |
 | Traceability (complete trace fields) | 100% (39/39) |
-| Latency per turn, local scripted planner | p50 0.4 ms, p95 1.1 ms, max 3.3 ms (limit 2000) |
+| Latency per turn, local scripted planner | p50 1.9 ms, p95 32.6 ms, max 57.0 ms (limit 2000) |
 
 ## By category
 

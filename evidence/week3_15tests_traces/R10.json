@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.870289+00:00",
+  "ts": "2026-10-16T18:29:08.785472+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "When are BIT2207 labs, and what do I do if my coursework mark is missing?",
@@ -7,13 +7,13 @@
     {
       "chunk_id": "DOC-08-C1",
       "doc_id": "DOC-08",
-      "score": 0.227,
+      "score": 0.2275,
       "excerpt": "DOC-ID: DOC-08 | Title: BIT2207 Web Technologies \u2013 Course Outline | Source: Team-synthesised (2026) | Version: 1.0 BIT2207 is a Year II course, 3 credit units covering HTML, CSS, JavaScript, REST APIs and deployment. Lab"
     },
     {
       "chunk_id": "DOC-02-C1",
       "doc_id": "DOC-02",
-      "score": 0.1527,
+      "score": 0.1542,
       "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
     },
     {

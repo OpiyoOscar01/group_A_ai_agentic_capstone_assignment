@@ -1,5 +1,5 @@
 {
-  "ts": "2026-09-16T14:56:09.834442+00:00",
+  "ts": "2026-10-16T18:29:08.774231+00:00",
   "model": "rag-tfidf-v1+gemini-2.0-flash",
   "prompt_version": "v3.0-rag",
   "query": "What format is my support case ID, and what does 'Pending' status mean?",
@@ -7,20 +7,20 @@
     {
       "chunk_id": "DOC-06-C1",
       "doc_id": "DOC-06",
-      "score": 0.4489,
+      "score": 0.4418,
       "excerpt": "DOC-ID: DOC-06 | Title: Student Support Cases and Ticketing | Source: Team-created system spec (2026) | Version: 1.0 Support categories are: missing_marks, retake, registration, other. A valid case requires student name,"
     },
     {
       "chunk_id": "DOC-02-C1",
       "doc_id": "DOC-02",
-      "score": 0.2513,
+      "score": 0.2491,
       "excerpt": "DOC-ID: DOC-02 | Title: Missing Marks Procedure | Source: Team-synthesised departmental guidance (2026) | Version: 1.0 2026-09-12 Where marks are missing on the student portal 30 days after results publication, the stude"
     },
     {
       "chunk_id": "DOC-12-C1",
       "doc_id": "DOC-12",
-      "score": 0.1343,
-      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.0 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
+      "score": 0.1769,
+      "excerpt": "DOC-ID: DOC-12 | Title: Data Handling and Privacy Note | Source: Team-created (2026) | Version: 1.1 The system uses only synthetic student, timetable and case records for prototyping. No real student records are stored o"
     }
   ],
   "decision": "grounded",
