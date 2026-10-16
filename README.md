@@ -30,6 +30,13 @@ python tests/run_week6_memory_demo.py     # 8 scenarios (M1-M7, I1), writes evid
 ```
 - `src/memory.py` persistent memory (active case ID only); `docs/design/` state model, memory note, MCP-style spec; `docs/interfaces/support_case_mcp_manifest.json`
 
+## Week 7 Evaluation, observability, guardrails
+```
+python evaluation/run_week7_eval.py --label final     # 49 scenarios, writes evidence/week7_eval/final/
+python evaluation/retest_failures.py                  # Failure Catalogue before/after + re-tests
+```
+- `evaluation/week7_eval_set.json` dataset; `evidence/week7_eval/baseline` = Week 6 code, `final` = fixed code; `evidence/week7_failures/` catalogue evidence
+
 ## Structure
 - `docs/requirements/` — charter, user stories, boundary matrix, model note, prompt specs
 - `docs/weekly-reports/` — Week 1–3 progress reports

@@ -1,11 +1,20 @@
 {
   "run_id": "RUN-001",
+  "trace_id": "RUN-001-d805bc36",
   "student_id": "2300716574",
+  "student_id_hash": "81ebd0507586",
   "goal": {
     "text": "My BSE4104 marks are missing.",
     "category": "missing_marks"
   },
   "planner": "repeat-planner (fault injection)",
+  "planner_model": null,
+  "prompt_version": null,
+  "prompt_sha256": null,
+  "latency_ms": {
+    "planner": 0.013,
+    "tools": 0
+  },
   "stop_reason": "MAX_ITERATIONS",
   "student_message": "I reached my step limit. Found so far: sources none; case created: no. Please continue with the Department Office.",
   "counters": {
@@ -23,8 +32,7 @@
     "max_service_retries": 1,
     "max_model_calls": 10,
     "max_seconds": 60,
-    "max_description_chars": 500,
-    "max_message_chars": 2000
+    "max_description_chars": 500
   },
   "final_state": {
     "approval": "NONE",
@@ -40,7 +48,7 @@
   "events": [
     {
       "seq": 1,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "turn",
       "iteration": 0,
       "role": "student",
@@ -48,14 +56,14 @@
     },
     {
       "seq": 2,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "boundary_check",
       "iteration": 0,
       "hit": null
     },
     {
       "seq": 3,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "fields_collected",
       "iteration": 0,
       "fields": {
@@ -72,7 +80,7 @@
     },
     {
       "seq": 4,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "sense",
       "iteration": 0,
       "summary": {
@@ -111,10 +119,13 @@
     },
     {
       "seq": 5,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "plan",
       "iteration": 0,
       "planner": "repeat-planner (fault injection)",
+      "model": null,
+      "prompt_version": null,
+      "planner_ms": 0.008,
       "proposal": {
         "action": "delete_case",
         "args": {
@@ -125,7 +136,7 @@
     },
     {
       "seq": 6,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "validate",
       "iteration": 1,
       "accepted": false,
@@ -133,7 +144,7 @@
     },
     {
       "seq": 7,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "sense",
       "iteration": 1,
       "summary": {
@@ -172,10 +183,13 @@
     },
     {
       "seq": 8,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "plan",
       "iteration": 1,
       "planner": "repeat-planner (fault injection)",
+      "model": null,
+      "prompt_version": null,
+      "planner_ms": 0.005,
       "proposal": {
         "action": "delete_case",
         "args": {
@@ -186,7 +200,7 @@
     },
     {
       "seq": 9,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "validate",
       "iteration": 1,
       "accepted": false,
@@ -194,7 +208,7 @@
     },
     {
       "seq": 10,
-      "ts": "2026-10-16T03:56:42.237764+00:00",
+      "ts": "2026-10-16T19:20:59.042273+00:00",
       "type": "stop",
       "iteration": 1,
       "stop_reason": "MAX_ITERATIONS",

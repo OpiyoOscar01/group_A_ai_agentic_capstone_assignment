@@ -110,7 +110,7 @@ AGENT_CASES = [
          student="2300701330",
          turns=["I want to file a case about my marks. It is the same as CASE-0001."],
          expect="UNAUTHORIZED", new_cases=0),
-    dict(id="G04", title="3000-char message is capped and logged; run still completes",
+    dict(id="G04", title="3000-char message is capped at 1000 and logged; run still completes",
          student=STUDENT,
          turns=["My BSE4104 marks are missing. " + "x" * 2960] + HAPPY_TURNS[1:],
          expect="GOAL_MET", new_cases=1, must_have_event="input_truncated"),

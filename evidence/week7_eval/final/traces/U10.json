@@ -1,0 +1,78 @@
+{
+ "run_id": "RUN-001",
+ "trace_id": "RUN-001-09adeedc",
+ "student_id": "2300000000",
+ "student_id_hash": "4c42d95859c6",
+ "goal": {
+  "text": "My BSE4104 marks are missing.",
+  "category": "missing_marks"
+ },
+ "planner": "scripted-rule-planner-v1",
+ "planner_model": "none (rule-based, no LLM)",
+ "prompt_version": "scripted-policy-v1",
+ "prompt_sha256": null,
+ "latency_ms": {
+  "planner": 0,
+  "tools": 0
+ },
+ "stop_reason": "UNAUTHORIZED",
+ "student_message": "I can't use or show that record. Nothing was changed.",
+ "counters": {
+  "iterations": 0,
+  "tool_calls": 0,
+  "questions_asked": 0,
+  "model_calls": 0,
+  "rejected_proposals": 0
+ },
+ "limits": {
+  "max_iterations": 8,
+  "max_tool_calls": 6,
+  "max_questions": 3,
+  "max_repeat_same_action": 2,
+  "max_service_retries": 1,
+  "max_model_calls": 10,
+  "max_seconds": 60,
+  "max_description_chars": 500
+ },
+ "final_state": {
+  "approval": "NONE",
+  "created_case_id": null,
+  "verified": false,
+  "sources": [],
+  "collected_fields": {},
+  "active_case_id": null
+ },
+ "events": [
+  {
+   "seq": 1,
+   "ts": "2026-10-16T12:49:06.251255+00:00",
+   "type": "turn",
+   "iteration": 0,
+   "role": "student",
+   "text": "My BSE4104 marks are missing."
+  },
+  {
+   "seq": 2,
+   "ts": "2026-10-16T12:49:06.251264+00:00",
+   "type": "identity_check",
+   "iteration": 0,
+   "registered": false
+  },
+  {
+   "seq": 3,
+   "ts": "2026-10-16T12:49:06.251269+00:00",
+   "type": "stop",
+   "iteration": 0,
+   "stop_reason": "UNAUTHORIZED",
+   "detail": "student_id is not a registered student",
+   "office": null,
+   "counters": {
+    "iterations": 0,
+    "tool_calls": 0,
+    "questions_asked": 0,
+    "model_calls": 0,
+    "rejected_proposals": 0
+   }
+  }
+ ]
+}

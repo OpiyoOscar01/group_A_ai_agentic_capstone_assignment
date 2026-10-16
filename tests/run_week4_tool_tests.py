@@ -14,7 +14,12 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE, "src"))
 import tools  # noqa: E402
 
-CASES_PATH = os.path.join(BASE, "data", "cases.json")
+# Week 7 fix (FC-13): run on a temporary COPY of data/ so the tests never write to the real cases.json
+import tempfile  # noqa: E402
+_TMP = tempfile.mkdtemp(prefix="w4_data_")
+shutil.copytree(os.path.join(BASE, "data"), os.path.join(_TMP, "data"))
+tools.DATA = os.path.join(_TMP, "data")
+CASES_PATH = os.path.join(tools.DATA, "cases.json")
 
 
 def run_one(case):

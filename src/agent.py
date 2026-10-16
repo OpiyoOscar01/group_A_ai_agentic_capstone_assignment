@@ -15,11 +15,13 @@ Reproducible traces:
   python tests/run_week5_agent_traces.py
 """
 import argparse
+import hashlib
 import json
 import os
 import re
 import sys
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -43,8 +45,6 @@ LIMITS = {
     "max_model_calls": 10,
     "max_seconds": 60,
     "max_description_chars": 500,
-    "max_message_chars": 2000,   # Week 7 (Richard): bound on one student message;
-                                 # far above any legitimate field (descriptions cap at 500)
 }
 
 # Contract section 7 - stop reasons
@@ -90,6 +90,10 @@ FIELD_LABEL = {
     "case_id": "the correct case ID (format CASE-0000)",
 }
 
+MAX_INPUT_CHARS = 1000          # Week 7 input validation
+ACADEMIC_YEAR = 2026            # assumed only when the student gives no year; the draft shows it for approval
+BOUNDARY_DOCS = {"fees": "DOC-10", "admissions": "DOC-11", "discipline": "DOC-09", "grading": None}
+
 OFFICES = {
     "fees": "the Bursar / Finance Office",
     "admissions": "the Admissions Office",
@@ -102,14 +106,17 @@ DEPARTMENT_OFFICE = "the Department Office"
 # Deterministic text helpers (boundary check, intent, extraction)
 # --------------------------------------------------------------------------
 BOUNDARY_PATTERNS = [
-    ("fees", r"\b(fees?|tuition|waivers?|bursar|refunds?|payment plan)\b"),
+    ("fees", r"\b(waive|waivers?|refunds?|defer|installments?|payment plan|bursar)\b|\b(reduce|clear|extend)\b.{0,25}\b(fees?|tuition|balance|dues)\b|\b(fees?|tuition)\b.{0,30}\b(waive|waiver|refund|reduce|defer|balance|owe)\b"),
     ("admissions", r"\b(admission|admissions|admit|admitted|intake|eligib\w*)\b"),
     ("grading", r"(\b(change|increase|improve|upgrade|alter|appeal)\b.{0,15}\b(grades?|marks?|scores?)\b)|\braise (my |the )?(grades?|marks?|scores?)\b|\bre-?mark(ing)?\b|\bre-?grad(e|ing)\b|\bgrade (change|appeal)\b"),
     ("discipline", r"\b(disciplinary|expel\w*|suspen\w*|misconduct|plagiaris\w*)\b"),
 ]
 INJECTION_RE = re.compile(
     r"ignore (all |the |previous |your )*(rules|instructions)|mark (my |the )?case as resolved|"
-    r"approve (my |the )?case|override|set status|you are now|system prompt|delete (the |my )?case|close (the |my )?case",
+    r"approve (my |the )?case|override|set status|you are now|system prompt|delete (the |my )?case|close (the |my )?case|"
+    r"disregard (all |your |the |previous |prior )*(rules|instructions)|forget (all |your |the |previous )*(rules|instructions)|"
+    r"without (asking|my approval|confirmation|confirming)|(skip|bypass) (the )?(approval|confirmation|checks?)|auto-?approve|"
+    r"developer mode|jailbreak|i am (the )?(registrar|admin|administrator|staff|dean|lecturer)|act as (the )?(registrar|admin|staff)",
     re.I)
 
 CASE_VERB_RE = re.compile(r"\b(file|open|submit|raise|create|lodge|prepare|start)\b.{0,25}\bcase\b|\bsupport case\b", re.I)
@@ -124,6 +131,14 @@ STATUS_FOLLOWUP_RE = re.compile(
     r"\b(my|the|that|this) case\b.{0,25}\b(status|update|progress)\b|\bwhat happened (to|with) (my|the) case\b", re.I)
 FORGET_RE = re.compile(r"\b(forget|delete|clear|erase|remove)\b.{0,25}\b(session|memory|active case|what you remember)\b", re.I)
 OPEN_STATUSES = {"Pending", "In Review"}      # anything else counts as closed -> memory is dropped
+
+AFFIRM_RE = re.compile(r"^(yes|yep|yeah|y|ok|okay|sure|confirm|confirmed|submit|go ahead)(\s+(please|submit|it|this|the case|confirm|go ahead|thanks|thank you|now))*$")
+
+
+def is_explicit_yes(text):
+    """Whole reply must be an affirmative; any extra clause ('yes but change...') is NOT approval."""
+    return bool(AFFIRM_RE.match(re.sub(r"[^\w\s]", "", text.lower()).strip()))
+
 
 YES_REPLIES = {"yes", "y", "yes submit", "yes submit it", "yes please", "confirm", "submit", "yes confirm", "yes i confirm"}
 
@@ -167,19 +182,30 @@ def classify_explicit(text):
 def extract_fields(text, category):
     """Deterministic extraction of collected_fields from a student message."""
     out = {}
-    m = re.search(r"\b([A-Za-z]{3})(\d{4})\b|\b([A-Z]{3})[ -](\d{4})\b", text)
-    if m:
-        out["course_code"] = ((m.group(1) or m.group(3)) + (m.group(2) or m.group(4))).upper()
+    NOT_CODES = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec", "doc", "day"}
+    for m in re.finditer(r"\b([A-Za-z]{3})[ -]?(\d{4})\b", text):
+        if m.group(1).lower() not in NOT_CODES:
+            out["course_code"] = (m.group(1) + m.group(2)).upper()
+            break
     m = re.search(r"\b(20\d{2})\s*[-/ ]?\s*S([12])\b", text, re.I)
     if m:
         out["semester"] = f"{m.group(1)}-S{m.group(2)}"
     else:
-        m = re.search(r"\bsemester\s+(1|2|i|ii|one|two)\b", text, re.I)
+        NUM = {"1": "1", "i": "1", "one": "1", "2": "2", "ii": "2", "two": "2"}
+        year = num = None
+        m = re.search(r"\b(20\d{2})\s+semester\s+(1|2|ii|i|one|two)\b", text, re.I)
         if m:
-            out["semester"] = "2026-S" + ("1" if m.group(1).lower() in ("1", "i", "one") else "2")
-    m = re.search(r"\b(?:Dr|Prof|Mr|Ms|Mrs)\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?", text)
+            year, num = m.group(1), NUM[m.group(2).lower()]
+        else:
+            m = re.search(r"\bsemester\s+(1|2|ii|i|one|two)\b(?:\s*(?:of|,|in)?\s*(20\d{2}))?", text, re.I)
+            if m:
+                num, year = NUM[m.group(1).lower()], m.group(2)
+        if num:
+            out["semester"] = f"{year or ACADEMIC_YEAR}-S{num}"
+    m = re.search(r"\b(?:Dr|Prof|Mr|Ms|Mrs)\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?", text) \
+        or re.search(r"\blecturer(?:'s name)?\s*(?:is|was|:)?\s*,?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)", text)
     if m:
-        out["lecturer"] = m.group(0).strip()
+        out["lecturer"] = (m.group(1) if m.lastindex else m.group(0)).strip()
     if category == "missing_marks":
         low = text.lower()
         verbs = r"(spoken|speak|talked|talk|reported|report|told|tell|emailed|email|met|meet|seen|see|contacted|contact|raised|raise|informed|inform|approached|approach|gone|been)"
@@ -187,14 +213,12 @@ def extract_fields(text, category):
             out["lecturer_contacted"] = False
         elif re.search(r"\b(spoke|talked|reported|told|emailed|met|saw|contacted|raised|informed|approached)\b.{0,60}(lecturer|\bdr\b|\bprof\b)", low):
             out["lecturer_contacted"] = True
-        d = re.search(r"(\d{1,3})\s*days?", low)
-        w = re.search(r"(\d{1,2})\s*weeks?", low)
-        if d:
-            out["days_since_report"] = int(d.group(1))
-        elif w:
-            out["days_since_report"] = int(w.group(1)) * 7
-        elif re.search(r"\b(a|one) week\b", low):
-            out["days_since_report"] = 7
+        WORDS = {"a": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8,
+                 "nine": 9, "ten": 10, "eleven": 11, "twelve": 12}
+        m = re.search(r"\b(\d{1,3}|" + "|".join(WORDS) + r")\s*(days?|weeks?)\b", low)
+        if m:
+            n = int(m.group(1)) if m.group(1).isdigit() else WORDS[m.group(1)]
+            out["days_since_report"] = n * (7 if m.group(2).startswith("week") else 1)
         if re.search(r"\b(no proof|don'?t have (any )?proof|no evidence)\b", low):
             pass
         else:
@@ -221,35 +245,57 @@ def norm_desc(s):
     return re.sub(r"[^a-z0-9 ]", "", (s or "").lower()).strip()
 
 
-def find_duplicate(existing, category, course_code, description):
-    """Pending case, same category, and same description or same course code (SC-4)."""
+def find_duplicate(existing, category, course_code, description, semester=None):
+    """Pending case, same category, and same description, or same course code in the SAME semester (SC-4).
+    If the existing case names a semester and the new request's semester is not yet known, it is not flagged yet."""
     for c in existing or []:
         if c.get("status") != "Pending" or c.get("category") != category:
             continue
-        if norm_desc(c.get("description")) == norm_desc(description):
+        if description and norm_desc(c.get("description")) == norm_desc(description):
             return c["case_id"]
         if course_code and course_code.upper() in (c.get("description") or "").upper():
+            m = re.search(r"\((20\d{2}-S[12])\)", c.get("description") or "")
+            if m and (semester is None or semester != m.group(1)):
+                continue                       # different (or not yet known) semester: not the same case
             return c["case_id"]
     return None
 
 
+def sanitize_input(text):
+    """Input validation: non-string -> empty, strip control characters, cap length. Returns (text, original_len_if_truncated)."""
+    if not isinstance(text, str):
+        return "", None
+    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text).strip()
+    if len(text) > MAX_INPUT_CHARS:
+        return text[:MAX_INPUT_CHARS], len(text)
+    return text, None
+
+
+def router_reply(r):
+    """Output validation: the student sees plain text only, never the internal RAG trace or raw tool JSON."""
+    rag_r = r.get("rag_result")
+    if rag_r:
+        ans = rag_r.get("answer", "")
+        if rag_r.get("decision") == "abstain":
+            return ans
+        return ans if "[Source" in ans else f"{ans} [Source: {', '.join(rag_r.get('sources', []))}]"
+    t = r.get("tool_result") or {}
+    if r.get("message"):
+        return r["message"]
+    if t.get("status") == "ok":
+        d = t["data"]
+        if "case_id" in d:
+            return f"Case {d['case_id']} ({d.get('category')}) is {d.get('status')}."
+        if isinstance(d, list) or "courses" in d or "entries" in d:
+            return "Here is your timetable: " + json.dumps(d.get("courses", d.get("entries", d)))[:400]
+        return "Done."
+    msgs = {"NOT_FOUND": "I could not find that record. Please check the ID.", "INVALID_ID": "Please give a valid case ID (format CASE-0000).",
+            "UNAUTHORIZED": "I can't show that record.", "SERVICE_UNAVAILABLE": f"The service is unavailable right now. Please try later or visit {DEPARTMENT_OFFICE}."}
+    return msgs.get(t.get("error_code"), f"I could not complete that. Please visit {DEPARTMENT_OFFICE}.")
+
+
 def now():
     return datetime.now(timezone.utc).isoformat()
-
-
-def safe_text(s, limit=800):
-    """Week 7 (Richard): student-facing output guard. Strips ASCII control
-    characters (which can hide terminal escape sequences pasted from user
-    input) and caps length. Stored records are untouched - only display text."""
-    s = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", str(s or ""))
-    return s if len(s) <= limit else s[:limit - 3] + "..."
-
-
-def cap_message(message):
-    """Week 7 (Richard): bound one student message. Returns (text, was_cut)."""
-    if len(message) > LIMITS["max_message_chars"]:
-        return message[:LIMITS["max_message_chars"]], True
-    return message, False
 
 
 # --------------------------------------------------------------------------
@@ -281,10 +327,17 @@ class Session:
         self.name = name or self._lookup_name(student_id)
         self.active_case_id = None
         self.run = None                       # paused run, if any
-        self._pending_trunc = None          # overlong-input note awaiting a run
         self.runs_completed = 0
         self.last_run = None
+        self.registered = self._is_registered(student_id)
         self.memory_events = []               # content-free record of memory use in this session
+
+    @staticmethod
+    def _is_registered(student_id):
+        try:
+            return any(s["student_id"] == student_id for s in json.loads((Path(tools.DATA) / "students.json").read_text()))
+        except Exception:
+            return False
 
     @staticmethod
     def _lookup_name(student_id):
@@ -300,6 +353,9 @@ class Session:
 class Run:
     def __init__(self, session, goal_text, run_id):
         self.run_id = run_id
+        self.trace_id = f"{run_id}-{uuid.uuid4().hex[:8]}"
+        self.boundary_hits = []
+        self.planner_info = {}
         self.session = session
         self.status = "running"                 # running | awaiting_answer | awaiting_approval | finished
         self.goal = {"text": goal_text, "category": classify(goal_text) or "other"}
@@ -346,7 +402,7 @@ class Run:
 
     def duplicate_of(self):
         return find_duplicate(self.existing_cases, self.goal["category"], self.fields.get("course_code"),
-                              compose_description(self) if not self.missing_fields() else "")
+                              compose_description(self) if not self.missing_fields() else "", self.fields.get("semester"))
 
     def cited_pending(self):
         for c in self.cited:
@@ -389,6 +445,9 @@ SEARCH_QUERY = {
 class ScriptedPlanner:
     """Rule-based planner: reproducible, used in tests and when no API key is set."""
     name = "scripted-rule-planner-v1"
+    model = "none (rule-based, no LLM)"
+    prompt_version = "scripted-policy-v1"
+    prompt_sha256 = None
 
     def propose(self, s):
         cat = s["category"]
@@ -433,9 +492,12 @@ class GeminiPlanner:
     """LLM planner. Proposes ONE action as JSON; the controller validates it exactly like the scripted one.
     Needs GEMINI_API_KEY and google-generativeai. Not used for the reproducible traces."""
     name = "gemini-planner"
+    prompt_version = "planner-v1"
 
     def __init__(self):
         self.model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+        self.model = self.model_name
+        self.prompt_sha256 = hashlib.sha256(self.SYSTEM.encode()).hexdigest()[:16]
 
     SYSTEM = (
         "You are the PLANNER of a bounded university support-case agent. Choose exactly ONE next action. "
@@ -554,7 +616,7 @@ def validate(run, p):
             return False, "ARGS_DIFFER_FROM_APPROVED_DRAFT"
         if run.created_case_id:
             return False, "ALREADY_CREATED"
-        if find_duplicate(run.existing_cases, d["category"], run.fields.get("course_code"), d["description"]):
+        if find_duplicate(run.existing_cases, d["category"], run.fields.get("course_code"), d["description"], run.fields.get("semester")):
             return False, "DUPLICATE_EXISTS"
     elif name in ("finish", "handoff"):
         out = args["outcome"]
@@ -573,20 +635,15 @@ class Agent:
         self.planner = planner or ScriptedPlanner()
         self.memory = memory or MemoryStore()
         self._run_counter = 0
+        self._trunc = None
 
     # ---------------- public turn API ----------------
     def handle_turn(self, session, message):
         """One student message in -> one reply out. Resumes a paused run or starts a new one."""
-        raw_len = len(message or "")
-        message, cut = cap_message(message or "")
-        trunc_info = None
-        if cut:
-            trunc_info = {"original_chars": raw_len, "kept_chars": len(message),
-                          "note": "overlong input capped; run continues on the kept prefix"}
-            if session.run is not None:
-                session.run.log("input_truncated", **trunc_info)
-                trunc_info = None
-            session._pending_trunc = trunc_info
+        message, self._trunc = sanitize_input(message)
+        if not message:
+            return {"final": True, "stop_reason": None, "route": "invalid_input",
+                    "message": "Please type your question or request and I will help."}
         run = session.run
         if run and run.status == "awaiting_approval":
             return self._resume_approval(session, run, message)
@@ -598,10 +655,17 @@ class Agent:
             return self._status_followup(session)
         if is_case_request(message):
             return self._start(session, message)
+        if not session.registered:                                      # no service on the single-step path for unregistered IDs
+            return {"final": True, "stop_reason": None, "route": "unregistered",
+                    "message": f"I could not verify your student ID. Please contact {DEPARTMENT_OFFICE}."}
+        if INJECTION_RE.search(message):                                # prompt-injection awareness on the single-step path
+            session.memory_events.append({"op": "injection_refused"})
+            return {"final": True, "stop_reason": None, "route": "injection_refused",
+                    "message": "I can only help with student-support requests, and I can't follow instructions that try to change how I work."}
         # single-step request: stays on the Week 4 router / Week 3 RAG path
         import orchestrator
         r = orchestrator.route(session.student_id, message)
-        return {"final": True, "stop_reason": None, "route": r["decision"], "message": json.dumps(r.get("rag_result", r.get("tool_result", r)))[:600]}
+        return {"final": True, "stop_reason": None, "route": r["decision"], "message": router_reply(r)}
 
     # ---------------- Week 6: memory (read-only follow-up, controller-written) ----------------
     def _remember(self, session, case_id, source):
@@ -657,12 +721,16 @@ class Agent:
     def _start(self, session, message):
         self._run_counter += 1
         run = Run(session, message, f"RUN-{self._run_counter:03d}")
-        pending = getattr(session, "_pending_trunc", None)
-        if pending:
-            run.log("input_truncated", **pending)
-            session._pending_trunc = None
         session.run = run
         run.log("turn", role="student", text=message)
+        run.planner_info = {"name": self.planner.name, "model": getattr(self.planner, "model", None),
+                            "prompt_version": getattr(self.planner, "prompt_version", None),
+                            "prompt_sha256": getattr(self.planner, "prompt_sha256", None)}
+        if self._trunc:
+            run.log("input_truncated", original_chars=self._trunc, kept_chars=MAX_INPUT_CHARS)
+        if not session.registered:                                   # authorization: signed-in ID must be a registered student
+            run.log("identity_check", registered=False)
+            return self._stop(run, "UNAUTHORIZED", detail="student_id is not a registered student")
         return self._ingest_and_continue(session, run, message)
 
     def _ingest(self, run, text):
@@ -689,6 +757,7 @@ class Agent:
         hits = boundary_check(text)
         run.log("boundary_check", hit=hits or None)
         if hits:
+            run.boundary_hits = hits
             return self._stop(run, "HANDOFF_BOUNDARY", office=" and ".join(OFFICES[h] for h in hits))
         if "name" not in run.fields and session.name:
             run.fields["name"] = session.name
@@ -697,6 +766,8 @@ class Agent:
 
     def _resume_answer(self, session, run, message):
         run.log("turn", role="student", text=message)
+        if self._trunc:
+            run.log("input_truncated", original_chars=self._trunc, kept_chars=MAX_INPUT_CHARS)
         run.log("resume", from_status="awaiting_answer")
         return self._ingest_and_continue(session, run, message)
 
@@ -704,7 +775,7 @@ class Agent:
         run.log("turn", role="student", text=message)
         run.log("resume", from_status="awaiting_approval")
         reply = re.sub(r"[^\w\s]", "", message.lower()).strip()
-        if reply in YES_REPLIES:
+        if is_explicit_yes(message):
             run.approval["status"] = "APPROVED"          # set by code, only on an explicit yes
             run.log("approval", status="APPROVED", reply=message)
             run.status = "running"
@@ -729,6 +800,7 @@ class Agent:
                 # --- 1 Sense -> 2 Plan ---
                 summary = run.summary()
                 run.log("sense", summary=summary)
+                t_plan = time.perf_counter()
                 try:
                     proposal = self.planner.propose(summary)
                 except Exception as e:                      # planner outage = failure, never a silent fallback
@@ -737,7 +809,9 @@ class Agent:
                     return self._stop(run, "TOOL_FAILURE", detail="planner_error")
                 run.model_calls += 1
                 proposal = self._fill_draft_args(run, proposal)
-                run.log("plan", planner=self.planner.name, proposal=proposal)
+                run.log("plan", planner=self.planner.name, model=getattr(self.planner, "model", None),
+                        prompt_version=getattr(self.planner, "prompt_version", None),
+                        planner_ms=round((time.perf_counter() - t_plan) * 1000, 3), proposal=proposal)
 
                 # --- 3 Validate ---
                 ok, reason = validate(run, proposal)
@@ -771,7 +845,7 @@ class Agent:
                     run.stop_reason = None
                     run.log("act", action="ask_student", args=args)
                     run.log("pause", reason="awaiting student reply", questions_asked=run.questions_asked)
-                    return {"final": False, "stop_reason": None, "run_status": run.status, "message": safe_text(args["question"])}
+                    return {"final": False, "stop_reason": None, "run_status": run.status, "message": args["question"]}
 
                 # --- 4 Act (tool) -> 5 Observe ---
                 if run.tool_calls >= LIMITS["max_tool_calls"]:
@@ -807,8 +881,8 @@ class Agent:
         run.log("act", action="present_draft", args=draft)
         run.log("pause", reason="AWAITING_APPROVAL")
         msg = (f"Here is the case I will submit for you:\n  Name: {draft['name']}\n  Category: {draft['category']}\n"
-                f"  Description: {draft['description']}\n  Sources: {', '.join(run.sources)}\nSubmit this? (yes/no)")
-        return {"final": False, "stop_reason": PAUSE_STOP, "run_status": run.status, "message": safe_text(msg)}
+               f"  Description: {draft['description']}\n  Sources: {', '.join(run.sources)}\nSubmit this? (yes/no)")
+        return {"final": False, "stop_reason": PAUSE_STOP, "run_status": run.status, "message": msg}
 
     # ---------------- act + observe ----------------
     def _execute_and_observe(self, session, run, name, args):
@@ -816,10 +890,16 @@ class Agent:
         while True:
             run.tool_calls += 1
             kwargs = self._tool_kwargs(session, run, name, args)
+            t_tool = time.perf_counter()
             result = TOOLS[name](**kwargs)
+            ms = round((time.perf_counter() - t_tool) * 1000, 3)
             shown_args = {k: v for k, v in kwargs.items() if k != "student_id"}
-            run.log("act", action=name, args=shown_args, student_id_source="session", tool_call_no=run.tool_calls)
-            run.log("observe", action=name, result=result)
+            run.log("act", action=name, args=shown_args, student_id_source="session", tool_call_no=run.tool_calls, ms=ms)
+            extra = {}
+            if name == "search_handbook":
+                extra["retrieval"] = {"query": kwargs["query"], "threshold": rag.MIN_SCORE, "top_score": result.get("top_score"),
+                                      "decision": result.get("status"), "hits": result.get("hits", [])}
+            run.log("observe", action=name, result=result, ms=ms, **extra)
             if result.get("error_code") == "SERVICE_UNAVAILABLE" and attempts < LIMITS["max_service_retries"] \
                     and run.tool_calls < LIMITS["max_tool_calls"]:
                 attempts += 1
@@ -898,6 +978,8 @@ class Agent:
                 return self._stop(run, "HANDOFF_BOUNDARY", office=DEPARTMENT_OFFICE, detail="tool boundary backstop")
             if code == "APPROVAL_DECLINED":
                 return self._stop(run, "APPROVAL_DECLINED")
+            if code == "UNAUTHORIZED":
+                return self._stop(run, "UNAUTHORIZED", detail="tool refused: student not registered")
             return self._stop(run, "TOOL_FAILURE", detail=code)
         return None
 
@@ -917,11 +999,6 @@ class Agent:
         return {"final": True, "stop_reason": reason, "run_status": "finished", "message": run.stop_message}
 
     def _student_message(self, run, reason, office):
-        # Week 7 (Richard): every student-facing stop message passes the
-        # output guard (control-char strip + length cap). Stored data is untouched.
-        return safe_text(self._student_message_raw(run, reason, office))
-
-    def _student_message_raw(self, run, reason, office):
         src = ", ".join(run.sources) or "none"
         if reason == "GOAL_MET":
             return (f"Your case {run.created_case_id} was created with status Pending and confirmed in the system. "
@@ -929,8 +1006,10 @@ class Agent:
         if reason == "APPROVAL_DECLINED":
             return "Nothing was created. Tell me what to change and I will prepare a new draft."
         if reason == "HANDOFF_BOUNDARY":
+            docs = sorted({BOUNDARY_DOCS[h] for h in run.boundary_hits if BOUNDARY_DOCS.get(h)})
+            cite = f" [Policy: {', '.join(docs)}]" if docs else ""
             return (f"This is outside what I can do, and I have not taken any action. Please contact {office or DEPARTMENT_OFFICE}. "
-                    f"No case was created. [Policy: DOC-10, DOC-11]")
+                    f"No case was created.{cite}")
         if reason == "NO_SOURCE":
             return "I don't know this from approved documents. Please visit the Department Office. No case was created."
         if reason == "PREREQUISITE_NOT_MET":
@@ -959,8 +1038,12 @@ class Agent:
 # --------------------------------------------------------------------------
 def run_to_trace(run, extra=None):
     t = {
-        "run_id": run.run_id, "student_id": run.session.student_id, "goal": run.goal,
-        "planner": None, "stop_reason": run.stop_reason, "student_message": run.stop_message,
+        "run_id": run.run_id, "trace_id": run.trace_id, "student_id": run.session.student_id,
+        "student_id_hash": hashlib.sha256(run.session.student_id.encode()).hexdigest()[:12], "goal": run.goal,
+        "planner": run.planner_info.get("name"), "planner_model": run.planner_info.get("model"),
+        "prompt_version": run.planner_info.get("prompt_version"), "prompt_sha256": run.planner_info.get("prompt_sha256"),
+        "latency_ms": {"planner": round(sum(e.get("planner_ms", 0) for e in run.events if e["type"] == "plan"), 3),
+                       "tools": round(sum(e.get("ms", 0) for e in run.events if e["type"] == "act"), 3)}, "stop_reason": run.stop_reason, "student_message": run.stop_message,
         "counters": {"iterations": run.iteration, "tool_calls": run.tool_calls,
                      "questions_asked": run.questions_asked, "model_calls": run.model_calls,
                      "rejected_proposals": run.rejections},

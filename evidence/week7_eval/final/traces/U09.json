@@ -1,0 +1,80 @@
+{
+ "run_id": "RUN-001",
+ "trace_id": "RUN-001-693fef04",
+ "student_id": "2300700445",
+ "student_id_hash": "e13210a3a1e4",
+ "goal": {
+  "text": "I want to file a case to change my grade for BSE4104",
+  "category": "other"
+ },
+ "planner": "scripted-rule-planner-v1",
+ "planner_model": "none (rule-based, no LLM)",
+ "prompt_version": "scripted-policy-v1",
+ "prompt_sha256": null,
+ "latency_ms": {
+  "planner": 0,
+  "tools": 0
+ },
+ "stop_reason": "HANDOFF_BOUNDARY",
+ "student_message": "This is outside what I can do, and I have not taken any action. Please contact the Examinations Office. No case was created.",
+ "counters": {
+  "iterations": 0,
+  "tool_calls": 0,
+  "questions_asked": 0,
+  "model_calls": 0,
+  "rejected_proposals": 0
+ },
+ "limits": {
+  "max_iterations": 8,
+  "max_tool_calls": 6,
+  "max_questions": 3,
+  "max_repeat_same_action": 2,
+  "max_service_retries": 1,
+  "max_model_calls": 10,
+  "max_seconds": 60,
+  "max_description_chars": 500
+ },
+ "final_state": {
+  "approval": "NONE",
+  "created_case_id": null,
+  "verified": false,
+  "sources": [],
+  "collected_fields": {},
+  "active_case_id": null
+ },
+ "events": [
+  {
+   "seq": 1,
+   "ts": "2026-10-16T12:49:06.249876+00:00",
+   "type": "turn",
+   "iteration": 0,
+   "role": "student",
+   "text": "I want to file a case to change my grade for BSE4104"
+  },
+  {
+   "seq": 2,
+   "ts": "2026-10-16T12:49:06.249917+00:00",
+   "type": "boundary_check",
+   "iteration": 0,
+   "hit": [
+    "grading"
+   ]
+  },
+  {
+   "seq": 3,
+   "ts": "2026-10-16T12:49:06.249927+00:00",
+   "type": "stop",
+   "iteration": 0,
+   "stop_reason": "HANDOFF_BOUNDARY",
+   "detail": null,
+   "office": "the Examinations Office",
+   "counters": {
+    "iterations": 0,
+    "tool_calls": 0,
+    "questions_asked": 0,
+    "model_calls": 0,
+    "rejected_proposals": 0
+   }
+  }
+ ]
+}
