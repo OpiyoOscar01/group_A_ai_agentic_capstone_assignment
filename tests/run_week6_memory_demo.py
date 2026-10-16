@@ -117,7 +117,7 @@ def m2():
     cases_before = len(w.cases())
     reads_before = sum(1 for e in w.audit() if e["op"] == "read")
     agent, sess = new_session_after_restart(CHRISTINE)
-    r = w.say(agent, sess, "My BSE4104 marks are missing.", "(session B)")
+    r = w.say(agent, sess, "My BSE4104 marks are missing, semester 2026-S1.", "(session B)")   # semester given: duplicate rule is semester-aware (Week 7)
     run = sess.last_run
     w.check("same request again -> DUPLICATE_FOUND from the LIVE my_cases lookup (memory did not decide)",
             r["stop_reason"] == "DUPLICATE_FOUND" and any(e["type"] == "act" and e.get("action") == "lookup_case_or_timetable"

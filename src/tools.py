@@ -104,6 +104,13 @@ def create_draft_support_case(student_id, name, category, description, approved=
     if not STUDENT_ID_RE.match(str(student_id)):
         return {"status": "error", "error_code": "MISSING_FIELD"}
 
+    # Week 7 guardrail: only a registered student may create a case (authorization backstop)
+    students = _load("students.json")
+    if students is None:
+        return {"status": "error", "error_code": "SERVICE_UNAVAILABLE"}
+    if not any(st.get("student_id") == student_id for st in students):
+        return {"status": "error", "error_code": "UNAUTHORIZED"}
+
     if category not in ALLOWED_CATEGORIES:
         return {"status": "error", "error_code": "INVALID_CATEGORY"}
 

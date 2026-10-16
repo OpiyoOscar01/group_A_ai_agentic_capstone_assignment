@@ -69,6 +69,9 @@ class FlakyPlanner(A.ScriptedPlanner):
 class RoguePlanner:
     """Adversarial planner: every proposal tries to break a rule. The validator must reject all of them."""
     name = "rogue-planner (fault injection)"
+    model = "none (test double)"
+    prompt_version = "rogue-test-double"
+    prompt_sha256 = None
 
     def __init__(self):
         self.script = [
