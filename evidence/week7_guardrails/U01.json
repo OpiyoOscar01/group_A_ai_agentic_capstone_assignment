@@ -1,0 +1,16 @@
+{
+  "id": "U01",
+  "title": "unknown action is rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "approve_case",
+    "args": {
+      "case_id": "CASE-0001"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "UNKNOWN_ACTION:approve_case",
+  "expected_reason": "UNKNOWN_ACTION:approve_case",
+  "verdict": "PASS"
+}

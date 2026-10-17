@@ -1,0 +1,18 @@
+{
+  "id": "U03",
+  "title": "write without approval is rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "create_draft_support_case",
+    "args": {
+      "name": "N",
+      "category": "other",
+      "description": "d"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "APPROVAL_REQUIRED",
+  "expected_reason": "APPROVAL_REQUIRED",
+  "verdict": "PASS"
+}

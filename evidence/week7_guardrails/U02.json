@@ -1,0 +1,17 @@
+{
+  "id": "U02",
+  "title": "smuggled argument is rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "lookup_case_or_timetable",
+    "args": {
+      "query_type": "my_cases",
+      "student_id": "2300700445"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "ARG_NOT_ALLOWED:student_id",
+  "expected_reason": "ARG_NOT_ALLOWED:student_id",
+  "verdict": "PASS"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "U06",
+  "title": "unjustified success claim is rejected",
+  "layer": "validator-unit",
+  "proposed": {
+    "action": "finish",
+    "args": {
+      "outcome": "GOAL_MET"
+    },
+    "reason": "t"
+  },
+  "accepted": false,
+  "reason": "STOP_NOT_JUSTIFIED:GOAL_MET",
+  "expected_reason": "STOP_NOT_JUSTIFIED:GOAL_MET",
+  "verdict": "PASS"
+}
