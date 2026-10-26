@@ -1,6 +1,6 @@
 {
   "run_id": "RUN-001",
-  "trace_id": "RUN-001-d805bc36",
+  "trace_id": "RUN-001-309cd8c5",
   "student_id": "2300716574",
   "student_id_hash": "81ebd0507586",
   "goal": {
@@ -12,7 +12,7 @@
   "prompt_version": null,
   "prompt_sha256": null,
   "latency_ms": {
-    "planner": 0.013,
+    "planner": 0.008,
     "tools": 0
   },
   "stop_reason": "MAX_ITERATIONS",
@@ -48,7 +48,7 @@
   "events": [
     {
       "seq": 1,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.384909+00:00",
       "type": "turn",
       "iteration": 0,
       "role": "student",
@@ -56,14 +56,14 @@
     },
     {
       "seq": 2,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.384953+00:00",
       "type": "boundary_check",
       "iteration": 0,
       "hit": null
     },
     {
       "seq": 3,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385044+00:00",
       "type": "fields_collected",
       "iteration": 0,
       "fields": {
@@ -80,7 +80,7 @@
     },
     {
       "seq": 4,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385068+00:00",
       "type": "sense",
       "iteration": 0,
       "summary": {
@@ -119,13 +119,13 @@
     },
     {
       "seq": 5,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385086+00:00",
       "type": "plan",
       "iteration": 0,
       "planner": "repeat-planner (fault injection)",
       "model": null,
       "prompt_version": null,
-      "planner_ms": 0.008,
+      "planner_ms": 0.005,
       "proposal": {
         "action": "delete_case",
         "args": {
@@ -136,7 +136,7 @@
     },
     {
       "seq": 6,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385123+00:00",
       "type": "validate",
       "iteration": 1,
       "accepted": false,
@@ -144,7 +144,7 @@
     },
     {
       "seq": 7,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385139+00:00",
       "type": "sense",
       "iteration": 1,
       "summary": {
@@ -183,13 +183,13 @@
     },
     {
       "seq": 8,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385149+00:00",
       "type": "plan",
       "iteration": 1,
       "planner": "repeat-planner (fault injection)",
       "model": null,
       "prompt_version": null,
-      "planner_ms": 0.005,
+      "planner_ms": 0.003,
       "proposal": {
         "action": "delete_case",
         "args": {
@@ -200,7 +200,7 @@
     },
     {
       "seq": 9,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385169+00:00",
       "type": "validate",
       "iteration": 1,
       "accepted": false,
@@ -208,7 +208,7 @@
     },
     {
       "seq": 10,
-      "ts": "2026-10-16T19:20:59.042273+00:00",
+      "ts": "2026-10-26T10:30:30.385181+00:00",
       "type": "stop",
       "iteration": 1,
       "stop_reason": "MAX_ITERATIONS",

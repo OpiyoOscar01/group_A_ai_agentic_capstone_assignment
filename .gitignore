@@ -5,3 +5,4 @@ __pycache__/
 venv/
 data/memory.json
 data/memory_audit.jsonl
+.demo_snapshot/
