@@ -14,7 +14,9 @@ Built for **BSE4104 Emerging Trends in Software Engineering**, Makerere Universi
 ## Demo quick start
 
 The demonstration interface has no third-party dependencies and no API key requirement in scripted
-mode.
+mode. Start it from the **repository root**, the folder that contains `src\`, `README.md` and
+`requirements.txt`. Full instructions, including the exact local path on the presentation machine,
+are in [`START_SERVER.md`](../START_SERVER.md).
 
 ```bash
 git clone https://github.com/OpiyoOscar01/group_A_ai_agentic_capstone_assignment.git
