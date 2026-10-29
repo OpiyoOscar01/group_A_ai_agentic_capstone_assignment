@@ -5,3 +5,8 @@ __pycache__/
 venv/
 data/memory.json
 data/memory_audit.jsonl
+data/camus_iq.sqlite3
+data/camus_iq.sqlite3-shm
+data/camus_iq.sqlite3-wal
+frontend/node_modules/
+frontend/dist/

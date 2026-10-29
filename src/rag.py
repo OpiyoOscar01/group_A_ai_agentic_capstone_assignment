@@ -72,7 +72,7 @@ def answer(query, use_llm=False):
     """Deterministic grounded answerer. use_llm=True wraps with Gemini if key present."""
     hits = retrieve(query)
     top = [h for h in hits if h["score"] >= MIN_SCORE]
-    trace = {"ts": datetime.now(timezone.utc).isoformat(), "model": "rag-tfidf-v1+gemini-2.0-flash",
+    trace = {"ts": datetime.now(timezone.utc).isoformat(), "model": "rag-tfidf-v1+gemini-3.8-flash",
              "prompt_version": "v3.0-rag", "query": query,
              "retrieved": [{"chunk_id": h["chunk_id"], "doc_id": h["doc_id"], "score": h["score"],
                             "excerpt": h["text"][:220]} for h in hits]}
@@ -107,7 +107,7 @@ def answer(query, use_llm=False):
     tag = ", ".join(f"[Source: {s}]" for s in srcs)
     llm_note = ""
     if use_llm:
-        llm_note = " (phrased with gemini-2.0-flash, grounded only in retrieved excerpts)"
+        llm_note = " (phrased with gemini-3.8-flash, grounded only in retrieved excerpts)"
     trace.update({"decision": "grounded", "answer": f"{ctx[:700]}{llm_note} {tag}", "sources": srcs})
     return trace
 

@@ -495,7 +495,7 @@ class GeminiPlanner:
     prompt_version = "planner-v1"
 
     def __init__(self):
-        self.model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+        self.model_name = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
         self.model = self.model_name
         self.prompt_sha256 = hashlib.sha256(self.SYSTEM.encode()).hexdigest()[:16]
 
@@ -515,6 +515,8 @@ class GeminiPlanner:
 
     def propose(self, s):
         key = os.environ.get("GEMINI_API_KEY", "").strip()
+        if not key:
+            raise RuntimeError("Gemini planner requires GEMINI_API_KEY to be configured.")
         import google.generativeai as genai  # lazy: not needed for scripted runs
         genai.configure(api_key=key)
         model = genai.GenerativeModel(self.model_name, system_instruction=self.SYSTEM)
