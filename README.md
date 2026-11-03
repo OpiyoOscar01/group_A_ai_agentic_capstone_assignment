@@ -48,6 +48,42 @@ a clean machine.
 
 ---
 
+## CampusIQ website (Flask + React)
+
+CampusIQ is the full browser interface for this student-support prototype. It includes a guided
+assistant, saved chat history, handbook search, case list, timetable, search history, and a description
+of the system's boundaries. The Flask server serves the built React frontend.
+
+The demo sign-in accepts **only a student ID from the synthetic sample roster**; it is not real
+authentication. JSON files remain the source for student, case, and timetable records. SQLite stores
+handbook-search metadata and chat transcripts scoped to the selected demo student. Transcripts persist
+across Flask restarts, but an unfinished case approval does not. Case submissions always require
+explicit approval.
+
+### Start CampusIQ
+
+From the repository root, run:
+
+```powershell
+python -m pip install -r requirements.txt
+python src/webapp.py
+```
+
+The server installs the locked frontend dependencies if needed and builds the React app automatically.
+Open **http://127.0.0.1:5000**. Node.js and npm must be installed. For frontend-only development, run
+`npm run dev` from `frontend\` in a second terminal and open the Vite URL it prints.
+
+Create an untracked `.env` file and set `GEMINI_API_KEY` to enable Gemini case-workflow planning.
+`GEMINI_MODEL` defaults to `gemini-3.8-flash`. Gemini is preferred when available; the scripted planner
+takes over if Gemini cannot be reached. Handbook Q&A continues to use the approved local retrieval
+pipeline. See `.env.example`. Set a private `CAMUS_SECRET_KEY` when using a stable local session.
+
+**The demo sign-in is not authentication. Use synthetic data only; never enter real or sensitive
+student information, and do not expose this prototype publicly.** Chat messages are sent to Gemini
+during Gemini-powered case planning and transcripts are stored locally until deleted.
+
+---
+
 ## What it does
 
 | Capability | Behaviour |
@@ -67,7 +103,7 @@ and records a full trace for every run.
 ## Architecture
 
 ```
-Browser UI (src/web_ui.py)  or  CLI (src/agent.py)
+Browser UI (src/web_ui.py or src/webapp.py + frontend/)  or  CLI (src/agent.py)
     |
     +-- Retrieval (src/rag.py)             TF-IDF + cosine, top-3, min score 0.14
     +-- Orchestrator (src/orchestrator.py) intent routing + approval gate
@@ -77,7 +113,7 @@ Browser UI (src/web_ui.py)  or  CLI (src/agent.py)
     +-- Memory (src/memory.py)             active_case_id only, TTL 30 days, audit log
 ```
 
-Model: **Gemini 2.0 Flash** (structured JSON / function calling). Prompts are versioned in `prompts/`
+Model: **Gemini 3.8 Flash** (structured JSON planning). Prompts are versioned in `prompts/`
 (`v1.0`, `v1.1`, `v2.0`, `v3.0-rag`). The default demonstration planner is a deterministic scripted
 policy; the live model is optional.
 
@@ -88,7 +124,8 @@ Architecture diagrams: [`docs/architecture/`](docs/architecture/).
 ## Requirements
 
 - Python 3.11 or newer
-- No third-party packages for the browser UI and scripted agent
+- The dependency-free `src/web_ui.py` demo and scripted agent need no third-party packages
+- The CampusIQ Flask + React website needs Python requirements plus Node.js/npm
 - A Gemini API key only for the optional live planner
 
 ---
