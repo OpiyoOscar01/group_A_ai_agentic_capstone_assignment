@@ -91,6 +91,7 @@ FIELD_LABEL = {
 }
 
 MAX_INPUT_CHARS = 1000          # Week 7 input validation
+GEMINI_REQUEST_TIMEOUT_SECONDS = 15
 ACADEMIC_YEAR = 2026            # assumed only when the student gives no year; the draft shows it for approval
 BOUNDARY_DOCS = {"fees": "DOC-10", "admissions": "DOC-11", "discipline": "DOC-09", "grading": None}
 
@@ -521,7 +522,11 @@ class GeminiPlanner:
         genai.configure(api_key=key)
         model = genai.GenerativeModel(self.model_name, system_instruction=self.SYSTEM)
         resp = model.generate_content("STATE SUMMARY:\n" + json.dumps(s, indent=1),
-                                      generation_config={"temperature": 0.0, "max_output_tokens": 400})
+                                      generation_config={"temperature": 0.0, "max_output_tokens": 400},
+                                      request_options={
+                                          "retry": None,
+                                          "timeout": GEMINI_REQUEST_TIMEOUT_SECONDS,
+                                      })
         m = re.search(r"\{.*\}", resp.text or "", re.DOTALL)
         if not m:
             return {"action": None, "args": {}, "reason": "unparseable planner output"}
@@ -638,6 +643,10 @@ class Agent:
         self.memory = memory or MemoryStore()
         self._run_counter = 0
         self._trunc = None
+        self.planner_status = (
+            "configured" if isinstance(self.planner, GeminiPlanner) else "scripted"
+        )
+        self.planner_fallback_reason = None
 
     # ---------------- public turn API ----------------
     def handle_turn(self, session, message):
@@ -805,11 +814,41 @@ class Agent:
                 t_plan = time.perf_counter()
                 try:
                     proposal = self.planner.propose(summary)
-                except Exception as e:                      # planner outage = failure, never a silent fallback
+                except Exception as e:                      # log planner failures before any fallback
                     run.model_calls += 1
-                    run.log("planner_error", error=str(e)[:200])
+                    run.log("planner_error", error_type=type(e).__name__)
+                    gemini_unavailable = (
+                        isinstance(e, (ImportError, OSError, TimeoutError))
+                        or type(e).__module__.startswith("google.api_core.")
+                    )
+                    if isinstance(self.planner, GeminiPlanner) and gemini_unavailable:
+                        error_message = str(e).lower()
+                        if "quota" in error_message or type(e).__name__ == "ResourceExhausted":
+                            reason = "the Gemini API quota is exhausted"
+                        elif "permission" in error_message or "api key" in error_message:
+                            reason = "Gemini access was denied"
+                        else:
+                            reason = "Gemini could not be reached"
+                        self.planner_fallback_reason = reason
+                        self.planner = ScriptedPlanner()
+                        self.planner_status = "scripted_fallback"
+                        run.planner_info.update({
+                            "name": self.planner.name,
+                            "model": self.planner.model,
+                            "prompt_version": self.planner.prompt_version,
+                            "prompt_sha256": self.planner.prompt_sha256,
+                        })
+                        run.log(
+                            "planner_fallback",
+                            from_planner="gemini-planner",
+                            to_planner=self.planner.name,
+                            reason=reason,
+                        )
+                        continue
                     return self._stop(run, "TOOL_FAILURE", detail="planner_error")
                 run.model_calls += 1
+                if isinstance(self.planner, GeminiPlanner):
+                    self.planner_status = "gemini_ready"
                 proposal = self._fill_draft_args(run, proposal)
                 run.log("plan", planner=self.planner.name, model=getattr(self.planner, "model", None),
                         prompt_version=getattr(self.planner, "prompt_version", None),

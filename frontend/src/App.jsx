@@ -108,6 +108,7 @@ function App() {
             role: item.role,
             text: item.text,
             draft: item.metadata?.draft,
+            fallbackResponse: item.metadata?.fallback_response,
             canApprove: item.can_approve,
           })));
         }
@@ -196,6 +197,7 @@ function App() {
         awaiting_approval: false,
         model_provider: "Gemini",
         model_configured: result.model_configured,
+        planner_status: result.planner_status,
       });
       setPage("assistant");
       setChatMessages([]);
@@ -240,6 +242,7 @@ function App() {
           role: "assistant",
           text: result.message,
           draft: result.pending_draft,
+          fallbackResponse: result.fallback_response,
           canApprove: result.awaiting_approval,
         },
       ]);
@@ -247,6 +250,7 @@ function App() {
         ...current,
         awaiting_approval: result.awaiting_approval,
         run_status: result.run_status,
+        planner_status: result.planner_status,
       }));
       try {
         const history = await api("/conversations");
@@ -617,7 +621,6 @@ function AssistantPage({ messages, busy, onSend, onNavigate, session, onNewChat 
     "Show me my timetable",
     "I need to file a case about missing marks",
   ];
-
   return (
     <div className="page-content assistant-content">
       <PageHeading
@@ -703,6 +706,7 @@ function ChatMessage({ message, onSend, busy }) {
       <div className={`message-bubble assistant-bubble ${message.isError ? "message-error" : ""}`}>
         <div className="message-author">CampusIQ <span>·</span> {message.isError ? "Notice" : "Assistant"}</div>
         <div className="message-text">{message.text}</div>
+        {message.fallbackResponse && <div className="message-citation"><BookOpen size={13} /> Support guidance</div>}
         {message.draft && (
           <div className="pending-draft">
             <div className="pending-draft-heading"><FileCheck2 size={15} /><strong>{message.canApprove ? "Draft waiting for your approval" : "Saved support-case draft"}</strong></div>

@@ -4,6 +4,7 @@ import os
 import re
 import secrets
 import sqlite3
+import subprocess
 import sys
 from datetime import datetime, timezone
 from functools import wraps
@@ -307,6 +308,7 @@ def create_app(database_path=None, planner_factory=None):
             "student": {"student_id": student_id, "name": student["name"]},
             "model_provider": "Gemini",
             "model_configured": bool(os.environ.get("GEMINI_API_KEY", "").strip()),
+            "planner_status": "configured" if os.environ.get("GEMINI_API_KEY", "").strip() else "scripted",
         })
 
     @app.get("/api/session")
@@ -317,6 +319,7 @@ def create_app(database_path=None, planner_factory=None):
         student, agent_sessions = user
         active_conversation_id = session.get("active_conversation_id")
         active_entry = agent_sessions.get(active_conversation_id)
+        agent = active_entry[0] if active_entry else None
         agent_session = active_entry[1] if active_entry else None
         current_run = agent_session.run if agent_session else None
         return jsonify({
@@ -325,6 +328,15 @@ def create_app(database_path=None, planner_factory=None):
             "active_conversation_id": active_conversation_id,
             "model_provider": "Gemini",
             "model_configured": bool(os.environ.get("GEMINI_API_KEY", "").strip()),
+            "planner_status": (
+                agent.planner_status
+                if agent
+                else (
+                    "configured"
+                    if os.environ.get("GEMINI_API_KEY", "").strip()
+                    else "scripted"
+                )
+            ),
             "run_status": current_run.status if current_run else None,
             "awaiting_approval": bool(current_run and current_run.status == "awaiting_approval"),
             "pending_draft": (
@@ -552,6 +564,7 @@ def create_app(database_path=None, planner_factory=None):
             app.config["DATABASE"], conversation_id, "user", message
         )
         result = agent.handle_turn(agent_session, message)
+        fallback_response = agent.planner_status == "scripted_fallback"
         current_run = agent_session.run
         pending_draft = (
             current_run.approval["draft"]
@@ -563,7 +576,10 @@ def create_app(database_path=None, planner_factory=None):
             conversation_id,
             "assistant",
             result["message"],
-            {"draft": pending_draft} if pending_draft else {},
+            {
+                **({"draft": pending_draft} if pending_draft else {}),
+                "fallback_response": fallback_response,
+            },
         )
         return jsonify({
             "conversation_id": conversation_id,
@@ -574,6 +590,8 @@ def create_app(database_path=None, planner_factory=None):
             "run_status": current_run.status if current_run else None,
             "awaiting_approval": bool(pending_draft),
             "pending_draft": pending_draft,
+            "planner_status": agent.planner_status,
+            "fallback_response": fallback_response,
         })
 
     @app.route("/", defaults={"path": ""})
@@ -605,5 +623,16 @@ def len_searches(path, student_id):
 app = create_app()
 
 
+def prepare_frontend():
+    frontend_dir = BASE / "frontend"
+    npm = "npm.cmd" if os.name == "nt" else "npm"
+
+    if not (frontend_dir / "node_modules" / "vite").is_dir():
+        subprocess.run([npm, "ci"], cwd=frontend_dir, check=True)
+
+    subprocess.run([npm, "run", "build"], cwd=frontend_dir, check=True)
+
+
 if __name__ == "__main__":
+    prepare_frontend()
     app.run(host="127.0.0.1", port=int(os.environ.get("PORT", "5000")), debug=False)

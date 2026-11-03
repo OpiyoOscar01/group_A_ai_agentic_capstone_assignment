@@ -13,6 +13,15 @@ KNOW = BASE / "knowledge"
 TRACE_DIR = BASE / "evidence" / "week3_15tests_traces"
 TESTS = BASE / "tests" / "week3_15cases.json"
 CHUNK_WORDS, OVERLAP, TOP_K, MIN_SCORE = 180, 30, 3, 0.14
+MAX_ANSWER_WORDS = 240
+
+
+def answer_excerpt(hit):
+    """Return one complete, readable source excerpt within the answer word limit."""
+    document = (KNOW / hit["file"]).read_text(encoding="utf-8")
+    _, separator, body = document.partition("\n")
+    text = body if separator else document
+    return " ".join(text.split()[:MAX_ANSWER_WORDS])
 
 def tokenize(t: str):
     return re.findall(r"[a-z0-9]+", t.lower())
@@ -85,7 +94,7 @@ def answer(query, use_llm=False):
         hits2 = [h for h in hits if h["doc_id"] in ("DOC-01", "DOC-05")]
         use = hits2[0] if hits2 else (top[0] if top else None)
         if use:
-            trace.update({"decision": "partial", "answer": f"Partially answerable. Based on {use['doc_id']}: {use['text'][:450]} [Source: {use['doc_id']}]. For the grade-change/fee-waiver part: this is outside what I can do – please contact Examinations/Bursar. No action taken. [Policy: DOC-10, DOC-11]",
+            trace.update({"decision": "partial", "answer": f"Partially answerable. Based on {use['doc_id']}: {answer_excerpt(use)} [Source: {use['doc_id']}]. For the grade-change/fee-waiver part: this is outside what I can do – please contact Examinations/Bursar. No action taken. [Policy: DOC-10, DOC-11]",
                           "sources": [use["doc_id"], "DOC-10" if "fee" in low else "DOC-11"]})
             return trace
     # pure boundary request -> refuse (fixes under-refusal F-02: R12)
@@ -99,16 +108,17 @@ def answer(query, use_llm=False):
         return trace
     # partially answerable heuristic: only 1 weak hit
     if len(top) == 1 and top[0]["score"] < 0.15:
-        trace.update({"decision": "partial", "answer": f"Partially answerable from approved documents. Based on {top[0]['doc_id']}: {top[0]['text'][:400]} [Source: {top[0]['doc_id']}]. For the remainder, I don't have an approved source – please confirm with the Department Office.",
+        trace.update({"decision": "partial", "answer": f"Partially answerable from approved documents. Based on {top[0]['doc_id']}: {answer_excerpt(top[0])} [Source: {top[0]['doc_id']}]. For the remainder, I don't have an approved source – please confirm with the Department Office.",
                       "sources": [top[0]["doc_id"]]})
         return trace
-    ctx = " ".join(h["text"][:500] for h in top[:2])
-    srcs = sorted(set(h["doc_id"] for h in top[:2]))
-    tag = ", ".join(f"[Source: {s}]" for s in srcs)
+    primary = top[0]
+    excerpt = answer_excerpt(primary)
     llm_note = ""
     if use_llm:
         llm_note = " (phrased with gemini-3.8-flash, grounded only in retrieved excerpts)"
-    trace.update({"decision": "grounded", "answer": f"{ctx[:700]}{llm_note} {tag}", "sources": srcs})
+    trace.update({"decision": "grounded",
+                  "answer": f"{excerpt}{llm_note} [Source: {primary['doc_id']}]",
+                  "sources": [primary["doc_id"]]})
     return trace
 
 def run_tests():
