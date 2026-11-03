@@ -1,264 +1,175 @@
-# University Student-Support Case Agent - Group A Day (BSE4104)
+# CampusIQ — University Student-Support Agent
 
-A bounded AI agent that helps university students resolve routine support problems. It answers
-questions from a controlled corpus with citations, looks up case and timetable records through typed
-tools, and drafts a support case that is created **only after the student explicitly approves it**.
+Repository: <https://github.com/OpiyoOscar01/group_A_ai_agentic_capstone_assignment>
+Clickup Link: <https://app.clickup.com/1200410000004185/v/o/s/1200410000006385>
 
-Built for **BSE4104 Emerging Trends in Software Engineering**, Makerere University - Group A Day.
+CampusIQ is a student-support prototype developed for **BSE4104 Emerging Trends in Software
+Engineering, Makerere University**. It combines grounded handbook Q&A, student-specific case and
+timetable lookups, and a bounded workflow for preparing support cases.
 
-> **Safety boundary in one line:** the model may propose; the host validates and executes. Fee
-> decisions, academic-record changes and emergency actions are refused and handed to a human.
+> **Safety boundary:** AI can propose the next step, but deterministic application code validates
+> proposals. A support case is created only after the student explicitly approves its draft.
 
----
+## What CampusIQ does
 
-## Demo quick start
+- Answers questions using the approved local handbook collection and cites a source, or abstains when
+  the collection does not support an answer.
+- Shows the signed-in demo student's timetable and support cases.
+- Collects required details for a support case, checks policy and existing cases, then presents a
+  draft for review before submission.
+- Saves handbook-search metadata and chat transcripts locally in SQLite.
+- Applies limits and checks to planner actions, input, tool calls, and approval.
 
-The demonstration interface has no third-party dependencies and no API key requirement in scripted
-mode. Start it from the **repository root**, the folder that contains `src\`, `README.md` and
-`requirements.txt`. Full instructions, including the exact local path on the presentation machine,
-are in [`START_SERVER.md`](START_SERVER.md).
+## Start the CampusIQ website
 
-```bash
-git clone https://github.com/OpiyoOscar01/group_A_ai_agentic_capstone_assignment.git
-cd group_A_ai_agentic_capstone_assignment
-python src/web_ui.py
-```
+### Requirements
 
-Open `http://127.0.0.1:7860/`. Use the six scenario buttons, approve the draft, then inspect the run.
-Press **Reset demo data and conversation** between independent segments.
+- Python and `pip`
+- Node.js and npm
+- A Gemini API key for Gemini-powered case-workflow planning
 
-Optional live Gemini planner:
-
-```bash
-pip install -r requirements.txt
-set GEMINI_API_KEY=your-key-here        # Windows
-python src/web_ui.py --planner gemini
-```
-
-Terminal fallback, same agent:
-
-```bash
-python src/agent.py --chat --student 2300701098
-```
-
-The interface follows the Custosell design system: `blue-600`
-primary actions, a `gray-50` canvas, white 16px cards, 8px control radii, restrained shadows and a
-system sans stack. It is implemented as dependency-free HTML/CSS so the demo remains reproducible on
-a clean machine.
-
----
-
-## CampusIQ website (Flask + React)
-
-CampusIQ is the full browser interface for this student-support prototype. It includes a guided
-assistant, saved chat history, handbook search, case list, timetable, search history, and a description
-of the system's boundaries. The Flask server serves the built React frontend.
-
-The demo sign-in accepts **only a student ID from the synthetic sample roster**; it is not real
-authentication. JSON files remain the source for student, case, and timetable records. SQLite stores
-handbook-search metadata and chat transcripts scoped to the selected demo student. Transcripts persist
-across Flask restarts, but an unfinished case approval does not. Case submissions always require
-explicit approval.
-
-### Start CampusIQ
-
-From the repository root, run:
+From the repository root, install the Python packages:
 
 ```powershell
 python -m pip install -r requirements.txt
+```
+
+To enable Gemini case planning, set the API key in an untracked `.env` file. If you do not have one
+yet:
+
+```powershell
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+```
+
+Edit `.env` and set `GEMINI_API_KEY`. The default model is `gemini-3.8-flash`; set `GEMINI_MODEL` to
+override it. Never commit `.env`.
+
+Start the app from the repository root:
+
+```powershell
 python src/webapp.py
 ```
 
-The server installs the locked frontend dependencies if needed and builds the React app automatically.
-Open **http://127.0.0.1:5000**. Node.js and npm must be installed. For frontend-only development, run
-`npm run dev` from `frontend\` in a second terminal and open the Vite URL it prints.
+The startup script installs the locked frontend dependencies if Vite is missing, builds the React
+frontend, and starts Flask. Open **http://127.0.0.1:5000**. Press `Ctrl+C` to stop it. Node.js and npm
+must be installed and available on `PATH`.
 
-Create an untracked `.env` file and set `GEMINI_API_KEY` to enable Gemini case-workflow planning.
-`GEMINI_MODEL` defaults to `gemini-3.8-flash`. Gemini is preferred when available; the scripted planner
-takes over if Gemini cannot be reached. Handbook Q&A continues to use the approved local retrieval
-pipeline. See `.env.example`. Set a private `CAMUS_SECRET_KEY` when using a stable local session.
+### Frontend development mode
 
-**The demo sign-in is not authentication. Use synthetic data only; never enter real or sensitive
-student information, and do not expose this prototype publicly.** Chat messages are sent to Gemini
-during Gemini-powered case planning and transcripts are stored locally until deleted.
+For Vite hot reload, keep Flask running and use a second terminal:
 
----
-
-## What it does
-
-| Capability | Behaviour |
-|---|---|
-| Policy questions | Grounded answer with a source identifier and section, or an honest abstention |
-| Partial questions | States what is supported and what is missing |
-| Case / timetable lookup | Typed tool call with an ownership check |
-| Case creation | Draft, explicit approval, then a `Pending` case |
-| Out-of-scope requests | Refusal with a handoff message; no tool exists for fee or record decisions |
-| Follow-up turns | Resumes the active case reference (30-day TTL) and can forget it on request |
-
-The agent asks at most three clarifying questions, takes at most eight iterations and six tool calls,
-and records a full trace for every run.
-
----
-
-## Architecture
-
-```
-Browser UI (src/web_ui.py or src/webapp.py + frontend/)  or  CLI (src/agent.py)
-    |
-    +-- Retrieval (src/rag.py)             TF-IDF + cosine, top-3, min score 0.14
-    +-- Orchestrator (src/orchestrator.py) intent routing + approval gate
-    +-- Agent loop (src/agent.py)          plan -> validate -> act -> observe -> stop
-    +-- Tools (src/tools.py)               search_handbook, lookup_case_or_timetable,
-    |                                      create_draft_support_case
-    +-- Memory (src/memory.py)             active_case_id only, TTL 30 days, audit log
+```powershell
+Set-Location frontend
+npm ci
+npm run dev
 ```
 
-Model: **Gemini 3.8 Flash** (structured JSON planning). Prompts are versioned in `prompts/`
-(`v1.0`, `v1.1`, `v2.0`, `v3.0-rag`). The default demonstration planner is a deterministic scripted
-policy; the live model is optional.
+Open the Vite URL (normally **http://127.0.0.1:5173**). Its `/api` requests are proxied to Flask on
+port 5000. This second terminal is only needed for frontend development; the normal local app uses the
+built frontend served by Flask.
 
-Architecture diagrams: [`docs/architecture/`](docs/architecture/).
+## Gemini and scripted planning
 
----
+The CampusIQ web app prefers the Gemini planner for support-case workflows. Gemini proposes one
+bounded action at a time; application code validates and executes allowed actions. If a Gemini request
+fails with a recognized service, quota, or access error, the scripted planner takes over. Automatic
+Gemini retries are disabled and planner requests have a 15-second timeout to avoid lengthy waits before
+fallback.
 
-## Requirements
+The direct agent CLI uses gemini planner by default. Choose the planner explicitly with
+`--planner gemini` or `--planner scripted`.
 
-- Python 3.11 or newer
-- The dependency-free `src/web_ui.py` demo and scripted agent need no third-party packages
-- The CampusIQ Flask + React website needs Python requirements plus Node.js/npm
-- A Gemini API key only for the optional live planner
+**Handbook answers do not use Gemini.** They use the local TF-IDF retrieval pipeline and answer from
+approved documents. Case planning is separate from handbook Q&A.
 
----
+## Sign-in, storage, and privacy
 
-## Configuration
+Choose a student ID from the app's synthetic demo roster. This is a profile selector, **not real
+authentication**. Student, case, and timetable fixtures are loaded from JSON files in `data/`.
+Handbook-search metadata and conversation transcripts are stored locally in
+`data/camus_iq.sqlite3`; students can delete saved conversations. In-progress approval state exists
+only while the Flask process is running. After a restart, start a new case request rather than trying
+to approve a saved draft.
 
-Copy `.env.example` to `.env` and set the key. **Never commit `.env`.**
+Use synthetic data only. Do not enter real, sensitive, or confidential student information, and do not
+expose this prototype publicly. During Gemini-powered case planning, message content is sent to the
+configured Gemini service.
 
-```ini
-GEMINI_API_KEY=your-key-here
-GEMINI_MODEL=gemini-2.0-flash
+## Project work by week
+
+| Week        | Focus                          | Project outcome                                                                                                     |
+| ----------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 1           | Project definition             | Charter, requirements, user needs, and initial design artifacts.                                                    |
+| 2           | Prompt-engineering baseline    | Command-line student-support agent, model-selection notes, prompt specifications, and baseline scenarios.           |
+| 3           | Retrieval-augmented generation | Synthetic handbook corpus, TF-IDF retrieval, cited answers, abstention behavior, and retrieval evaluation.          |
+| 4           | Tools and orchestration        | Typed lookup and draft-case tools, routing, tool schemas, and tool tests.                                           |
+| 5           | Bounded agent                  | Plan–validate–act workflow, scripted and Gemini planners, explicit approval, limits, and workflow traces.           |
+| 6           | Memory and state               | Minimal active-case memory, state handling, expiry and deletion behavior, and interface documentation.              |
+| 7           | Evaluation and guardrails      | End-to-end evaluation, failure retests, guardrail checks, tracing, and retained evidence.                           |
+| Integration | CampusIQ interface             | Flask API and React website bring the handbook, timetable, case workflow, saved chats, and search history together. |
+
+Weekly reports are in `docs/weekly-reports/`. Requirements, evaluation reports, design notes, and
+architecture materials are in `docs/`.
+
+## Developer command-line tools
+
+The supported browser app is **CampusIQ**, started with `python src/webapp.py` above. The following
+commands are separate project exercises and do not start the CampusIQ website:
+
+Run these from the repository root:
+
+```powershell
+# Week 2 baseline
+python src/app.py --chat
+python src/app.py --run-tests
+
+# Handbook retrieval
+python src/rag.py --query "How many times can I retake a failed course?"
+python src/rag.py --run-tests
+
+# Bounded case agent (scripted planner by default)
+python src/agent.py --chat --student 2300701098
+python src/agent.py --chat --student 2300701098 --planner gemini
 ```
 
-`.env` is excluded by `.gitignore`. The application reads configuration from the environment only.
+## Tests and evaluation
 
----
+Run the CampusIQ API tests:
 
-## Evaluation and evidence
+```powershell
+python -m unittest discover -s tests -p test_webapp.py
+```
 
-The evaluation harnesses live under **`tests/`**. All commands run from the repository root.
+Additional project test and evaluation runners:
 
-```bash
-# 49-scenario end-to-end evaluation (scripted planner, deterministic)
-python tests/run_week7_eval.py --label final
-
-# 16 adversarial guardrail probes
-python tests/run_week7_guardrails.py
-
-# 13 agent workflow traces
+```powershell
+python tests/run_week4_tool_tests.py
 python tests/run_week5_agent_traces.py
-
-# 8 memory scenarios
 python tests/run_week6_memory_demo.py
-
-# Failure-catalogue re-tests
+python tests/run_week7_eval.py --label final
+python tests/run_week7_guardrails.py
 python tests/retest_failures.py
 ```
 
-Retained results:
+Evaluation scripts may write traces or reports under `evidence/`. Retained results describe the
+specific runs that produced them; they are not a guarantee of current Gemini service availability.
 
-| Evidence | Result | Location |
-|---|---|---|
-| End-to-end | 49/49 (100%) | `evidence/week7_eval/final/RESULTS.md` |
-| Guardrails | 16/16 | `evidence/week7_guardrails/SUMMARY.md` |
-| Memory | 8/8 | `evidence/week6_memory/SUMMARY.md` |
-| Agent traces | 13/13 | `evidence/week5_traces/SUMMARY.md` |
-| Retrieval | 14/15 (93%) | Week 3 deliverable |
-| Traceability | 39/39 | Week 7 evidence |
+## Repository map
 
-Latency in the retained final run: p50 1.9 ms, p95 32.6 ms, max 57.0 ms (budget 2,000 ms).
-These are **scripted-planner orchestration times**, not live model latency.
+| Location        | Contents                                                                     |
+| --------------- | ---------------------------------------------------------------------------- |
+| `src/webapp.py` | Flask API, database initialization, and frontend build/serving               |
+| `src/agent.py`  | Bounded agent, planners, validation, and support-case workflow               |
+| `src/rag.py`    | Local corpus loading, TF-IDF retrieval, and grounded answers                 |
+| `src/tools.py`  | Case, timetable, and support-case tools                                      |
+| `src/memory.py` | Active-case memory and audit handling                                        |
+| `frontend/`     | React + Vite CampusIQ website                                                |
+| `knowledge/`    | Approved synthetic support documents                                         |
+| `data/`         | Synthetic demo fixtures and local application data                           |
+| `tests/`        | Unit tests, scenario sets, and evaluation runners                            |
+| `evidence/`     | Evaluation results, traces, and project evidence                             |
+| `docs/`         | Weekly reports, requirements, design, evaluation, and architecture documents |
+| `prompts/`      | Versioned prompts from the project exercises                                 |
 
----
-
-## Repository structure
-
-```
-|
-+-- src/
-|   +-- web_ui.py           # dependency-free browser demonstration UI
-|   +-- app.py              # Week 2 CLI baseline
-|   +-- rag.py              # corpus loading, chunking, retrieval, grounding
-|   +-- orchestrator.py     # routing and approval gate
-|   +-- agent.py            # bounded planner loop, validation, stop conditions
-|   +-- tools.py            # typed tools and schemas
-|   +-- memory.py           # minimal active-case memory
-+-- prompts/                # v1.0, v1.1, v2.0, v3.0-rag
-+-- tools_schemas/          # JSON schemas for each tool
-+-- tests/                  # evaluation harnesses and scenario sets
-+-- evidence/               # retained results, traces, failure catalogue
-+-- docs/                   # requirements, design, architecture, MCP manifest
-+-- docs/week8/             # final report, evidence pack, deck, demo script
-+-- release/                # changelog, release notes, tagging procedure
-+-- demo/                   # demo launcher and presenter guide
-+-- data/                   # synthetic corpus and fixtures
-+-- requirements.txt
-+-- .env.example
-```
-
----
-
-## Safety and data handling
-
-- **No write without approval.** `create_draft_support_case` requires a host-injected approval flag;
-  the model cannot set it.
-- **No model-supplied identity.** The host injects the student ID after session validation.
-- **Tool whitelist and typed arguments.** Unknown tools and malformed arguments are rejected before
-  execution.
-- **Bounded loop.** Iterations, tool calls, questions, repeats, retries, model calls and wall-clock
-  time are capped in code.
-- **Data minimisation.** Memory stores `active_case_id` and minimal metadata only, never the
-  transcript. 30-day TTL; deletion on request; `memory_audit.jsonl` records events.
-- **Synthetic corpus.** `data/` contains no real student records.
-
----
-
-## Known limitations
-
-1. **R14 lexical false positive.** Retrieval is 14/15; a lexically similar paragraph is cited instead
-   of abstaining. A local coverage guard (`MIN_COVER=2`) reaches 15/15 on that set but is **not
-   merged** into v1.0.0 because the 49-scenario evidence predates it.
-2. **Live-model evidence gap.** The 49-scenario run uses a scripted planner. It proves the
-   orchestration, tools and safety layers, not live Gemini action choice.
-3. **Unverified failure history.** `FC-12` to `FC-14` have verified before/after evidence;
-   `FC-01` to `FC-11` are documented but their pre-fix baseline was not preserved. See
-   `evidence/week7_failures/CATALOGUE_EVIDENCE.md`.
-4. **Synthetic corpus.** External validity for real policy edge cases is limited.
-5. **Prototype operations.** No authentication, rate limiting or structured log shipping.
-6. **No CI.** Harnesses are run manually.
-
----
-
-## Release
-
-- Version: **v1.0.0** (annotated tag prepared)
-- Final documents: [`docs/week8/`](docs/week8/)
-- Changelog: [`release/CHANGELOG.md`](release/CHANGELOG.md)
-- Release notes: [`release/RELEASE_NOTES_v1.0.0.md`](release/RELEASE_NOTES_v1.0.0.md)
-- Tagging procedure: [`release/TAGGING.md`](release/TAGGING.md)
-
-The remote tag and GitHub release are created by the maintainer with the procedure in
-`release/TAGGING.md`; they are not created by this repository snapshot.
-
----
-
-## Team
-
-| Member | Student number |
-|---|---|
-| Namatovu Christine Maria | 2300701098 |
-| Opiyo Oscar | 2300701330 |
-| Isio Lily | 2300700445 |
-| Babirye Sandra | 2300707270 |
-| Ogwal Richard | 2300716574 |
-
-Course: BSE4104 Emerging Trends in Software Engineering, Makerere University.
+Repository: <https://github.com/OpiyoOscar01/group_A_ai_agentic_capstone_assignment>
+Clickup Link: <https://app.clickup.com/1200410000004185/v/o/s/1200410000006385>
