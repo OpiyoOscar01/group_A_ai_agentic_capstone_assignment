@@ -10,3 +10,8 @@ data/camus_iq.sqlite3-shm
 data/camus_iq.sqlite3-wal
 frontend/node_modules/
 frontend/dist/
+.demo_snapshot/data/camus_iq.sqlite3
+data/camus_iq.sqlite3-shm
+data/camus_iq.sqlite3-wal
+frontend/node_modules/
+frontend/dist/
