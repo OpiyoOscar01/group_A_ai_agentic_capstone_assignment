@@ -1,7 +1,10 @@
 # CampusIQ — University Student-Support Agent
 
 Repository: <https://github.com/OpiyoOscar01/group_A_ai_agentic_capstone_assignment>
+
 Clickup Link: <https://app.clickup.com/1200410000004185/v/o/s/1200410000006385>
+
+Link to the CampusIQ Website Demo: <https://youtu.be/ErfHs6sxqfc>
 
 CampusIQ is a student-support prototype developed for **BSE4104 Emerging Trends in Software
 Engineering, Makerere University**. It combines grounded handbook Q&A, student-specific case and
